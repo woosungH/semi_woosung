@@ -24,7 +24,7 @@
 %>
 		<script>
 			alert("글이 삭제되었습니다.");
-			location.href= "list.jsp?pageNum=<%= pageNum %>";
+			location.href= "qnaList_u.jsp?pageNum=<%= pageNum %>";
 		</script>
 <%
 	} else if(re == 0) {

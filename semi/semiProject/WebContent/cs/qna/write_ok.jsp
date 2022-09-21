@@ -54,8 +54,8 @@
 	int re = qdb.insertBoard(qBoard);
 	
 	if(re == 1){
-		response.sendRedirect("list.jsp");
+		response.sendRedirect("qnaList_u.jsp");
 	}else{
-		response.sendRedirect("write.jsp");
+		response.sendRedirect("qnaWrite.jsp");
 	}
 %>

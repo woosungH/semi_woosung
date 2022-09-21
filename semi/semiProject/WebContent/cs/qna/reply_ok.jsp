@@ -64,13 +64,13 @@
 	if(re == 1){
 %>
 		<script>
-			location.href= "list.jsp?pageNum=<%= pageNum %>";
+			location.href= "../../admin/qnaList.jsp?pageNum=<%= pageNum %>";
 		</script>
 <%
 	}else{
 		%>
 		<script>
-			location.href= "reply.jsp?pageNum=<%= pageNum %>";
+			location.href= "qnaReply.jsp?pageNum=<%= pageNum %>";
 		</script>
 <%
 	}

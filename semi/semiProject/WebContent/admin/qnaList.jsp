@@ -1,8 +1,8 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="cs.QnABoardBean"%>
 <%@page import="cs.QnABoardDBBean"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
@@ -35,27 +35,56 @@
 		} // 전체 페이지가 10페이지인데 마지막 페이지가 11이면 안되므로 조건문 설정
 	}
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<center>
-		<h1>Q&A 관리</h1>
-		<table>
-			<tr>
-				<td>글번호</td>
-				<td>분류</td>
-				<td>제목</td>
-				<td>작성자</td>
-				<td>작성일</td>
-				<td>조회수</td>
-				<td>첨부파일</td>
-				<td>비공개</td>
-			</tr>
-	<%
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>Tiny Dashboard - A Bootstrap Dashboard Template</title>
+    <!-- Simple bar CSS -->
+    <link rel="stylesheet" href="css/simplebar.css">
+    <!-- Fonts CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="css/feather.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap4.css">
+    <!-- Date Range Picker CSS -->
+    <link rel="stylesheet" href="css/daterangepicker.css">
+    <!-- App CSS -->
+    <link rel="stylesheet" href="css/app-light.css" id="lightTheme" disabled>
+    <link rel="stylesheet" href="css/app-dark.css" id="darkTheme">
+  </head>
+  <body class="vertical  dark  ">
+    <div class="wrapper">
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="row">
+                <!-- Small table -->
+                <div class="col-md-12 my-4">
+                  <h2 class="h4 mb-1">Q & A 관리</h2>
+                  <div class="card shadow">
+                    <div class="card-body">
+                      <!-- table -->
+                      <table class="table table-borderless table-hover">
+                        <thead>
+                          <tr>
+                            <th>글번호</th>
+							<th>분류</th>
+							<th class="w-25">제목</th>
+							<th>작성자</th>
+							<th>작성일</th>
+							<th>조회수</th>
+							<th>첨부파일</th>
+							<th>비공개</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+   <%
 		for(int i=0; i < adminList.size(); i++) {
 			QnABoardBean board = adminList.get(i); // 배열에 넣은 역순으로 board 객체에 값을 넣어줌
 			b_id=board.getB_id();
@@ -71,77 +100,111 @@
 			b_anschk = board.getB_anschk();
 			if(b_anschk.equals("N")){
 	%>
-			<tr height="25" bgcolor="#E8E8E8" onmouseover="this.style.backgroundColor='#AEBAB4'"
-			onmouseout="this.style.backgroundColor='#E8E8E8'">
-				<td align="center"><%=b_id%></td>
-				<td align="center"><%=b_category%></td>
-				<td id="title" style="width:150px;">
-					<%
-						if(b_level > 0){
-							for(int j=0; j<b_level; j++){
-					%>
-								&nbsp;
-					<%
-							}
-					%>
-						<img src="../images/replyE.png" style="width:10px;" />
+                          <tr>
+							<td class="mb-0 text-muted"><%=b_id%></td>
+							<td class="mb-0 text-muted"><%=b_category%></td>
+							<td class="mb-0 text-muted"><%=b_title%></td>
+							<td class="mb-0 text-muted"><%= u_id %></td>
+							<td class="mb-0 text-muted"><%=sdf.format(b_date)%></td>
+							<td class="mb-0 text-muted"><%=b_view%></td>
+							<td>
+								<%
+									if(b_fsize != 0) {
+								%>
+										<img src="../images/image.png" style="width:10px;" />
+								<%
+									}
+								%>
+							</td>
+							<td>
+								<%
+									if(b_secret.equals("Y")) {
+								%>
+										<img src="../images/lock.png" style="width:30px;" />
+								<%
+									}
+								%>
+							</td>
+							<td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="text-muted sr-only">Action</span>
+                              </button>
+                              <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/show&b_id=<%= b_id %>&pageNum=<%= pageNum %>">확인</a>
+                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/reply&b_id=<%= b_id %>&pageNum=<%= pageNum %>">답변</a>
+                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/delete&b_id=<%= b_id %>&pageNum=<%= pageNum %>">삭제</a>
+                              </div>
+                            </td>
+						</tr>
 					<%
 						}
 					%>
-					<a href="../cs/qna/show.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>"><%=b_title%></a>
-				</td>
-				<td><%= u_id %></td>
-				<td><%=sdf.format(b_date)%></td>
-				<td><%=b_view%></td>
-				<td style="width:80px; height:40px;">
-					<%
-						if(b_fsize != 0) {
-					%>
-							<img src="../images/image.png" style="width:30px; margin-left:25px;" />
-					<%
-						}
-					%>
-				</td>
-				<td style="width:80px; height:40px;">
-					<%
-						if(b_secret.equals("Y")) {
-					%>
-							<img src="../images/lock.png" style="width:30px; margin-left:25px;" />
-					<%
-						}
-					%>
-				</td>
-			</tr>
-		<%
-			}
-		%>
-	<%
-		}
-	%>
-		</table>
-	<div>
-	<%
+				<%
+					}
+				%>
+                        </tbody>
+                      </table>
+                      <nav aria-label="Table Paging" class="mb-0 text-muted">
+                        <ul class="pagination justify-content-center mb-0">
+                        	<%
 		if(startPage > pageBlock) {
 	%>
-			<a href="?page=qnaList.jsp&pageNum=<%= startPage-pageBlock %>">이전</a>
-	<%
+                          <li class="page-item"><a class="page-link" href="adminIndex.jsp?pages=qnaList&pageNum=<%= startPage-pageBlock %>">이전</a></li>
+    <%
 		}
-	%>
-	<%
 		for(int i = startPage; i<= endPage; i++){
 	%>
-			<a href="?page=qnaList.jsp&pageNum=<%= i %>"><%= i %></a>
-	<%	
+                          <li class="page-item"><a class="page-link" href="adminIndex.jsp?pages=qnaList&pageNum=<%= i %>"><%= i %></a></li>
+    <%	
 		}
-	%>
-	<%
 		if(startPage+pageBlock <= pageCount) {
 	%>
-			<a href="?page=qnaList.jsp&pageNum=<%= startPage+pageBlock %>">다음</a>
-	<%
+                          <li class="page-item"><a class="page-link" href="adminIndex.jsp?pages=qnaList&pageNum=<%= startPage+pageBlock %>">다음</a></li>
+    <%
 		}
 	%>
-	</div>
-	</center>
-</body>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div> <!-- customized table -->
+              </div> <!-- end section -->
+            </div> <!-- .col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+    </div> <!-- .wrapper -->
+<!--     <script src="js/jquery.min.js"></script> -->
+    <script src="js/popper.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/simplebar.min.js"></script>
+    <script src='js/daterangepicker.js'></script>
+    <script src='js/jquery.stickOnScroll.js'></script>
+    <script src="js/tinycolor-min.js"></script>
+    <script src="js/config.js"></script>
+    <script src='js/jquery.dataTables.min.js'></script>
+    <script src='js/dataTables.bootstrap4.min.js'></script>
+    <script>
+      $('#dataTable-1').DataTable(
+      {
+        autoWidth: true,
+        "lengthMenu": [
+          [16, 32, 64, -1],
+          [16, 32, 64, "All"]
+        ]
+      });
+    </script>
+    <script src="js/apps.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag()
+      {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-56159088-1');
+    </script>
+  </body>
 </html>

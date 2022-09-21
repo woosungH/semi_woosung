@@ -63,13 +63,12 @@
 			</tr>
 			<tr>
 				<td colspan="4">
-					<%-- <input type="button" value="글목록" onclick="location.href='list.jsp?pageNum=<%= pageNum %>'" /> --%>
-					<input type="button" value="글목록" onclick="history.go(-1)" />
+					<input type="button" value="글목록" onclick="location.href='qnaList_u.jsp?pageNum=<%= pageNum %>'" />
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<% 
 						if(qbb.getU_id().equals(session.getAttribute("id"))){
 					%>
-					<input type="button" value="글수정" onclick="location.href='edit.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>'" />
+					<input type="button" value="글수정" onclick="location.href='qnaEdit.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>'" />
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<% 
 						}
@@ -77,7 +76,7 @@
 					<% 
 						if(qbb.getU_id().equals(session.getAttribute("id"))||session.getAttribute("grade")=="관리자") {
 					%>
-					<input type="button" value="글삭제" onclick="location.href='delete.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>'" />
+					<input type="button" value="글삭제" onclick="location.href='qnaDelete.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>'" />
 					<% 
 						}
 					%>
@@ -85,7 +84,7 @@
 					<% 
 						if(session.getAttribute("grade")=="admin" || session.getAttribute("id")=="admin" ) {
 					%>
-					<input type="button" value="답변글" onclick="location.href='reply.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>'" />
+					<input type="button" value="답변글" onclick="location.href='qnaReply.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>'" />
 					<% 
 						}
 					%>

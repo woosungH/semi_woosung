@@ -13,7 +13,7 @@
 %>
 		<script>
 			alert("주문이 수정되었습니다.");
-			location.href= "admin_main.jsp?page=orderList.jsp&pageNum=<%= pageNum %>";
+			location.href= "adminIndex.jsp?pages=orderList&pageNum=<%= pageNum %>";
 		</script>
 <%
 	} else {
