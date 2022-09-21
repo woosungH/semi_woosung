@@ -76,6 +76,7 @@
                   <div class="card shadow">
                     <div class="card-body">
                       <!-- table -->
+                      <div style="text-align:center">
                       <table class="table table-borderless table-hover">
                         <thead>
                           <tr>
@@ -150,6 +151,7 @@
 					}
 	%>
                       </table>
+                      </div>
                       <nav aria-label="Table Paging" class="mb-0 text-muted">
                         <ul class="pagination justify-content-center mb-0">
                         	<%

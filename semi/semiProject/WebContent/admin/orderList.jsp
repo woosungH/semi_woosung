@@ -70,6 +70,7 @@
           <div class="row justify-content-center">
             <div class="col-12">
               <h2 class="h3 mb-3 page-title">주문 관리</h2>
+              <div style="text-align: center;">
               <table class="table border table-hover bg-white">
                 <thead>
                   <tr role="row">
@@ -148,6 +149,7 @@
                   </tr>
                 </tbody>
               </table>
+              </div>
                <nav aria-label="Table Paging" class="mb-0 text-muted">
 	                 <ul class="pagination justify-content-center mb-0">
 	                 	<%

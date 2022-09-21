@@ -37,19 +37,19 @@ public class NoticeBean {
 			if(temp3 <= 0) {
 				temp3=1;
 			}
-			str="<a href = 'adminIndex.jsp?pageNum="+(temp3)+"&pages=listNotice'>[이전]</a>&nbsp;&nbsp";
+			str="<a href = 'listNotice.jsp?pageNum="+(temp3)+"'>[이전]</a>&nbsp;&nbsp";
 		}
 		for(int i=startPage;i<(startPage+limit);i++) {
 			if(i==pageNum) {
 				str +="["+i+"]&nbsp&nbsp";
 			} else {
-				str+="<a href='adminIndex.jsp?pageNum="+i+"&pages=listNotice'>["+i+"]</a>&nbsp;&nbsp;";
+				str+="<a href='listNotice.jsp?pageNum="+i+"'>["+i+"]</a>&nbsp;&nbsp;";
 			}
 			if(i>=pageCount)break;
 		}
 		
 		if(startPage + limit<=pageCount) {
-			str+="<a href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=listNotice'>[다음]</a>&nbsp;&nbsp";
+			str+="<a href = 'listNotice.jsp?pageNum="+(startPage+limit)+"'>[다음]</a>&nbsp;&nbsp";
 		}
 		
 		return str;

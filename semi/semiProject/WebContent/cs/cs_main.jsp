@@ -36,11 +36,11 @@
             <div class="col-12">
               <div class="w-50 mx-auto text-center justify-content-center py-5 my-5">
                 <h2 class="page-title mb-0">How can we help?</h2>
-                <p class="lead text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <form class="searchform searchform-lg">
+                <p class="lead text-muted mb-4">궁금한점을 찾아보세요</p>
+                <!-- <form class="searchform searchform-lg">
                   <input class="form-control form-control-lg bg-white rounded-pill pl-5" type="search" placeholder="Search" aria-label="Search">
                   <p class="help-text mt-2 text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </form>
+                </form> -->
               </div>
               <div class="row my-4">
                 <div class="col-6 col-md-4">
