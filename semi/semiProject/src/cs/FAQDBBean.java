@@ -54,7 +54,7 @@ public class FAQDBBean { //QnABoardBean과 QnABoardDBBean을 사용
 				"   and b_secret = 'N' \r\n" + 
 				"   and b_title like '%"+b_title+"%' \r\n" + 
 				"   and b_category like '%"+b_category+"%' \r\n" + 
-				"   and rownum <= 10 \r\n" + 
+				"   and rownum <= 20 \r\n" + 
 				" order by b_view desc";
 		
 		Connection conn = null;

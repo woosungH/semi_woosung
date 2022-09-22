@@ -104,6 +104,12 @@ public class NoticeDBBean {
 				pstmt.clearParameters();
 			}
 			
+			/*
+			 * sql = "select n_num\r\n" + "     , n_title\r\n" + "     , n_content\r\n" +
+			 * "     , n_date\r\n" + "     , n_hit\r\n" + "     , n_pwd\r\n" +
+			 * "     , n_ip\r\n" + "     , user_id\r\n" + "  from notice" +
+			 * " where n_num = ?";
+			 */
 			sql="select n.n_num\r\n" + 
 					"     , n.n_title\r\n" + 
 					"     , n.n_content\r\n" + 
@@ -363,7 +369,6 @@ public class NoticeDBBean {
 		}
 		return re;
 	}
-	
 	public int countWrite(int amount) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
