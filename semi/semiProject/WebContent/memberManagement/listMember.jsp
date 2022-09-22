@@ -46,27 +46,27 @@
     <!-- Date Range Picker CSS -->
     <link rel="stylesheet" href="css/daterangepicker.css">
     <!-- App CSS -->
-    <link rel="stylesheet" href="css/app-dark.css?" id="darkTheme">
+    <link rel="stylesheet" href="css/app-dark.css?a=b" id="darkTheme" disable>
+    <link rel="stylesheet" href="css/app-light.css?a=b" id="lightTheme">
 </head>
 <body>
-	<h3>회원 관리</h3>
-	<div style="text-align: right;">
-	<form method="post" action="adminIndex.jsp?pages=listMember&pageNum=<%= pageNum %>" style="margin: 20px;">
+		<div style="text-align: center;">
+	<h3>User_Manager</h3>
+	<form method="post" action="listMember.jsp">
 		<input type="text" name="search_user_id">
-		<input class="btn btn-primary" type="submit" value="검색">
+		<input type="submit" value="user_id 검색">
 	</form>
-	</div>
-	<div style="text-align: center;">
 	<table class="table table-bordered table-hover mb-0" border="1" style="margin: 0 auto; width:90%; cellspacing:0;">
 		<tr height="25" style="background-color: #343a40">
-			<th width="40" align="center">ID</th>
-			<th width="100" align="center">이름</th>
-			<th width="180" align="center">전화번호</th>
-			<th width="140" align="center">이메일</th>
-			<th width="180" align="center">가입일</th>
-			<th width="250" align="center">주소</th>
-			<th width="140" align="center">탈퇴</th>
+			<th width="40" align="center">user_id</th>
+			<th width="100" align="center">user_name</th>
+			<th width="180" align="center">user_phone</th>
+			<th width="140" align="center">user_email</th>
+			<th width="180" align="center">user_regdate</th>
+			<th width="250" align="center">user_addr</th>
+			<th width="140" align="center">action</th>
 		</tr>
+		<tbody>
 <%
 	for(int i=0; i<memberList.size();i++){
 		member = memberList.get(i);
@@ -109,18 +109,42 @@
 				지     번 : <%= user_jibun %> <br>
 				상세주소 : <%= user_detailaddr %>
 			</td>
-			<td  align="center">
+			<td>
+                <div class="dropdown">
+                  <button class="btn btn-sm dropdown-toggle" type="button" id="dr1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="text-muted sr-only">Action</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dr1">
+                    <a class="dropdown-item" href="showMember.jsp?user_id=<%= user_id %>&pageNum=<%= pageNum %>">Edit</a>
+                    <a class="dropdown-item" href="deleteM_ok.jsp?user_id=<%= user_id%>&pageNum=<%= pageNum %>">Remove</a>
+                  </div>
+                </div>
+             </td>
+			<%-- <td  align="center">
 				<form method="post" action="deleteM_ok.jsp?user_id=<%=user_id%>&pageNum=<%=pageNum%>" name="del_frm">
 					<input type="submit" onclick="exitCheck()" value="탈퇴" name="send">
 				</form>
-			</td>
+			</td> --%>
 		</tr>
+	</tbody>
 		<%
 	}
 	memberList.clear();
 %>
 	</table>
-	<%= MemberBean.pageNumber(5) %>
+	<%= MemberBean.pageNumber(4) %>
 	</div>
+	
+   	<script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/simplebar.min.js"></script>
+    <script src='js/daterangepicker.js'></script>
+    <script src='js/jquery.stickOnScroll.js'></script>
+    <script src="js/tinycolor-min.js"></script>
+    <script src="js/config.js"></script>
+    <script src='js/jquery.dataTables.min.js'></script>
+    <script src='js/dataTables.bootstrap4.min.js'></script>
 </body>
 </html>

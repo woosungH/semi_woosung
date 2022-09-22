@@ -69,7 +69,7 @@
                   <div class="card shadow mb-4">
                     <div class="card-body">
                       <i class="fe fe-globe fe-32 text-warning"></i>
-                      <a href="notice/listNotice_u.jsp">
+                      <a href="notice/noticeList_u.jsp">
                         <h3 class="h5 mt-4 mb-1">Notice</h3>
                       </a>
                       <p class="text-muted">공지사항을 확인해주세요</p>

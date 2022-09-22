@@ -38,52 +38,50 @@
 </head>
 <script src="notice.js?a=b"></script>
 <body>
-	<div style="text-align: center; margin: 10px auto; width: 90%" class="card shadow">
-		<h1 style="margin: 10px">글 수정하기</h1>
-		<form method="post" action="noticeEdit_ok.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>" name="wrt_frm">
-			<table style="margin: 0 auto; width: 90%" >
-				<tr height="30">
-					<td width="80">작성자</td>
-					<td width="140" align="left">
-						<%-- <input type="text" name="user_id" size="15" maxlength="20"  value="<%= notice.getUser_id()%>" readonly> --%>
-	                        <input type="text" class="form-control" value="<%= notice.getUser_id() %>" aria-label="Username" aria-describedby="basic-addon1" readonly style="height: 25px; width: 90%;">
-					</td>
-				</tr>
-				<tr height="30">
-					<td width="80">글제목</td>
-					<td colspan="3" width="460">
-	                        <input name="n_title" type="text" class="form-control" value="<%= notice.getN_title() %>" aria-label="Username" aria-describedby="basic-addon1" style="height: 25px; width: 90%;">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="4">
-                   		<div class="card-body" style="color: #ccc; width: 100%;">
+	<div class="wrapper">
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <h2 class="page-title">공지 수정</h2>
+              <br />
+              <form method="post" action="noticeEdit_ok.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>" name="wrt_frm">
+              <div class="card shadow mb-2">
+                  <div class="card shadow">
+                    <div class="card-body">
+                      <div class="form-group mb-3">
+                        <label for="name">작성자</label>
+                      <%-- <input type="text" name="user_id" size="15" maxlength="20"  value="<%= notice.getUser_id()%>" readonly> --%>
+	                    <input type="text" id="name" class="form-control" value="<%= notice.getUser_id() %>" aria-label="Username" aria-describedby="basic-addon1" readonly />
+                      </div>
+                      <div class="form-group mb-3">
+                        <label for="title">제목</label>
+	                    <input type="text" name="n_title" id="title" class="form-control" value="<%= notice.getN_title() %>" aria-label="Username" aria-describedby="basic-addon1" />
+                      </div>
+                      <div class="form-group mb-3">
                    			<div id="editor" style="min-height:300px;" contenteditable="true">
                    				<%= notice.getN_content() %>
                    			</div>
                    		</div>
                   		<input type="hidden" value="" name="n_content" id="content">
-					</td>
-				</tr>
-				<tr>
-					<td>
-						암&nbsp;&nbsp;호
-					</td>
-					<td height="50">
-                        <input type="password" name="n_pwd" class="form-control" aria-label="Username" aria-describedby="basic-addon1" style="height: 25px; width: 100px;">
-					</td>	
-				</tr>
-				<tr>
-					<td height="50" colspan="4" align="center">
-						<input class="btn btn-primary" type="button" value="수정" onclick="onclick_ok()">
-						<input class="btn btn-primary" type="reset" value="다시작성">
-						<input class="btn btn-primary" type="button" value="목록" onclick="location.href='adminIndex.jsp?pages=noticeList&pageNum=<%= pageNum %>&n_num=<%=n_num%>'">
-					</td>	
-				</tr>
-			</table>
-		</form>
-	</div>
-	
+                      <div class="form-group mb-3">
+                        <label for="example-password">비밀번호</label>
+                        <input type="password" name="n_pwd" class="form-control" aria-label="Username" aria-describedby="basic-addon1" />
+                      </div>
+                  	<div style="text-align:center">
+	                  <div class="btn-group" role="group" aria-label="Basic example">
+	                    <input type="button" class="btn btn-primary" value="목록" onclick="location.href='adminIndex.jsp?pages=noticeList&pageNum=<%= pageNum %>&n_num=<%=n_num%>'" />
+		                 <input type="reset" class="btn btn-primary" value="다시 작성" />
+		                 <input type="button" class="btn btn-primary" value="수정" onclick="onclick_ok()" />
+	                  </div>
+                	</div>
+                    </div>
+                  </div>
+                  </div>
+                	</div>
+              	</div> <!-- end section -->
+              </form>
+            </div> <!-- .col-12 -->
+          </div> <!-- .row -->
 	<script>
       $('.select2').select2(
       {

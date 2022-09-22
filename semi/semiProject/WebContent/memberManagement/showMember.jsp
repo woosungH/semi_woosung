@@ -12,7 +12,10 @@
 	} else{
 		user_id = request.getParameter("user_id");
 		member = db.getMember(user_id);
-		
+
+		phone1=member.getUser_phone1();
+		phone2=member.getUser_phone2();
+		phone3=member.getUser_phone3();
 	}
 	String[] arraylist = {"010","02","031","051"};
 %>
@@ -133,12 +136,12 @@
 			<tr>
 				<td>주소</td>
 				<td>
-					<input type="text" name="user_pcode" id="sample4_postcode" placeholder="우편번호" >
+					<input type="text" name="user_pcode" id="sample4_postcode" value="<%=member.getUser_pcode()%>">
 					<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-					<input type="text" name="user_raddr" id="sample4_roadAddress" placeholder="도로명주소" size="60" ><br>
-					<input type="hidden" name="user_jibun" id="sample4_jibunAddress" placeholder="지번주소"  size="60">
+					<input type="text" name="user_raddr" id="sample4_roadAddress" placeholder="도로명주소" size="60" value="<%=member.getUser_raddr()%>"><br>
+					<input type="hidden" name="user_jibun" id="sample4_jibunAddress" placeholder="지번주소"  size="60" value="<%=member.getUser_jibun()%>">
 					<span id="guide" style="color:#999;display:none"></span>
-					<input type="text" name="user_detailaddr" id="sample4_detailAddress" placeholder="상세주소"  size="60"><br>
+					<input type="text" name="user_detailaddr" id="sample4_detailAddress" placeholder="상세주소"  size="60" value="<%=member.getUser_detailaddr()%>"><br>
 				</td>
 			</tr>
 			<tr>

@@ -1,71 +1,197 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@page import="product.ProductBean"%>
+<%@page import="product.ProductDBBean"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<%
+	int product_number = 0;
+	String pageNum = request.getParameter("pageNum");
+	String product_name = "";
+	
+	if (request.getParameter("product_number") != null) {
+		product_number = Integer.parseInt(request.getParameter("product_number"));
+	}
+	
+	ProductDBBean updb = ProductDBBean.getInstance();
+	ProductBean upbd = updb.getproduct(product_number, false);
+	
+	if (upbd != null) {
+		product_name = upbd.getProduct_name();
+	}
+%>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="favicon.ico">
+<title>Tiny Dashboard - A Bootstrap Dashboard Template</title>
+<!-- Simple bar CSS -->
+<link rel="stylesheet" href="css/simplebar.css">
+<!-- Fonts CSS -->
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<!-- Icons CSS -->
+<link rel="stylesheet" href="css/feather.css">
+<link rel="stylesheet" href="css/select2.css">
+<link rel="stylesheet" href="css/dropzone.css">
+<link rel="stylesheet" href="css/uppy.min.css">
+<link rel="stylesheet" href="css/jquery.steps.css">
+<link rel="stylesheet" href="css/jquery.timepicker.css">
+<link rel="stylesheet" href="css/quill.snow.css">
+<!-- Date Range Picker CSS -->
+<link rel="stylesheet" href="css/daterangepicker.css">
+<!-- App CSS -->
+<link rel="stylesheet" href="css/app-light.css" id="lightTheme">
+<link rel="stylesheet" href="css/app-dark.css" id="darkTheme" disabled>
+<script language="JavaScript" src="js/uploadProduct.js" charset="utf-8"></script>
 </head>
-<body>
-	<center>
-		<h1>상품 등록</h1>
-		<form action="productReg_ok.jsp" method="post" name="reg_frm">
-		<table border="1">
-			<tr>
-                <td>카테고리</td>
-                <td>
-                    <select name="p_category" id="category">
-                        <option value="nonSelect">카테고리를 선택해 주세요.</option>
-                        <option value="아우터">아우터</option>
-                        <option value="상의">상의</option>
-                        <option value="바지">바지</option>
-                        <option value="신발">신발</option>
-                        <option value="악세서리">악세서리</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>상품명</td>
-                <td>
-                    <input type="text" name="p_name" />
-                </td>
-            </tr>
-            <tr>
-                <td>가격</td>
-                <td>
-                    <input type="number" name="p_price" />
-                </td>
-            </tr>
-            <tr>
-                <td>수량</td>
-                <td>
-					<input type="number" name="p_stock" />
-                </td>
-            </tr>
-            <tr>
-                <td>상세 설명</td>
-                <td>
-                    <textarea name="p_desc" cols="30" rows="10" placeholder="내용을 입력해주세요."></textarea>
-                </td>
-                <!-- 쇼핑몰처럼 이미지로 상세 페이지 꾸밀 수 있게도 필요  -->
-            </tr>
-            <tr>
-                <td>대표 이미지</td>
-                <td>
-                   <input type="file" name="p_fname" id="productImg" onchange="checkFile(this);"/>
-                   <div id="showFiles">( 업로드한 파일이 없습니다. )</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="button" value="취소" onclick="location.href=admin_main.jsp" />
-                    <input type="reset" value="다시작성" />
-                    <input type="button" value="등록" onclick="check_ok();" />
-                </td>
-            </tr>
-		</table>
+<body class="vertical  dark  ">
+	<div class="wrapper">
+		<form method="post" name="reg_frm" action="productReg_ok.jsp" enctype="multipart/form-data">
+	        <div class="container-fluid">
+	          <div class="row justify-content-center">
+	            <div class="col-12">
+	              <h2 class="h3 mb-3 page-title">상품등록</h2>
+	                <div class="card shadow">
+	                	<div class="card-body">
+	                  <div class="row">
+	                      <div class="col-md-12">
+	                        <div class="form-group mb-3">
+	                            <label for="custom-select">상품 카테고리</label>
+	                            <select class="custom-select" id="custom-select" name="category_code">
+	                            <option selected value="none">카테고리를 선택하세요</option>
+	                            <option value="t-shirt">티셔츠</option>
+	                            <option value="hude-t">후드티</option>
+	                            <option value="nite">니트/스웨터</option>
+	                            <option value="shirt">셔츠/남방</option>
+	                            <option value="pants">바지</option>
+	                            <option value="blue-jeans">청바지</option>
+	                            </select>
+	                          </div>
+	                      <div class="form-group mb-3">
+	                        <label for="productName">상품명</label>
+	                        <input type="text" id="productName" name="product_name" class="form-control" />
+	                      </div>
+	                      <div class="form-group mb-3">
+	                        <label for="productPrice">상품 가격(원)</label>
+	                        <input type="number" id="productPrice" name="product_price" class="form-control" />
+	                      </div>
+	                      <div class="form-group mb-3">
+	                        <label for="productStock">재고 수량(개)</label>
+	                        <input type="number" id="productStock" name="product_stock" class="form-control" />
+	                      </div>
+	                      <div class="form-group mb-3">
+	                       <label for="content">상품 상세 설명</label>
+	                 		<div id="editor" style="min-height:500px;" contenteditable="true">
+	                 		</div>
+	                  		<input type="hidden" value="" name="product_desc" id="content">
+	                      </div>
+	                      <div class="form-group mb-3">
+	                      <label for="fileinput">이미지</label>
+	                      <input type="file" id="fileinput" class="form-control-file" name="product_img" />
+	                      </div>
+	                      <div style="text-align:center;">
+	                      <input type="button" class="btn mb-2 btn-primary" value="목록" onclick="location.href='adminIndex.jsp?pages=productList'" />
+	                      <input type="reset" class="btn mb-2 btn-primary" value="다시 작성" />
+	                      <input type="button" class="btn mb-2 btn-primary" value="등록" onclick="check_ok()" />
+	                      </div>
+	                    </div> <!-- /.col -->
+	               		 </div> <!-- row /.col -->
+	               		 </div> <!-- card -->
+	             	 </div> <!-- end section -->
+	           	 </div> <!-- .col-12 -->
+	          	</div> <!-- .row -->
+	          </div> <!-- .row -->
 		</form>
-	</center>
+     </div> <!-- .container-fluid -->
+	<!-- .wrapper -->
+	<script src="js/popper.min.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/simplebar.min.js"></script>
+	<script src='js/daterangepicker.js'></script>
+	<script src='js/jquery.stickOnScroll.js'></script>
+	<script src="js/tinycolor-min.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/gauge.min.js"></script>
+	<script src="js/jquery.sparkline.min.js"></script>
+	<script src='js/jquery.mask.min.js'></script>
+	<script src='js/select2.min.js'></script>
+	<script src='js/jquery.steps.min.js'></script>
+	<script src='js/jquery.validate.min.js'></script>
+	<script src='js/jquery.timepicker.js'></script>
+
+	<script>
+    // editor
+    var editor = document.getElementById('editor');
+    if (editor)
+    {
+      var toolbarOptions = [
+        [
+        {
+          'font': []
+        }],
+        [
+        {
+          'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [
+        {
+          'header': 1
+        },
+        {
+          'header': 2
+        }],
+        [
+        {
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }],
+        [
+        {
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }],
+        [
+        {
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }], // outdent/indent
+        [
+        {
+          'direction': 'rtl'
+        }], // text direction
+        [
+        {
+          'color': []
+        },
+        {
+          'background': []
+        }], // dropdown with defaults from theme
+        [
+        {
+          'align': []
+        }],
+        ['clean'] // remove formatting button
+      ];
+      var quill = new Quill(editor,
+      {
+        modules:
+        {
+          toolbar: toolbarOptions
+        },
+        theme: 'snow'
+      });
+    }
+    </script>
 </body>
 </html>

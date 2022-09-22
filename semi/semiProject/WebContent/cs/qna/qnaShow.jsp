@@ -97,7 +97,7 @@
                             <span class="form-control"><%= qbb.getB_view() %></span>
                           </div>
                           <div class="col-md-8 mb-3">
-                            <span>업로드 사진</span>
+                            <span>이미지</span>
                             <span class="form-control">
                             <%
 								if(qbb.getB_fname() != null){

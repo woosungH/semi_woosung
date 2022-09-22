@@ -26,11 +26,17 @@
 			member.setUser_id("test"+i);
 			member.setUser_pwd("test");
 			member.setUser_name("test"+i);
-/* 			member.setUser_phone(arraylist[(int)(Math.random()*4)]+"-0000-0000");
+			member.setUser_phone1(arraylist[(int)(Math.random()*4)]);
+			member.setUser_phone2("0000");
+			member.setUser_phone3("0000");
 			member.setUser_email("test@test");
+			member.setUser_pcode("test");
+			member.setUser_raddr("test");
+			member.setUser_jibun("test");
+			member.setUser_detailaddr("test");
+			member.setUser_grade(1);
 			member.setUser_regdate(new Timestamp(System.currentTimeMillis()));
-			member.setUser_addr("test");
-			 */
+			
 			//noticeDBBean.insertNotice(notice);
 			dbBean.register(member);
 			if(i==100){

@@ -50,7 +50,7 @@
             <div class="col-12">
               <h2 class="page-title">문의 작성</h2>
               <br />
-              <form action="write_ok.jsp" method="post" name="write_frm" enctype="multipart/form-data"">
+              <form action="qnaWrite_ok.jsp" method="post" name="write_frm" enctype="multipart/form-data"">
               <div class="card shadow mb-2">
                   <div class="card shadow">
                     <div class="card-body">
@@ -87,7 +87,7 @@
                         <textarea class="form-control" name="b_content" id="example-textarea" rows="10"></textarea>
                       </div>
                       <div class="form-group mb-3">
-                        <label for="customFile">사진 업로드</label>
+                        <label for="customFile">이미지</label>
                         <div class="custom-file">
                           <input type="file" name="b_fname" id="customFile"/>
                           <label for="customFile"></label>

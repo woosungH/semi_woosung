@@ -135,7 +135,7 @@
                               <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="adminIndex.jsp?pages=qnaShow&b_id=<%= b_id %>&pageNum=<%= pageNum %>">확인</a>
                                 <a class="dropdown-item" href="adminIndex.jsp?pages=qnaReply&b_id=<%= b_id %>&pageNum=<%= pageNum %>&b_category=<%= category %>">답변</a>
-                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/delete&b_id=<%= b_id %>&pageNum=<%= pageNum %>">삭제</a>
+                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/qnaDelete&b_id=<%= b_id %>&pageNum=<%= pageNum %>">삭제</a>
                               </div>
                             </td>
 						</tr>
