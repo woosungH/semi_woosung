@@ -20,38 +20,41 @@ public class NoticeBean {
 	
 
 	public static String pageNumber(int limit) {
-		String str="";
+		String str = "";
 		int temp = (pageNum-1)%limit;
-		int temp2=0;
-		int startPage = pageNum;
-		if(startPage > 1) {
-			startPage = pageNum -1;
-			temp2 = 1;
-		} else {
-			startPage = 1;
-		}
+		int startPage = pageNum - temp; // 시작 페이지 > 한번에 보여지는 페이지 번호의 처음 숫자
 		
-		//if(startPage - limit>0) {
-		if(startPage > 1) {
-			int temp3=startPage-limit;
-			if(temp3 <= 0) {
-				temp3=1;
+		if ((startPage - limit) > 0) { // 시작 페이지가
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage-1)+"&pages=noticeList'>이전</a></li>";
+		}
+		for (int i = startPage; i < (startPage+limit) ; i++) {
+			str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages=noticeList'>"+i+"</a></li>";
+			if (i >= pageCount) { 
+				break;
 			}
-			str="<a href = 'adminIndex.jsp?pageNum="+(temp3)+"&pages=listNotice'>[이전]</a>&nbsp;&nbsp";
 		}
-		for(int i=startPage;i<(startPage+limit);i++) {
-			if(i==pageNum) {
-				str +="["+i+"]&nbsp&nbsp";
-			} else {
-				str+="<a href='adminIndex.jsp?pageNum="+i+"&pages=listNotice'>["+i+"]</a>&nbsp;&nbsp;";
+		if ((startPage + limit) <= pageCount) {
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=noticeList'>다음</a></li>";
+		}
+		return str;
+	}
+	public static String userPageNumber(int limit) {
+		String str = "";
+		int temp = (pageNum-1)%limit;
+		int startPage = pageNum - temp; // 시작 페이지 > 한번에 보여지는 페이지 번호의 처음 숫자
+		
+		if ((startPage - limit) > 0) { // 시작 페이지가
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'noticeList_u.jsp?pageNum="+(startPage-1)+"'>이전</a></li>";
+		}
+		for (int i = startPage; i < (startPage+limit) ; i++) {
+			str+="<li class=\"page-item\"><a class=\"page-link\" href='noticeList_u.jsp?pageNum="+i+"'>"+i+"</a></li>";
+			if (i >= pageCount) { 
+				break;
 			}
-			if(i>=pageCount)break;
 		}
-		
-		if(startPage + limit<=pageCount) {
-			str+="<a href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=listNotice'>[다음]</a>&nbsp;&nbsp";
+		if ((startPage + limit) <= pageCount) {
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'noticeList_u.jsp?pageNum="+(startPage+limit)+"'>다음</a></li>";
 		}
-		
 		return str;
 	}
 	

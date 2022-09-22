@@ -111,26 +111,44 @@ public class QnABoardDBBean {
 		return re;
 	}
 
-	public ArrayList<QnABoardBean> listBoard(int startRow, int pageSize) throws Exception {
+	public ArrayList<QnABoardBean> listBoard(String pageNumber) throws Exception {
 		String sql = "SELECT B_ID, U_ID, B_CATEGORY, B_VIEW, B_TITLE, B_CONTENT\r\n" + 
 				"     , B_IP, B_PWD, B_DATE, B_SECRET, B_REF, B_STEP, B_LEVEL\r\n" + 
 				"     , B_FNAME, B_FSIZE, B_RFNAME, B_ANSCHK\r\n" + 
-				"  FROM (SELECT ROWNUM AS rnum, A.* \r\n" + 
-				"          FROM (SELECT * FROM QNA_BOARD ORDER BY B_REF DESC, B_STEP) A)\r\n" + 
-				" WHERE rnum >= ? AND rnum <= ?";		// 페이지에 글을 몇 개 보여주는지 제한하는 쿼리
+				"  FROM qna_board ORDER BY B_REF DESC, B_STEP";
+		String sql2="SELECT COUNT(B_ID) FROM qna_board";
 		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
-				
+		ResultSet pageSet = null;
+		int dbCount=0;
+		int absolutePage=1;
 		ArrayList<QnABoardBean> list = new ArrayList<QnABoardBean>();
 		try {
 			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, startRow+pageSize-1);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			pageSet = stmt.executeQuery(sql2);
+			
+			if (pageSet.next()) {
+				dbCount = pageSet.getInt(1);
+				pageSet.close();
+			}
+			if (dbCount % QnABoardBean.pageSize == 0) { // 데이터가 80개면 pageSize = 10이므로 전체 페이지는 8개
+				QnABoardBean.pageCount = dbCount / QnABoardBean.pageSize;
+			} else { // 데이터가 82개면 pageSize = 10이므로 전체 페이지는 80/10 +1 = 9개
+				QnABoardBean.pageCount = dbCount / QnABoardBean.pageSize+1;
+			}
+			if (pageNumber != null) { // 글을 보다가 목록으로 돌아오면 페이지번호를 가지고 있으므로 해당 페이지의 목록을 보여주게 하기 위함
+				QnABoardBean.pageNum = Integer.parseInt(pageNumber);
+				absolutePage = (QnABoardBean.pageNum - 1) * QnABoardBean.pageSize + 1;
+			}
+			
+			rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				rs.absolute(absolutePage);
+				int count = 0;
+				while(count < QnABoardBean.pageSize) {
 				QnABoardBean qbb = new QnABoardBean();
 				qbb.setB_id(rs.getInt("B_ID"));
 				qbb.setU_id(rs.getString("U_ID"));
@@ -149,8 +167,16 @@ public class QnABoardDBBean {
 				qbb.setB_fsize(rs.getInt("B_FSIZE"));
 				qbb.setB_rfname(rs.getString("B_RFNAME"));
 				qbb.setB_anschk(rs.getString("B_ANSCHK"));
-				
 				list.add(qbb);
+				
+				if (rs.isLast()) {
+					break; // 결과가 마지막이면 반복 종료
+				} else {
+					rs.next();
+				}
+				count++;
+				
+				}
 			}
 			
 		} catch (SQLException ex) {
@@ -161,8 +187,8 @@ public class QnABoardDBBean {
 				if (rs != null) {
 					rs.close();
 				}
-				if (pstmt != null) {
-					pstmt.close();
+				if (stmt != null) {
+					stmt.close();
 				}
 				if (conn != null) {
 					conn.close();
@@ -414,12 +440,13 @@ public class QnABoardDBBean {
 			if (rs.next()) {
 				String db_pwd = rs.getString("B_PWD"); // 속성값에 조회한 비밀번호 입력
 				if (db_pwd.equals(qbb.getB_pwd())) {
-					sql = "UPDATE qna_board SET B_CATEGORY=?, B_TITLE=?, B_CONTENT=? WHERE B_ID=?";
+					sql = "UPDATE qna_board SET B_CATEGORY=?, B_TITLE=?, B_CONTENT=?, B_SECRET=? WHERE B_ID=?";
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1,qbb.getB_category());
 					pstmt.setString(2,qbb.getB_title());
 					pstmt.setString(3,qbb.getB_content());
-					pstmt.setInt(4, qbb.getB_id());
+					pstmt.setString(4, qbb.getB_secret());
+					pstmt.setInt(5, qbb.getB_id());
 					pstmt.executeUpdate();
 					re = 1; // 수정 성공
 				} else {
@@ -448,46 +475,76 @@ public class QnABoardDBBean {
 		}
 		return re;
 	}
-	public ArrayList<QnABoardBean> adminListBoard(int startRow, int pageSize) throws Exception {
+	public ArrayList<QnABoardBean> adminListBoard(String pageNumber) throws Exception {
 		String sql = "SELECT B_ID, U_ID, B_CATEGORY, B_VIEW, B_TITLE, B_CONTENT\r\n" + 
 				"     , B_IP, B_PWD, B_DATE, B_SECRET, B_REF, B_STEP, B_LEVEL\r\n" + 
 				"     , B_FNAME, B_FSIZE, B_RFNAME, B_ANSCHK\r\n" + 
-				"  FROM (SELECT ROWNUM AS rnum, A.* \r\n" + 
-				"          FROM (SELECT * FROM QNA_BOARD ORDER BY B_REF DESC, B_STEP) A)\r\n" + 
-				" WHERE rnum >= ? AND rnum <= ? AND B_ANSCHK = 'N'";		// 답글이 없는 글만 불러오는 쿼리
+				"  FROM qna_board WHERE B_ANSCHK='N' ORDER BY B_REF DESC, B_STEP";
+		String sql2="SELECT COUNT(B_ID) FROM qna_board WHERE B_ANSCHK='N'";
 		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Statement stmt = null;
 		ResultSet rs = null;
-				
+		ResultSet pageSet = null;
+		
+		int dbCount=0;
+		int absolutePage=1;
+		
 		ArrayList<QnABoardBean> adminList = new ArrayList<QnABoardBean>();
 		try {
 			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, startRow+pageSize-1);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				QnABoardBean qbb = new QnABoardBean();
-				qbb.setB_id(rs.getInt("B_ID"));
-				qbb.setU_id(rs.getString("U_ID"));
-				qbb.setB_category(rs.getString("B_CATEGORY"));
-				qbb.setB_view(rs.getInt("B_VIEW"));
-				qbb.setB_title(rs.getString("B_TITLE"));
-				qbb.setB_content(rs.getString("B_CONTENT"));
-				qbb.setB_ip(rs.getString("B_IP"));
-				qbb.setB_pwd(rs.getString("B_PWD"));
-				qbb.setB_date(rs.getTimestamp("B_DATE"));
-				qbb.setB_secret(rs.getString("B_SECRET"));
-				qbb.setB_ref(rs.getInt("B_REF"));
-				qbb.setB_step(rs.getInt("B_STEP"));
-				qbb.setB_level(rs.getInt("B_LEVEL"));
-				qbb.setB_fname(rs.getString("B_FNAME"));
-				qbb.setB_fsize(rs.getInt("B_FSIZE"));
-				qbb.setB_rfname(rs.getString("B_RFNAME"));
-				qbb.setB_anschk(rs.getString("B_ANSCHK"));
+			
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			pageSet = stmt.executeQuery(sql2);
+			
+			if (pageSet.next()) {
+				dbCount = pageSet.getInt(1);
+				pageSet.close();
+			}
+			if (dbCount % QnABoardBean.pageSize == 0) { // 데이터가 80개면 pageSize = 10이므로 전체 페이지는 8개
+				QnABoardBean.pageCount = dbCount / QnABoardBean.pageSize;
+			} else { // 데이터가 82개면 pageSize = 10이므로 전체 페이지는 80/10 +1 = 9개
+				QnABoardBean.pageCount = dbCount / QnABoardBean.pageSize+1;
+			}
+			if (pageNumber != null) { // 글을 보다가 목록으로 돌아오면 페이지번호를 가지고 있으므로 해당 페이지의 목록을 보여주게 하기 위함
+				QnABoardBean.pageNum = Integer.parseInt(pageNumber);
+				absolutePage = (QnABoardBean.pageNum - 1) * QnABoardBean.pageSize + 1;
+			}
+			
+			rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				rs.absolute(absolutePage);
+				int count = 0;
 				
-				adminList.add(qbb);
+				while(count < QnABoardBean.pageSize) {
+					QnABoardBean qbb = new QnABoardBean();
+					qbb.setB_id(rs.getInt("B_ID"));
+					qbb.setU_id(rs.getString("U_ID"));
+					qbb.setB_category(rs.getString("B_CATEGORY"));
+					qbb.setB_view(rs.getInt("B_VIEW"));
+					qbb.setB_title(rs.getString("B_TITLE"));
+					qbb.setB_content(rs.getString("B_CONTENT"));
+					qbb.setB_ip(rs.getString("B_IP"));
+					qbb.setB_pwd(rs.getString("B_PWD"));
+					qbb.setB_date(rs.getTimestamp("B_DATE"));
+					qbb.setB_secret(rs.getString("B_SECRET"));
+					qbb.setB_ref(rs.getInt("B_REF"));
+					qbb.setB_step(rs.getInt("B_STEP"));
+					qbb.setB_level(rs.getInt("B_LEVEL"));
+					qbb.setB_fname(rs.getString("B_FNAME"));
+					qbb.setB_fsize(rs.getInt("B_FSIZE"));
+					qbb.setB_rfname(rs.getString("B_RFNAME"));
+					qbb.setB_anschk(rs.getString("B_ANSCHK"));
+					adminList.add(qbb);
+				
+				if (rs.isLast()) {
+					break; // 결과가 마지막이면 반복 종료
+				} else {
+					rs.next();
+				}
+				count++;
+				
+				}
 			}
 			
 		} catch (SQLException ex) {
@@ -495,11 +552,8 @@ public class QnABoardDBBean {
 			ex.printStackTrace();
 		} finally {
 			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
+				if (stmt != null) {
+					stmt.close();
 				}
 				if (conn != null) {
 					conn.close();

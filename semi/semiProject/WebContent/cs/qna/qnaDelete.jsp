@@ -30,20 +30,19 @@
   <body class="dark ">
     <div class="wrapper vh-100">
       <div class="row align-items-center h-100">
-        <form method="post" action="delete_ok.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>" name="del_frm" class="col-lg-3 col-md-4 col-10 mx-auto text-center">
+        <form method="post" action="qnaDelete_ok.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>" name="del_frm" class="col-lg-3 col-md-4 col-10 mx-auto text-center">
           <div class="mx-auto text-center my-4">
             <h2 class="my-3">정말로 글을 삭제하시겠습니까?</h2>
           </div>
           <p class="text-muted">글을 삭제하기 위해 비밀번호를 입력해 주세요.</p>
           <div class="form-group">
-            <label for="inputEmail" class="sr-only"></label>
-            <input type="password" name="b_pwd" id="inputEmail" class="form-control form-control-lg" placeholder="PassWord">
+            <label for="password" class="sr-only"></label>
+            <input type="password" name="b_pwd" id="password" class="form-control form-control-lg" placeholder="비밀번호를 입력하세요.">
           </div>
           <div style="text-align:center">
             <div class="btn-group" role="group" aria-label="Basic example">
-                <input type="button" class="btn mb-2 btn-secondary" value="취소" onclick="history.go(-1)" />
-	            <input type="reset" class="btn mb-2 btn-secondary" value="다시 작성" />
 	            <input type="button" class="btn mb-2 btn-secondary" value="삭제" onclick="delete_ok()" />
+                <input type="button" class="btn mb-2 btn-secondary" value="취소" onclick="history.go(-1)" />
             </div>
        	  </div>
         </form>
@@ -63,16 +62,7 @@
     <script src="js/apps.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
 
-      function gtag()
-      {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'UA-56159088-1');
-    </script>
   </body>
 </html>
 </body>

@@ -5,18 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-	*{
-         list-style: none;
-         padding: 0;
-         margin: 0;
-     }
-     a{
-         text-decoration: none;
-         color: black;
-         display: block;
-     }
-</style>
 </head>
 <body>
 <div class="row">

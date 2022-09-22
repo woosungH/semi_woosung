@@ -40,7 +40,7 @@
           </a>
           <ul class="collapse list-unstyled pl-4 w-100" id="profile">
             <a class="nav-link pl-3" href="adminIndex.jsp?pages=qnaList"><span class="ml-1">문의 관리</span></a>
-            <a class="nav-link pl-3" href="adminIndex.jsp?pages=listNotice"><span class="ml-1">공지사항 관리</span></a>
+            <a class="nav-link pl-3" href="adminIndex.jsp?pages=noticeList"><span class="ml-1">공지사항 관리</span></a>
           </ul>
         </li>
         <li class="nav-item w-100">

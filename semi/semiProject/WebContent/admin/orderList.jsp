@@ -105,13 +105,13 @@
 			if(o_dStat.equals("입금 완료")){
 				stat = URLEncoder.encode("입금 완료","UTF-8");
 			} else if(o_dStat.equals("배송 준비")){
-				stat = URLEncoder.encode("입금 완료","UTF-8");
+				stat = URLEncoder.encode("배송 준비","UTF-8");
 			} else if(o_dStat.equals("배송중")){
-				stat = URLEncoder.encode("입금 완료","UTF-8");
+				stat = URLEncoder.encode("배송중","UTF-8");
 			} else if(o_dStat.equals("배송 완료")){
-				stat = URLEncoder.encode("입금 완료","UTF-8");
+				stat = URLEncoder.encode("배송 완료","UTF-8");
 			} else if(o_dStat.equals("구매 확정")){
-				stat = URLEncoder.encode("입금 완료","UTF-8");
+				stat = URLEncoder.encode("구매 확정","UTF-8");
 			}
 	%>
                   <tr>

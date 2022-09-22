@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="cs.QnABoardBean"%>
 <%@page import="cs.QnABoardDBBean"%>
@@ -12,29 +13,12 @@
 	Timestamp b_date;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	QnABoardDBBean qdb = QnABoardDBBean.getInstance();
-	
-	// 페이징 처리
-	int pageSize = 10; // 한페이지에 보여질 글 수
-	int count = qdb.getCount(new QnABoardBean()); // 전체 글 수
-	// 현재 페이지 정보 설정
 	String pageNum = request.getParameter("pageNum");
 	if(pageNum == null){
 		pageNum = "1";
 	} 
-	// 첫 행번호 계산
-	int currentPage = Integer.parseInt(pageNum);
-	int startRow = (currentPage-1)*pageSize+ 1; // 2페이지면 11~20
-	ArrayList<QnABoardBean> list = qdb.listBoard(startRow,pageSize);
+	ArrayList<QnABoardBean> list = qdb.listBoard(pageNum);
 	
-	int pageCount=1, pageBlock=5, startPage=1, endPage=1; // pageBlock: 한 페이지에 보여줄 페이지 블럭
-	if(count != 0) {
-		pageCount = (int)Math.ceil((double)count / pageSize); // 전체 페이지 수
-		startPage = ((currentPage-1)/pageBlock)*pageBlock+1; // 페이지 블럭 시작 번호
-		endPage = startPage + pageBlock -1; // 페이지 블럭 끝 번호
-		if(endPage > pageCount){
-			endPage = pageCount;
-		} // 전체 페이지가 10페이지인데 마지막 페이지가 11이면 안되므로 조건문 설정
-	}
 %>
 <!doctype html>
 <html lang="ko">
@@ -105,6 +89,7 @@
 			b_fsize = board.getB_fsize();
 			b_secret = board.getB_secret();
 			b_anschk = board.getB_anschk();
+			
 	%>
                           <tr>
 							<td class="mb-0 text-muted"><%=b_id%></td>
@@ -122,7 +107,7 @@
 								<%
 									}
 								%>
-								<a href="show.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>"><%=b_title%></a>
+								<a href="qnaShow.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>"><%=b_title%></a>
 							</td>
 							<td class="mb-0 text-muted"><%= u_id %></td>
 							<td class="mb-0 text-muted"><%=sdf.format(b_date)%></td>
@@ -152,26 +137,10 @@
 	%>
                       </table>
                       </div>
-                      <nav aria-label="Table Paging" class="mb-0 text-muted">
-                        <ul class="pagination justify-content-center mb-0">
-                        	<%
-		if(startPage > pageBlock) {
-	%>
-                          <li class="page-item"><a class="page-link" href="qnaList_u.jsp?pageNum=<%= startPage-pageBlock %>">이전</a></li>
-    <%
-		}
-		for(int i = startPage; i<= endPage; i++){
-	%>
-                          <li class="page-item"><a class="page-link" href="qnaList_u.jsp?pageNum=<%= i %>"><%= i %></a></li>
-    <%	
-		}
-		if(startPage+pageBlock <= pageCount) {
-	%>
-                          <li class="page-item"><a class="page-link" href="qnaList_u.jsp?pageNum=<%= startPage+pageBlock %>">다음</a></li>
-    <%
-		}
-	%>
-                        </ul>
+				<nav aria-label="Table Paging" class="mb-0 text-muted">
+		        	<ul class="pagination justify-content-center mb-0">
+						<%= QnABoardBean.pageNumber(5) %>
+					</ul>
 	<%
 				 /* if(session.getAttribute("id") != null){ */
 	%>
@@ -202,16 +171,7 @@
     <script src="js/config.js"></script>
     <script src='js/jquery.dataTables.min.js'></script>
     <script src='js/dataTables.bootstrap4.min.js'></script>
-    <script>
-      $('#dataTable-1').DataTable(
-      {
-        autoWidth: true,
-        "lengthMenu": [
-          [16, 32, 64, -1],
-          [16, 32, 64, "All"]
-        ]
-      });
-    </script>
+
     <script src="js/apps.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>

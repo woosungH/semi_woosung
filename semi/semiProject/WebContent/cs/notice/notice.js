@@ -3,15 +3,15 @@ function onclick_ok(){
         alert("제목을 써주세요.");
         wrt_frm.n_title,focus();
         return;
-    } else if(!wrt_frm.n_content.value){
-        alert("내용을 써주세요.");
-        wrt_frm.n_content,focus();
-        return;
     } else if(!wrt_frm.n_pwd.value){
         alert("암호을 써주세요.");
         wrt_frm.n_pwd,focus();
         return;
     }
+	const element = document.getElementsByClassName("ql-editor")[0];
+	
+	document.getElementById("content").value = element.innerHTML;
+	
     document.wrt_frm.submit();
 }
 

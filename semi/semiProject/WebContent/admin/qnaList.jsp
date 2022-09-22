@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="cs.QnABoardBean"%>
 <%@page import="cs.QnABoardDBBean"%>
@@ -10,30 +11,16 @@
 	int b_id,b_view, b_level, b_fsize;
 	String b_category, u_id, b_title, b_content, b_pwd, b_secret, b_anschk;
 	Timestamp b_date;
+	String category="";
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	QnABoardDBBean qdb = QnABoardDBBean.getInstance();
-	// 페이징 처리
-	int pageSize = 10; // 한페이지에 보여질 글 수
-	int count = qdb.getReplyCount(new QnABoardBean()); // 전체 글 수
-	// 현재 페이지 정보 설정
+	
 	String pageNum = request.getParameter("pageNum");
 	if(pageNum == null){
 		pageNum = "1";
 	} 
-	// 첫 행번호 계산
-	int currentPage = Integer.parseInt(pageNum);
-	int startRow = (currentPage-1)*pageSize+ 1; // 2페이지면 11~20
-	ArrayList<QnABoardBean> adminList = qdb.adminListBoard(startRow,pageSize);
-	
-	int pageCount=1, pageBlock=5, startPage=1, endPage=1; // pageBlock: 한 페이지에 보여줄 페이지 블럭
-	if(count != 0) {
-		pageCount = (int)Math.ceil((double)count / pageSize); // 전체 페이지 수
-		startPage = ((currentPage-1)/pageBlock)*pageBlock+1; // 페이지 블럭 시작 번호
-		endPage = startPage + pageBlock -1; // 페이지 블럭 끝 번호
-		if(endPage > pageCount){
-			endPage = pageCount;
-		} // 전체 페이지가 10페이지인데 마지막 페이지가 11이면 안되므로 조건문 설정
-	}
+	ArrayList<QnABoardBean> adminList = qdb.adminListBoard(pageNum);
+
 %>
 <!doctype html>
 <html lang="en">
@@ -65,7 +52,7 @@
               <div class="row">
                 <!-- Small table -->
                 <div class="col-md-12 my-4">
-                  <h2 class="h4 mb-1">Q & A 관리</h2>
+                  <h2 class="h3 mb-3 page-title">Q & A 관리</h2>
                   <div class="card shadow">
                     <div class="card-body">
                       <!-- table -->
@@ -99,6 +86,21 @@
 			b_fsize = board.getB_fsize();
 			b_secret = board.getB_secret();
 			b_anschk = board.getB_anschk();
+			
+			if(b_category.equals("회원정보")){
+				category = URLEncoder.encode("회원정보","UTF-8");
+			} else if(b_category.equals("상품문의")){
+				category = URLEncoder.encode("상품문의","UTF-8");
+			} else if(b_category.equals("주문/결제")){
+				category = URLEncoder.encode("주문/결제","UTF-8");
+			} else if(b_category.equals("배송")){
+				category = URLEncoder.encode("배송","UTF-8");
+			} else if(b_category.equals("교환/취소")){
+				category = URLEncoder.encode("교환/취소","UTF-8");
+			} else if(b_category.equals("서비스")){
+				category = URLEncoder.encode("서비스","UTF-8");
+			}
+			
 			if(b_anschk.equals("N")){
 	%>
                           <tr>
@@ -112,7 +114,7 @@
 								<%
 									if(b_fsize != 0) {
 								%>
-										<img src="../images/image.png" style="width:10px;" />
+										<img src="../images/image.png" style="width:30px;" />
 								<%
 									}
 								%>
@@ -126,12 +128,13 @@
 									}
 								%>
 							</td>
-							<td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="text-muted sr-only">Action</span>
-                              </button>
+							<td>
+								<button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                	<span class="text-muted sr-only">Action</span>
+                                </button>
                               <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/show&b_id=<%= b_id %>&pageNum=<%= pageNum %>">확인</a>
-                                <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/reply&b_id=<%= b_id %>&pageNum=<%= pageNum %>">답변</a>
+                                <a class="dropdown-item" href="adminIndex.jsp?pages=qnaShow&b_id=<%= b_id %>&pageNum=<%= pageNum %>">확인</a>
+                                <a class="dropdown-item" href="adminIndex.jsp?pages=qnaReply&b_id=<%= b_id %>&pageNum=<%= pageNum %>&b_category=<%= category %>">답변</a>
                                 <a class="dropdown-item" href="adminIndex.jsp?pages=../cs/qna/delete&b_id=<%= b_id %>&pageNum=<%= pageNum %>">삭제</a>
                               </div>
                             </td>
@@ -145,26 +148,10 @@
                         </tbody>
                       </table>
                       </div>
-                      <nav aria-label="Table Paging" class="mb-0 text-muted">
-                        <ul class="pagination justify-content-center mb-0">
-                        	<%
-		if(startPage > pageBlock) {
-	%>
-                          <li class="page-item"><a class="page-link" href="adminIndex.jsp?pages=qnaList&pageNum=<%= startPage-pageBlock %>">이전</a></li>
-    <%
-		}
-		for(int i = startPage; i<= endPage; i++){
-	%>
-                          <li class="page-item"><a class="page-link" href="adminIndex.jsp?pages=qnaList&pageNum=<%= i %>"><%= i %></a></li>
-    <%	
-		}
-		if(startPage+pageBlock <= pageCount) {
-	%>
-                          <li class="page-item"><a class="page-link" href="adminIndex.jsp?pages=qnaList&pageNum=<%= startPage+pageBlock %>">다음</a></li>
-    <%
-		}
-	%>
-                        </ul>
+						<nav aria-label="Table Paging" class="mb-0 text-muted">
+			        	<ul class="pagination justify-content-center mb-0">
+							<%= QnABoardBean.pageNumber(5) %>
+						</ul>
                       </nav>
                     </div>
                   </div>

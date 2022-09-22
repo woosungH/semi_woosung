@@ -12,37 +12,37 @@
 <%
 	//아래에 사용할 변수들
 	int b_id,b_view, b_level, b_fsize;
-	String b_category, u_id, b_title, b_content, b_pwd, b_secret, b_anschk;
+	String b_category, u_id, b_title, b_content, b_pwd, b_secret, b_anschk, content;
 	Timestamp b_date;
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-	String b_titleSearch = "";
-	int b_categorySearch = 0;
+	
+	String b_titleSearch = "";//제목 검색 변수
+	int b_categorySearch = 0;//카테고리를 위한 변수
+	
+	
 	String[] category = {"","회원정보", "상품문의", "주문/결제", "배송", "교환/취소", "서비스"};
+	
 	
 	if(request.getParameter("b_titleS")!=null){
 		b_titleSearch = request.getParameter("b_titleS");		
-	} else{
-		b_titleSearch = "회원정보";
 	}
 	if(request.getParameter("b_categoryS")!=null){
 		b_categorySearch = Integer.parseInt(request.getParameter("b_categoryS"));
-	} else {
-		b_categorySearch = 1;
 	}
-	
+
 	//객체생성 및 객체 배열
 	FAQDBBean faqdbBean = FAQDBBean.getInstance();
+	QnABoardDBBean qnadbBean = QnABoardDBBean.getInstance();
 	ArrayList<QnABoardBean> list = faqdbBean.listBoardFAQ(b_titleSearch,category[b_categorySearch]);
 %>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>Tiny Dashboard - A Bootstrap Dashboard Template</title>
-     <!-- 부트스트랩 CSS -->
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="jquery.min.js"></script>
+<script type="text/javascript" src="faq.js?a=b"></script>
+<!-- 부트스트랩 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <!-- Simple bar CSS -->
     <link rel="stylesheet" href="css/simplebar.css">
@@ -50,12 +50,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
     <link rel="stylesheet" href="css/feather.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap4.css">
     <!-- Date Range Picker CSS -->
     <link rel="stylesheet" href="css/daterangepicker.css">
     <!-- App CSS -->
-    <link rel="stylesheet" href="css/app-light.css" id="lightTheme">
-    <link rel="stylesheet" href="css/app-dark.css" id="darkTheme" disabled>
-  </head>
+    <link rel="stylesheet" href="css/app-dark.css?" id="darkTheme" disabled>
+    <link rel="stylesheet" href="css/app-light.css?" id="lightTheme">
+</head>
 <body class="vertical  light  ">
 	<div class="form-group col-md-4">
 		<form method="post" action="faq.jsp">
@@ -171,19 +172,58 @@
                   </div>
                 </div>
               </div> <!-- end section -->
-              <input type="radio" name="category" id="001" onclick="location.href='?b_categoryS=1'" style="display: none;">
-			  <input type="radio" name="category" id="002" onclick="location.href='?b_categoryS=2'" style="display: none;">
-			  <input type="radio" name="category" id="003" onclick="location.href='?b_categoryS=3'" style="display: none;">
-			  <input type="radio" name="category" id="004" onclick="location.href='?b_categoryS=4'" style="display: none;">
-			  <input type="radio" name="category" id="005" onclick="location.href='?b_categoryS=5'" style="display: none;">
-			  <input type="radio" name="category" id="006" onclick="location.href='?b_categoryS=6'" style="display: none;">
+              <input type="radio" name="category" id="001" onclick="location.href='?pages=faq.jsp&b_categoryS=1'"
+        	<%
+    			if(b_categorySearch == 1){
+    				%>
+    					checked="checked"
+    				<%
+    			}
+      		%> style="display: none;">
+			  <input type="radio" name="category" id="002" onclick="location.href='?pages=faq.jsp&b_categoryS=2'"        	
+			<%
+	  			if(b_categorySearch == 2){
+					%>
+						checked="checked"
+					<%
+				}
+	  		%> style="display: none;">
+			  <input type="radio" name="category" id="003" onclick="location.href='?pages=faq.jsp&b_categoryS=3'"
+        	<%
+    			if(b_categorySearch == 3){
+    				%>
+    					checked="checked"
+    				<%
+    			}
+      		%> style="display: none;">
+			  <input type="radio" name="category" id="004" onclick="location.href='?pages=faq.jsp&b_categoryS=4'"
+        	<%
+    			if(b_categorySearch == 4){
+    				%>
+    					checked="checked"
+    				<%
+    			}
+      		%> style="display: none;">
+			  <input type="radio" name="category" id="005" onclick="location.href='?pages=faq.jsp&b_categoryS=5'"
+        	<%
+    			if(b_categorySearch == 5){
+    				%>
+    					checked="checked"
+    				<%
+    			}
+      		%> style="display: none;">
+			  <input type="radio" name="category" id="006" onclick="location.href='?pages=faq.jsp&b_categoryS=6'"
+        	<%
+    			if(b_categorySearch == 6){
+    				%>
+    					checked="checked"
+    				<%
+    			}
+      		%> style="display: none;">
               <div class="row my-4">
                 <div class="col-md-12">
                   <div class="accordion w-100" id="accordion1">
                     <div class="card shadow">
-                      <div class="card-header" id="heading1">
-                        <a role="button" href="#collapse1" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-                          <strong>
       	<%
 			for(int i=0;i<list.size();i++){
 				board = list.get(i);
@@ -199,17 +239,19 @@
 				b_level = board.getB_level();
 				b_fsize = board.getB_fsize();
 				b_secret = board.getB_secret();
-				
 		%>
-			<tr><!-- 조회순 20개의 질문글 -->
-				<td>[<%= b_category %>]<%= b_title %></td>
-			</tr>
+                      <div class="card-header" id="heading<%=i+1 %>">
+                        <a role="button" href="#collapse1" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                          <strong>
+			<div><!-- 조회순 20개의 질문글 -->
+				<div>[<%= b_category %>]<%= b_title %></div>
+			</div>
                           </strong>
                         </a>
                       </div>
-                      <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordion1">
+                      <div id="collapse<%=i+1 %>" class="collapse show" aria-labelledby="heading1" data-parent="#accordion1">
                         <div class="card-body">
-            <tr><!-- 위의 질문글에 대한 답변 -->
+            <div><!-- 위의 질문글에 대한 답변 -->
 		<%
 				board2 = faqdbBean.getBoardFAQ(b_id, false);
 		
@@ -223,15 +265,17 @@
 				b_level = board2.getB_level();
 				b_fsize = board2.getB_fsize();
 				b_secret = board2.getB_secret();
+				board2 = qnadbBean.getBoard(b_id, false);
+				content = board2.getB_content();
 		
 		%>
-				<td>[<%= b_category %>]<%= b_title %></td>
-			</tr>
+				<div><%= content %></div>
+			</div>
+					</div>
+					</div>
 		<% 
 			}
 		%>
-					</div>
-					</div>
                 	</div> 
 				</div>
                 </div> <!-- /.col -->
@@ -240,7 +284,7 @@
           </div> <!-- .row -->
         </div> <!-- .container-fluid -->
     </div> <!-- .wrapper -->
-    <script src="js/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -262,5 +306,6 @@
       gtag('js', new Date());
       gtag('config', 'UA-56159088-1');
     </script>
-  </body>
+	
+</body>
 </html>

@@ -188,7 +188,7 @@ public class NoticeDBBean {
 				"     , n_ip\r\n" + 
 				"     , user_id\r\n" + 
 				"  from notice"+   
-				" order by n_num";
+				" order by n_num desc";
 		
 		sql2="SELECT COUNT(N_NUM) FROM NOTICE";
 		try {
@@ -212,6 +212,7 @@ public class NoticeDBBean {
 				NoticeBean.pageNum = Integer.parseInt(pageNumber);
 				absolutePage = (NoticeBean.pageNum - 1) * NoticeBean.pageSize +1;
 			}
+			
 			rs=stmt.executeQuery(sql);
 			if(rs.next()) {
 				rs.absolute(absolutePage);
@@ -270,12 +271,12 @@ public class NoticeDBBean {
 		
 		sql = "select n_pwd\r\n" + 
 				"   from notice\r\n" + 
-				"  where user_id = ?";
+				"  where n_num = ?";
 		
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, notice.getUser_id());
+			pstmt.setInt(1, notice.getN_num());
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				check_pw=rs.getString(1);

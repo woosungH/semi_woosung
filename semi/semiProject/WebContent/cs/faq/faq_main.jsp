@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String pages = "";
+	if(request.getParameter("pages")!=null){
+		pages = request.getParameter("pages");		
+	} else{
+		pages = "faq.jsp";
+	}
+%>
 <!DOCTYPE html>
 <html lang="ko">
   <head>

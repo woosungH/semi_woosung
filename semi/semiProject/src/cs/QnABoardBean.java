@@ -24,6 +24,51 @@ public class QnABoardBean {
 	static private int b_nm;
 	
 	
+	public static int pageSize=10;
+	public static int pageCount=1;
+	public static int pageNum=1;
+	
+
+	public static String pageNumber(int limit) {
+		String str = "";
+		int temp = (pageNum-1)%limit;
+		int startPage = pageNum - temp; // 시작 페이지 > 한번에 보여지는 페이지 번호의 처음 숫자
+		
+		if ((startPage - limit) > 0) { // 시작 페이지가
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage-1)+"&pages=qnaList'>이전</a></li>";
+		}
+		for (int i = startPage; i < (startPage+limit) ; i++) {
+			str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages=qnaList'>"+i+"</a></li>";
+			if (i >= pageCount) { 
+				break;
+			}
+		}
+		if ((startPage + limit) <= pageCount) {
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=qnaList'>다음</a></li>";
+		}
+		return str;
+	}
+	public static String userPageNumber(int limit) {
+		String str = "";
+		int temp = (pageNum-1)%limit;
+		int startPage = pageNum - temp; // 시작 페이지 > 한번에 보여지는 페이지 번호의 처음 숫자
+		
+		if ((startPage - limit) > 0) { // 시작 페이지가
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'qnaList_u.jsp?pageNum="+(startPage-1)+"'>이전</a></li>";
+		}
+		for (int i = startPage; i < (startPage+limit) ; i++) {
+			str+="<li class=\"page-item\"><a class=\"page-link\" href='qnaList_u.jsp?pageNum="+i+"'>"+i+"</a></li>";
+			if (i >= pageCount) { 
+				break;
+			}
+		}
+		if ((startPage + limit) <= pageCount) {
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'qnaList_u.jsp?pageNum="+(startPage+limit)+"'>다음</a></li>";
+		}
+		return str;
+	}
+	
+	
 	public static int getB_nm() {
 		return b_nm;
 	}
