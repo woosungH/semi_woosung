@@ -91,6 +91,12 @@ public class ProductDBBean {
 				pstmt.setInt(6, product.getFile_size());
 				/* pstmt.setTimestamp(7, product.getCreate_date()); */
 				pstmt.executeUpdate();
+			} else {
+				sql="INSERT INTO product_imagefile VALUES(0,?,null,null,null,0,sysdate)";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, productNumber);
+				pstmt.executeUpdate();
 			}
 			
 			re=1;
@@ -232,7 +238,6 @@ public class ProductDBBean {
 		ProductBean upbd = null;
 		String sql="";
 		
-
 		try {
 			conn = getConnection();
 			
@@ -284,7 +289,7 @@ public class ProductDBBean {
 		
 		return upbd;
 	}
-	
+
 	public int updateProduct(ProductBean upbd) throws Exception{
 		int re=-1;
 		Connection conn=null;
@@ -295,12 +300,10 @@ public class ProductDBBean {
 		try {
 			conn = getConnection();
 			
-			sql = "UPDATE PRODUCT SET category_code=? \r \n"
-					+ ", product_name=? \r \n"
-					+ ", product_price=? \r \n"
-					+ ", product_stock=? \r \n"
-					+ ", product_desc=? \r \n"
-					+ "WHERE product_number=?";
+			sql = "UPDATE product SET CATEGORY_CODE=?, PRODUCT_NAME=?\r\n" + 
+					"     , PRODUCT_PRICE=?, PRODUCT_STOCK=?, PRODUCT_DESC=?\r\n" + 
+					"     , PRODUCT_DATE=SYSDATE\r\n" + 
+					"  WHERE PRODUCT_NUMBER=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, upbd.getCategory_code());
 			pstmt.setString(2, upbd.getProduct_name());
@@ -309,7 +312,20 @@ public class ProductDBBean {
 			pstmt.setString(5, upbd.getProduct_desc());
 			pstmt.setInt(6, upbd.getProduct_number());
 			pstmt.executeUpdate();
+			// 상품 수정 시 사진이 바뀔 수 있어 쿼리문 추가
+			sql = "UPDATE product_imagefile SET ORGIN_FILE_NAME=?,STORED_FILE_NAME=?\r\n" + 
+					"     , STORED_THUMBNAIL=?, FILE_SIZE=?, CREATE_DATE=SYSDATE\r\n" + 
+					"  WHERE PRODUCT_NUMBER=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, upbd.getOrgin_file_name());
+			pstmt.setString(2, upbd.getStored_file_name());
+			pstmt.setString(3, upbd.getStored_thumbnail());
+			pstmt.setInt(4, upbd.getFile_size());
+			pstmt.setInt(5, upbd.getProduct_number());
+			pstmt.executeUpdate();
+			
 			re=1;
+			
 		}catch(SQLException ex){
 			System.out.println("수정 실패");
 			ex.printStackTrace();

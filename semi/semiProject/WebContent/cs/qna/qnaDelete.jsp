@@ -30,9 +30,9 @@
   <body class="dark ">
     <div class="wrapper vh-100">
       <div class="row align-items-center h-100">
-        <form method="post" action="qnaDelete_ok.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>" name="del_frm" class="col-lg-3 col-md-4 col-10 mx-auto text-center">
-          <div class="mx-auto text-center my-4">
-            <h2 class="my-3">정말로 글을 삭제하시겠습니까?</h2>
+        <form method="post" action="qnaDelete_ok.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>" name="del_frm" class="col-lg-3 col-md-4 col-10 mx-auto text-center" style="min-width:400px;">
+          <div class="mx-auto text-center my-6">
+            <h2 class="my-6">삭제하시겠습니까?</h2>
           </div>
           <p class="text-muted">글을 삭제하기 위해 비밀번호를 입력해 주세요.</p>
           <div class="form-group">
@@ -40,9 +40,9 @@
             <input type="password" name="b_pwd" id="password" class="form-control form-control-lg" placeholder="비밀번호를 입력하세요.">
           </div>
           <div style="text-align:center">
-            <div class="btn-group" role="group" aria-label="Basic example">
-	            <input type="button" class="btn mb-2 btn-secondary" value="삭제" onclick="delete_ok()" />
-                <input type="button" class="btn mb-2 btn-secondary" value="취소" onclick="history.go(-1)" />
+            <div class="btn"aria-label="Basic example">
+                <input type="button" class="btn btn-primary" value="취소" onclick="history.go(-1)" />
+	            <input type="button" class="btn btn-primary" value="삭제" onclick="delete_ok()" />
             </div>
        	  </div>
         </form>

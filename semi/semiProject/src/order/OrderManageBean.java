@@ -23,6 +23,33 @@ public class OrderManageBean {
 	private String receiver_jibun;
 	private String receiver_detailaddr;
 	
+	
+	//페이징 변수
+		public static int pageSize = 10; //한패이지에 보여줄 글 갯수
+		public static int pageCount = 1; //총 페이지 갯수
+		public static int pageNum = 1; //총 페이지 갯수
+	//페이지 메소드
+		public static String pageNumber(int limit, String url) {
+			String str = "";
+			int temp = (pageNum-1) % limit;
+			int startPage = pageNum - temp;
+			
+			if(startPage - limit > 0) {
+				str ="<li class=\"page-item\"><a class=\"page-link\" href ='adminIndex.jsp?pageNum="+(startPage-limit)+"&pages="+url+"'>이전</a></li>";
+			}
+			for (int i = startPage; i < (startPage+limit); i++) {//안쪽 페이지 번호
+				str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages="+url+"'>"+i+"</a></li>";
+				if (i >= pageCount) { 
+					break;
+				}
+			}
+			if ((startPage + limit) <= pageCount) {
+				str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages="+url+"'>다음</a></li>";
+			}
+			return str;
+		}
+		//페이징 변수 끝
+	
 	public String getReceiver_phone1() {
 		return receiver_phone1;
 	}

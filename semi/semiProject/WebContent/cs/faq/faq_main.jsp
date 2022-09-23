@@ -42,6 +42,12 @@
          </div>
        </div>
      </div>
+   	<div class="form-group col-md-4">
+		<form method="post" action="faq_main.jsp?pages=faq.jsp">
+			<input type="text" name="b_titleS"  aria-label="Recipient's username" aria-describedby="button-addon2" />
+			<input class="btn btn-primary" id="button-addon2" type="submit" value="FAQ검색">
+		</form>
+	</div>
 	<jsp:include page="faq.jsp"></jsp:include>
    
 <!--     <script src="js/jquery.min.js"></script> -->

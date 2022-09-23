@@ -15,10 +15,9 @@
 		pageNumber="1";
 		response.sendRedirect("adminIndex.jsp?pages=productList&pageNum=1");
 	}
-
 	ProductDBBean db = ProductDBBean.getInstance();
 	
-	ArrayList<ProductBean> list = db.productList(pageNumber);
+	ArrayList<ProductBean> productList = db.productList(pageNumber);
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm");
 %>
@@ -38,6 +37,7 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="css/app-light.css" id="lightTheme" disabled>
     <link rel="stylesheet" href="css/app-dark.css" id="darkTheme">
+    <script type="text/javascript" src="admin.js"></script>
 </head>
 <body class="vertical  dark  ">
     <div class="wrapper">
@@ -60,13 +60,13 @@
 							<th>상품명</th>
 							<th>가격</th>
 							<th>재고량</th>
-							<th>제품 등록일</th>
+							<th>제품 등록(수정)일</th>
                             <th>Action</th>
                           </tr>
                         </thead>
   <%
-		for(int i=1;i<list.size();i++){
-			product = list.get(i);
+		for(int i=0;i<productList.size();i++){
+			product = productList.get(i);
 			
 			int product_number = product.getProduct_number();
 			String product_name = product.getProduct_name();
@@ -75,11 +75,11 @@
 			int product_stock = product.getProduct_stock();
 			Timestamp product_date = product.getProduct_date();
 			int product_fileNumber;
-			String thumbName="";
-			
+			String thumbName ="";
 			product = db.getImg(product_number);
-			thumbName = product.getStored_thumbnail();
-			
+			if(product.getStored_thumbnail() != ""){
+				thumbName = product.getStored_thumbnail();
+			}
 	%>
                         <tbody>
                         <tr>
@@ -111,8 +111,9 @@
                                   <span class="text-muted sr-only">Action</span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dr1">
-                                  <a class="dropdown-item" href="adminIndex.jsp?pages=productEdit&product_number=<%= product_number %>">수정</a>
-                                  <a class="dropdown-item" href="adminIndex.jsp?pages=productDelete&product_number=<%= product_number %>">삭제</a>
+                                  <a class="dropdown-item" href="adminIndex.jsp?pages=productEdit&product_number=<%= product_number %>&pageNum=<%= pageNumber %>">수정</a>
+                                  <a class="dropdown-item" href="#" onclick="delCheck()">삭제</a>
+                                  <input class="btn mb-2" type="hidden" id="delete" value="product_delete_ok.jsp?product_number=<%= product_number %>&pageNum=<%= pageNumber %>" />
                                 </div>
                               </div>
                             </td>

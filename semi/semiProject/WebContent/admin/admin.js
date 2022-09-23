@@ -44,6 +44,8 @@ function check(){
 	document.order_frm.submit();
 }
 
+
+
 function sample4_execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -97,4 +99,51 @@ function sample4_execDaumPostcode() {
             }
         }
     }).open();
+}
+
+function exitCheck() {
+    var checking = confirm("탈퇴하시겠습니까?");
+    if (checking == false) {
+        alert("취소되었습니다.");
+    } else {
+        alert("탈퇴되었습니다.");
+		var href = document.getElementById("delete").value;
+		location.href=href;
+    }
+}
+function delCheck() {
+    var checking = confirm("상품을 삭제하시겠습니까?");
+    if (checking == false) {
+        alert("취소되었습니다.");
+    } else {
+        alert("삭제되었습니다.");
+		var href = document.getElementById("delete").value;
+		location.href=href;
+    }
+}
+
+function onclick_ok(){
+    if(!wrt_frm.n_title.value){
+        alert("제목을 써주세요.");
+        wrt_frm.n_title,focus();
+        return;
+    } else if(!wrt_frm.n_pwd.value){
+        alert("암호을 써주세요.");
+        wrt_frm.n_pwd,focus();
+        return;
+    }
+	const element = document.getElementsByClassName("ql-editor")[0];
+	
+	document.getElementById("content").value = element.innerHTML;
+	
+    document.wrt_frm.submit();
+}
+
+function delete_ok(){
+    if(!del_frm.n_pwd.value){
+        alert("암호을 써주세요.");
+        del_frm.n_pwd,focus();
+        return;
+    }
+    document.del_frm.submit();
 }

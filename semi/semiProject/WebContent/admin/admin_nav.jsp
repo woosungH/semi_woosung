@@ -29,8 +29,8 @@
             <span class="ml-3 item-text">주문 관리</span>
           </a>
           <ul class="collapse list-unstyled pl-4 w-100" id="contact">
-            <a class="nav-link pl-3" href="adminIndex.jsp?pages=orderList"><span class="ml-1">주문 관리</span></a>
-            <a class="nav-link pl-3" href="adminIndex.jsp?pages=refundList"><span class="ml-1">환불 관리</span></a>
+            <a class="nav-link pl-3" href="adminIndex.jsp?pages=order_list"><span class="ml-1">주문 관리</span></a>
+            <a class="nav-link pl-3" href="adminIndex.jsp?pages=refund_list"><span class="ml-1">환불 관리</span></a>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -44,7 +44,7 @@
           </ul>
         </li>
         <li class="nav-item w-100">
-          <a class="nav-link" href="adminIndex.jsp?pages=memberList">
+          <a class="nav-link" href="adminIndex.jsp?pages=member_list">
             <i class="fe fe-calendar fe-16"></i>
             <span class="ml-3 item-text">회원 관리</span>
           </a>

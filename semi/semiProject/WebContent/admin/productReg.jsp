@@ -88,8 +88,16 @@
 	                      </div>
 	                      <div class="form-group mb-3">
 	                      <label for="fileinput">이미지</label>
-	                      <input type="file" id="fileinput" class="form-control-file" name="product_img" />
-	                      </div>
+	                      <!-- <input type="file" id="example-fileinput" class="form-control-file" name="product_img" onchange="setThumbnail(event);" />
+							<div id="image_container" style="width: 150px; height: 150px;"></div>
+	                      </div> -->
+	                        <!-- 첨부파일(이미지파일만 업로드가능) -->
+							<input type="file" id="fileinput" name="product_img" accept="image/*">
+							
+							<!-- 이미지 미리보기 영역 -->
+							<div id="imgViewArea" style="margin-top:10px; display:none;">
+								<img id="imgArea" style="width:200px; height:200px;" onerror="imgAreaError()"/>
+							</div>
 	                      <div style="text-align:center;">
 	                      <input type="button" class="btn mb-2 btn-primary" value="목록" onclick="location.href='adminIndex.jsp?pages=productList'" />
 	                      <input type="reset" class="btn mb-2 btn-primary" value="다시 작성" />
@@ -105,6 +113,7 @@
 		</form>
      </div> <!-- .container-fluid -->
 	<!-- .wrapper -->
+    <script src="js/jquery.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -193,5 +202,42 @@
       });
     }
     </script>
+  <!--   <script>
+      function setThumbnail(event) {
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+          var img = document.createElement("img");
+          img.setAttribute("src", event.target.result);
+          document.querySelector("#image_container").appendChild(img);
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    </script> -->
+    <script type="text/javascript">
+	// 콘텐츠 수정 :: 사진 수정 시 이미지 미리보기
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$('#imgArea').attr('src', e.target.result); 
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	$(":input[name='product_img']").change(function() {
+		if( $(":input[name='product_img']").val() == '' ) {
+			$('#imgArea').attr('src' , '');  
+		}
+		$('#imgViewArea').css({ 'display' : '' });
+		readURL(this);
+	});
+
+	// 이미지 에러 시 미리보기영역 미노출
+	function imgAreaError(){
+		$('#imgViewArea').css({ 'display' : 'none' });
+	}
+</script>
 </body>
 </html>

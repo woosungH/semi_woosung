@@ -99,13 +99,13 @@
 									<%= n_hit %>
 								</td>
 							</tr>
-		<%
-	}
-	noticeList.clear();
-%>
-<%
-	if(session.getAttribute("n_user_id")!=null){
-%>
+						<%
+							}
+							noticeList.clear();
+						%>
+						<%
+							if(session.getAttribute("n_user_id")!=null){
+						%>
 			<!-- 	    
 			<td><span class="badge badge-pill badge-warning">Hold</span></td>
 	        <td><span class="badge badge-pill badge-danger">Danger</span></td>
@@ -115,6 +115,15 @@
 								    </tbody>
 								</table>
 							</div>
+							<nav aria-label="Table Paging" class="mb-0 text-muted">
+					        	<ul class="pagination justify-content-center mb-0">
+									<%= NoticeBean.pageNumber(5) %>
+								</ul>
+								<div style="text-align: right;">
+									<input class="btn btn-primary" type="button" value="글쓰기" 
+										onclick="location.href='adminIndex.jsp?pages=noticeWrite&pageNum=<%= pageNum %>&n_user_id=<%= n_user_id %>'">		
+								</div>
+							</nav>
 						</div>
 					</div>
 				</div>
@@ -122,15 +131,6 @@
 		</div>
 	</div>
 </div>
-		<nav aria-label="Table Paging" class="mb-0 text-muted">
-        	<ul class="pagination justify-content-center mb-0">
-				<%= NoticeBean.pageNumber(5) %>
-			</ul>
-		</nav>
-		<div style="text-align: right; margin: 20px 5% 0px 5%">
-			<input class="btn btn-primary" type="button" value="글쓰기" 
-				onclick="location.href='adminIndex.jsp?pages=noticeWrite&pageNum=<%= pageNum %>&n_user_id=<%= n_user_id %>'">		
-		</div>
 <%
 		}
 %>

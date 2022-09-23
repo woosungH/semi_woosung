@@ -50,7 +50,7 @@
             <div class="col-12">
               <h2 class="page-title">문의 작성</h2>
               <br />
-              <form action="qnaWrite_ok.jsp" method="post" name="write_frm" enctype="multipart/form-data"">
+              <form action="qna_write_ok.jsp" method="post" name="write_frm" enctype="multipart/form-data"">
               <div class="card shadow mb-2">
                   <div class="card shadow">
                     <div class="card-body">

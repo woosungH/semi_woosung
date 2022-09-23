@@ -1,14 +1,22 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="order.OrderManageBean"%>
+<%@page import="order.OrderManageDBBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% request.setCharacterEncoding("UTF-8"); %>
 <%
-	request.setCharacterEncoding("UTF-8");
-	String pages = "";
-	if(request.getParameter("pages")!=null){
-		pages = request.getParameter("pages");		
-	} else{
-		pages = "admin_body";
+	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
+	OrderManageBean omb = omdb.getOrder(Integer.parseInt(request.getParameter("o_dNum")));
+	String pageNum = request.getParameter("pageNum");
+	if(pageNum == null){
+		pageNum = "1";
 	}
-%> 
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	String o_dStat = request.getParameter("o_dStat");
+	int p_count = omb.getProduct_count();
+	int p_price = omb.getProduct_price();
+%>
 <!doctype html>
 <html lang="ko">
   <head>
@@ -16,7 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Admin Page</title>
+    <title>document</title>
     <!-- 부트스트랩 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <!-- Simple bar CSS -->
@@ -35,62 +43,127 @@
     <link rel="stylesheet" href="css/daterangepicker.css">
     <!-- App CSS -->
     <link rel="stylesheet" href="css/app-light.css" id="lightTheme" disabled>
-    <link rel="stylesheet" href="css/app-dark.css" id="darkTheme?a=b">
+    <link rel="stylesheet" href="css/app-dark.css" id="darkTheme">
   </head>
   <body class="vertical  dark  ">
     <div class="wrapper">
-    	<nav class="topnav navbar navbar-light">
-	        <button type="button" class="navbar-toggler text-muted mt-2 p-0 mr-3 collapseSidebar">
-	          <i class="fe fe-menu navbar-toggler-icon"></i>
-	        </button>
-	        <ul class="nav">
-	          <li class="nav-item dropdown">
-	            <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	              <span class="avatar avatar-sm mt-2">
-	                <img src="assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
-	              </span>
-	            </a>
-	            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-	              <a class="dropdown-item" href="#">Profile</a>
-	              <a class="dropdown-item" href="#">Settings</a>
-	            </div>
-	          </li>
-	        </ul>
-	      </nav>
-	      <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
-        	<a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
-         	    <i class="fe fe-x"><span class="sr-only"></span></i>
-        	</a>
-        	<nav class="vertnav navbar navbar-light">
-          <!-- nav bar -->
-          <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="adminIndex.jsp">
-              <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
-                <g>
-                  <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
-                  <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
-                  <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
-                </g>
-              </svg>
-            </a>
-          </div>
-           <!-- 좌측 네비게이션 바 -->
-          <p class="text-muted nav-heading mt-4 mb-1">
-            <span>관리자 메뉴</span>
-          </p>
-          <jsp:include page='admin_nav.jsp'></jsp:include>
-          </aside>
-      <main role="main" class="main-content">
         <div class="container-fluid">
           <div class="row justify-content-center">
             <div class="col-12">
-              <jsp:include page='<%= pages+".jsp"%>'></jsp:include>
-            </div>
+              <h2 class="page-title">주문서 수정</h2>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                      <strong class="card-title">주문 내역</strong>
+                    </div>
+                    <div class="card-body">
+                      <form action="order_edit_ok.jsp?pageNum=<%= pageNum %>" method="post" name="order_frm">
+                        <div class="form-row">
+                          <div class="form-group col-md-4">
+                            <label for="inputEmail4">주문 일자</label>
+                            <input type="text" class="form-control" id="inputEmail5" value="<%= sdf.format(omb.getOrder_date()) %>" readonly />
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label for="inputPassword4">주문 번호</label>
+                            <input type="text" class="form-control" name="order_number" id="inputPassword5" value="<%= omb.getOrder_number() %>" readonly />
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label for="inputState">주문 상태</label>
+                            <select id="status" class="form-control" name="order_detail_status">
+	                            <option value="입금 완료">입금 완료</option>
+		                        <option value="배송 준비">배송 준비</option>
+		                        <option value="배송중">배송중</option>
+		                        <option value="배송 완료">배송 완료</option>
+		                        <option value="구매 확정">구매 확정</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-3">
+                            <label for="inputEmail4">주문자 ID</label>
+                            <input type="text" class="form-control" id="inputEmail5" value="<%= omb.getUser_id() %>" readonly />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="inputEmail4">상품 번호</label>
+                            <input type="text" class="form-control" id="inputEmail5" value="<%= omb.getProduct_number() %>" readonly />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="inputPassword4">수량(개)</label>
+                            <input type="text" class="form-control" name="product_count" id="inputPassword5" value="<%= p_count %>" />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="inputPassword4">금액(원)</label>
+                            <input type="text" class="form-control" name="product_price" id="inputPassword5" value="<%= p_price %>" />
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-3">
+                            <label for="inputPassword4">수령자</label>
+                            <input type="text" class="form-control" name="receiver_name" id="inputPassword5" value="<%= omb.getReceiver_name() %>" />
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-2">
+                          	<label for="inputPassword4">전화번호</label>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-2">
+                            <select id="phone" class="form-control" name="receiver_phone1">
+	                            <option value="010">010</option>
+		                        <option value="02">02</option>
+		                        <option value="031">031</option>
+		                        <option value="051">051</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-2">
+                            <input type="text" class="form-control" name="receiver_phone2" value="<%= omb.getReceiver_phone2() %>" maxlength="4" />
+                          </div>
+                          <div class="form-group col-md-2">
+                            <input type="text" class="form-control" name="receiver_phone3" value="<%= omb.getReceiver_phone3() %>" maxlength="4" />
+                          </div>
+                        </div>
+	                    <div class="form-row">
+	                    	<div class="form-group col-md-3">
+                          		<label for="inputPassword4">수령 주소</label>
+                          	</div>
+                        </div>
+                        <div class="form-row">
+	                        <div class="form-group col-md-1">
+	                        	<input type="text" class="form-control" name="receiver_pcode" id="sample4_postcode" value="<%= omb.getReceiver_pcode() %>">
+	                        </div>
+	                        <div class="form-group col-md-1">
+							<input type="button" class="form-control" onclick="sample4_execDaumPostcode()" value="주소 변경"><br>
+                        	</div>
+                        </div>
+                        <div class="form-row">
+	                        <div class="form-group col-md-4">
+								<input type="text" class="form-control" name="receiver_raddr" id="sample4_roadAddress" value="<%= omb.getReceiver_raddr() %>">
+								<input type="hidden" class="form-control" name="receiver_jibun" id="sample4_jibunAddress" value="<%= omb.getReceiver_jibun() %>">
+								<span id="guide" style="color:#999;display:none;"></span>
+							</div>
+							<div class="form-group col-md-4">
+								<input type="text" class="form-control" name="receiver_detailaddr" id="sample4_detailAddress" value="<%= omb.getReceiver_detailaddr() %>">
+								<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
+							</div>
+						</div>
+						
+                        <div style="text-align:center;">
+	                        <input type="button" class="btn btn-primary" value="주문 목록" onclick="history.go(-1)" />
+	                        <input type="reset" class="btn btn-primary">
+	                        <input type="button" class="btn btn-primary" value="주문 수정" onclick="check()" />
+                        </div>
+                      </form>
+                    </div> <!-- /. card-body -->
+                  </div> <!-- /. card -->
+                </div> <!-- /. col -->
+              </div> <!-- /. end-section -->
+            </div> <!-- .col-12 -->
           </div> <!-- .row -->
         </div> <!-- .container-fluid -->
-      </main>
     </div> <!-- .wrapper -->
-    <script src="js/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -105,6 +178,8 @@
     <script src="js/datamaps-zoomto.js"></script>
     <script src="js/datamaps.custom.js"></script>
     <script src="js/Chart.min.js"></script>
+	<script type="text/javascript" src="admin.js" charset="UTF-8"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
       /* defind global options */
       Chart.defaults.global.defaultFontFamily = base.defaultFontFamily;
@@ -122,6 +197,13 @@
     <script src='js/dropzone.min.js'></script>
     <script src='js/uppy.min.js'></script>
     <script src='js/quill.min.js'></script>
+    <script type="text/javascript">
+		/*주문 수정 페이지에서 넘겨 받은 주문 상태가 기본으로 선택되게 하는 스크립트(Jquery 필요)*/
+		$(function(){
+			$("#status > option[value='<%= o_dStat %>']").prop("selected", true);
+		});
+		/* 변수를 받아야해서 스크립트 파일에 넣지 못함 */
+	</script>
     <script>
       $('.select2').select2(
       {
