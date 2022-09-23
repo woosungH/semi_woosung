@@ -11,6 +11,7 @@ public class OrderManageBean {
 	private int product_price;
 	private String order_detail_status;
 	private String refund_check;
+	private String shipment;
 	
 	private String user_id;
 	private Timestamp order_date;
@@ -50,8 +51,15 @@ public class OrderManageBean {
 		}
 		//페이징 변수 끝
 	
+		
 	public String getReceiver_phone1() {
 		return receiver_phone1;
+	}
+	public String getShipment() {
+		return shipment;
+	}
+	public void setShipment(String shipment) {
+		this.shipment = shipment;
 	}
 	public void setReceiver_phone1(String receiver_phone1) {
 		this.receiver_phone1 = receiver_phone1;

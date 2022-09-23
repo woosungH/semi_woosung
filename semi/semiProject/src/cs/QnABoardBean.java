@@ -23,6 +23,10 @@ public class QnABoardBean {
 	
 	static private int b_nm;
 	
+	//惑前 俺荐 包访 加己
+	private int allNoAns;
+	private int todayNoAns;
+	
 	
 	public static int pageSize=10;
 	public static int pageCount=1;
@@ -69,6 +73,18 @@ public class QnABoardBean {
 	}
 	
 	
+	public int getAllNoAns() {
+		return allNoAns;
+	}
+	public void setAllNoAns(int allNoAns) {
+		this.allNoAns = allNoAns;
+	}
+	public int getTodayNoAns() {
+		return todayNoAns;
+	}
+	public void setTodayNoAns(int todayNoAns) {
+		this.todayNoAns = todayNoAns;
+	}
 	public static int getB_nm() {
 		return b_nm;
 	}

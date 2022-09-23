@@ -305,43 +305,6 @@ public class QnABoardDBBean {
 		}
 		return bb;
 	}
-	
-	public int getCount(QnABoardBean qbb) throws Exception {
-		String sql = "SELECT COUNT(*) FROM qna_board";
-		int re=0;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		QnABoardBean qboard = new QnABoardBean();
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-					re = rs.getInt(1); // 글 갯수
-			} else {
-					re = 0; // 글 없음
-			}
-		}catch (SQLException ex) {
-			System.out.print("조회 실패");
-			ex.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return re;
-	}
 	public int getReplyCount(QnABoardBean qbb) throws Exception {
 		String sql = "SELECT COUNT(*) FROM qna_board WHERE B_ANSCHK = 'N'";
 		int re=0;
@@ -563,5 +526,47 @@ public class QnABoardDBBean {
 			}
 		}
 		return adminList;
+	}
+	public QnABoardBean getCount(String date) throws Exception {
+		String sql = "SELECT COUNT(*) FROM qna_board WHERE TO_CHAR(B_DATE,'YYYY-MM-DD')=? AND B_ANSCHK='N'";
+		int re=0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		QnABoardBean qna = new QnABoardBean();
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				qna.setTodayNoAns(rs.getInt(1));
+			}
+			
+			sql = "SELECT COUNT(*) FROM qna_board WHERE B_ANSCHK='N'";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				qna.setAllNoAns(rs.getInt(1));
+			}
+		}catch (SQLException ex) {
+			System.out.print("조회 실패");
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return qna;
 	}
 }

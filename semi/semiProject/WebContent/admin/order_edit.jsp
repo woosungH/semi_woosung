@@ -16,6 +16,12 @@
 	String o_dStat = request.getParameter("o_dStat");
 	int p_count = omb.getProduct_count();
 	int p_price = omb.getProduct_price();
+	String shipment;
+	if(omb.getShipment() == null){
+		shipment = "";
+	} else{
+		shipment = omb.getShipment();
+	}
 %>
 <!doctype html>
 <html lang="ko">
@@ -60,16 +66,16 @@
                     <div class="card-body">
                       <form action="order_edit_ok.jsp?pageNum=<%= pageNum %>" method="post" name="order_frm">
                         <div class="form-row">
-                          <div class="form-group col-md-4">
-                            <label for="inputEmail4">주문 일자</label>
-                            <input type="text" class="form-control" id="inputEmail5" value="<%= sdf.format(omb.getOrder_date()) %>" readonly />
+                          <div class="form-group col-md-3">
+                            <label for="date">주문 일자</label>
+                            <input type="text" class="form-control" id="date" value="<%= sdf.format(omb.getOrder_date()) %>" readonly />
                           </div>
-                          <div class="form-group col-md-4">
-                            <label for="inputPassword4">주문 번호</label>
-                            <input type="text" class="form-control" name="order_number" id="inputPassword5" value="<%= omb.getOrder_number() %>" readonly />
+                          <div class="form-group col-md-3">
+                            <label for="number">주문 번호</label>
+                            <input type="text" class="form-control" name="order_number" id="number" value="<%= omb.getOrder_number() %>" readonly />
                           </div>
-                          <div class="form-group col-md-4">
-                            <label for="inputState">주문 상태</label>
+                          <div class="form-group col-md-3">
+                            <label for="status">주문 상태</label>
                             <select id="status" class="form-control" name="order_detail_status">
 	                            <option value="입금 완료">입금 완료</option>
 		                        <option value="배송 준비">배송 준비</option>
@@ -78,34 +84,38 @@
 		                        <option value="구매 확정">구매 확정</option>
                             </select>
                           </div>
-                        </div>
-                        <div class="form-row">
                           <div class="form-group col-md-3">
-                            <label for="inputEmail4">주문자 ID</label>
-                            <input type="text" class="form-control" id="inputEmail5" value="<%= omb.getUser_id() %>" readonly />
-                          </div>
-                          <div class="form-group col-md-3">
-                            <label for="inputEmail4">상품 번호</label>
-                            <input type="text" class="form-control" id="inputEmail5" value="<%= omb.getProduct_number() %>" readonly />
-                          </div>
-                          <div class="form-group col-md-3">
-                            <label for="inputPassword4">수량(개)</label>
-                            <input type="text" class="form-control" name="product_count" id="inputPassword5" value="<%= p_count %>" />
-                          </div>
-                          <div class="form-group col-md-3">
-                            <label for="inputPassword4">금액(원)</label>
-                            <input type="text" class="form-control" name="product_price" id="inputPassword5" value="<%= p_price %>" />
+                            <label for="shipment">운송장 번호</label>
+                            <input type="text" class="form-control" name="shipment" id="shipment" value="<%= shipment %>" />
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-3">
-                            <label for="inputPassword4">수령자</label>
-                            <input type="text" class="form-control" name="receiver_name" id="inputPassword5" value="<%= omb.getReceiver_name() %>" />
+                            <label for="userId">주문자 ID</label>
+                            <input type="text" class="form-control" id="userId" value="<%= omb.getUser_id() %>" readonly />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="productNumber">상품 번호</label>
+                            <input type="text" class="form-control" id="productNumber" value="<%= omb.getProduct_number() %>" readonly />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="count">수량(개)</label>
+                            <input type="text" class="form-control" name="product_count" id="count" value="<%= p_count %>" readonly />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label for="price">금액(원)</label>
+                            <input type="text" class="form-control" name="product_price" id="price" value="<%= p_price %>" readonly />
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-3">
+                            <label for="receivername">수령자</label>
+                            <input type="text" class="form-control" name="receiver_name" id="receivername" value="<%= omb.getReceiver_name() %>" />
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-2">
-                          	<label for="inputPassword4">전화번호</label>
+                          	<label for="phone">전화번호</label>
                           </div>
                         </div>
                         <div class="form-row">
@@ -126,7 +136,7 @@
                         </div>
 	                    <div class="form-row">
 	                    	<div class="form-group col-md-3">
-                          		<label for="inputPassword4">수령 주소</label>
+                          		<label for="address">수령 주소</label>
                           	</div>
                         </div>
                         <div class="form-row">
@@ -150,9 +160,9 @@
 						</div>
 						
                         <div style="text-align:center;">
-	                        <input type="button" class="btn btn-primary" value="주문 목록" onclick="history.go(-1)" />
+	                        <input type="button" class="btn btn-primary" value="목록" onclick="history.go(-1)" />
 	                        <input type="reset" class="btn btn-primary">
-	                        <input type="button" class="btn btn-primary" value="주문 수정" onclick="check()" />
+	                        <input type="button" class="btn btn-primary" value="수정" onclick="check()" />
                         </div>
                       </form>
                     </div> <!-- /. card-body -->

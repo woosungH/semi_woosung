@@ -221,6 +221,7 @@ public class ProductDBBean {
 				upbd.setFile_size(rs.getInt("file_size"));
 				upbd.setCreate_date(rs.getTimestamp("create_date"));
 			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -242,7 +243,7 @@ public class ProductDBBean {
 			conn = getConnection();
 			
 			if (odercount == true) {
-				sql="UPDATE PRODUCT SET product_ordered_count=product_ordered_count+1 from WHERE product_number=?";
+				sql="UPDATE PRODUCT SET product_ordered_count=product_ordered_count+1 WHERE product_number=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, pnumber);
 				pstmt.executeUpdate();
@@ -374,5 +375,70 @@ public class ProductDBBean {
 		}
 		
 		return re;
+	}
+	public ProductBean getCount(int product_number) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select * from product_imagefile where product_number=?";
+		ProductBean upbd = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, product_number);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				upbd = new ProductBean();
+				upbd.setFile_number(rs.getInt("file_number"));
+				upbd.setProduct_number(rs.getInt("product_number"));
+				upbd.setOrgin_file_name(rs.getString("orgin_file_name"));
+				upbd.setStored_file_name(rs.getString("stored_file_name"));
+				upbd.setStored_thumbnail(rs.getString("stored_thumbnail"));
+				upbd.setFile_size(rs.getInt("file_size"));
+				upbd.setCreate_date(rs.getTimestamp("create_date"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) rs.close();
+			if(pstmt!=null) pstmt.close();
+			if(conn!=null) conn.close();
+		}
+		return upbd;
+	}
+	public ProductBean productCount() throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT COUNT(*) FROM product";
+		ProductBean upbd = new ProductBean();
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				upbd.setCount(rs.getInt(1));
+			}
+			
+			sql = "SELECT COUNT(*) FROM product WHERE PRODUCT_STOCK=0";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				upbd.setNoStock(rs.getInt(1));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) rs.close();
+			if(pstmt!=null) pstmt.close();
+			if(conn!=null) conn.close();
+		}
+		return upbd;
 	}
 }

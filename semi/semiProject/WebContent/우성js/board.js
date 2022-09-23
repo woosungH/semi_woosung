@@ -34,7 +34,7 @@ function delete_ok(){
 		del_frm.b_pwd.focus();
 		return;
 	}
-	if(del_frm.b_pwd.value.length < 4 || del_frm.b_pwd.value.length > 12){
+	if(del_frm.b_pwd.value.length < 4 || write_frm.b_pwd.value.length > 12){
 		alert("비밀번호는 4자 이상 12자 이하로 작성해주세요");
 		del_frm.b_pwd.focus();
 		return;

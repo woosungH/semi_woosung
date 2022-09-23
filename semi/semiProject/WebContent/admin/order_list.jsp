@@ -9,7 +9,7 @@
 	
 	int o_rank = 0;
 	int o_dNum, p_num, p_count, p_price;
-	String o_num, o_dStat, refund, stat, pageNum;
+	String o_num, o_dStat, refund, stat, pageNum, shipment;
 	
 	if(request.getParameter("pageNum") == null){
 		pageNum = "1";
@@ -70,6 +70,7 @@
                     <th>수량</th>
                     <th>금액</th>
                     <th>주문 상태</th>
+                    <th>운송장 번호</th>
                     <th>주문 수정</th>
                   </tr>
                 </thead>
@@ -85,6 +86,11 @@
 			p_price = omb.getProduct_price();
 			o_dStat = omb.getOrder_detail_status();
 			refund = omb.getRefund_check();
+			if(omb.getShipment() == null){
+				shipment = "-";
+			} else{
+				shipment = omb.getShipment();
+			}
 			
 			if(o_dStat.equals("입금 완료")){
 				stat = URLEncoder.encode("입금 완료","UTF-8");
@@ -113,6 +119,7 @@
 					<td><%= p_count %></td>
 					<td><%=p_price%></td>
 					<td><%=o_dStat%></td>
+					<td><%=shipment%></td>
 					<td>
                       <div class="dropdown">
                         <button class="btn btn-sm dropdown-toggle more-vertical" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,12 +129,9 @@
                           <a class="dropdown-item" href="adminIndex.jsp?pages=order_edit&o_dNum=<%= o_dNum%>&o_dStat=<%=o_dStat%>&pageNum=<%= pageNum %>">수정</a>
                         </div>
                       </div>
-                      
                     </td>
-					<%-- <td>
-						<input type="radio" name="o_dNum" value="<%= o_dNum %>" />
-					</td> <!-- 라디오 버튼  > 수정 버튼 > 정보 수정, 환불 처리 --> --%>
-	<%			
+	<%		
+			
 		}
 	%>
                   </tr>

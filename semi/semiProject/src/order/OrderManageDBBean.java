@@ -32,7 +32,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		int absolutePage = 1;
 		
 		String sql = "SELECT ORDER_DETAIL_NUMBER, ORDER_NUMBER, PRODUCT_NUMBER, PRODUCT_COUNT\r\n" + 
-				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS, REFUND_CHECK\r\n" + 
+				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS, REFUND_CHECK, SHIPMENT\r\n" + 
 				"  FROM USERORDER_DETAIL\r\n" + 
 				" WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != '환불 완료'\r\n" + 
 				" ORDER BY ORDER_NUMBER";
@@ -75,6 +75,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 					omb.setProduct_price(rs.getInt("PRODUCT_PRICE"));
 					omb.setOrder_detail_status(rs.getString("ORDER_DETAIL_STATUS"));
 					omb.setRefund_check(rs.getString("REFUND_CHECK"));
+					omb.setShipment(rs.getString("SHIPMENT"));
 					list.add(omb);
 					
 					if(rs.isLast()) {
@@ -103,7 +104,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 	
 	public OrderManageBean getOrder(int o_dNum) throws Exception {
 		String sql = "SELECT ORDER_NUMBER, PRODUCT_NUMBER, PRODUCT_COUNT\r\n" + 
-				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS\r\n" + 
+				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS, SHIPMENT\r\n" + 
 				"  FROM USERORDER_DETAIL\r\n" + 
 				" WHERE order_detail_number = ?";
 		Connection conn = null;
@@ -124,6 +125,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 				omb.setProduct_count(rs.getInt(3));
 				omb.setProduct_price(rs.getInt(4));
 				omb.setOrder_detail_status(rs.getString(5));
+				omb.setShipment(rs.getString(6));
 				o_num = rs.getString(1);
 			}
 			
@@ -171,7 +173,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		return omb;
 	}
 	public int editOrder(OrderManageBean omb) throws Exception {
-		String sql = "UPDATE userorder_detail SET PRODUCT_COUNT=?, PRODUCT_PRICE=?, ORDER_DETAIL_STATUS=? WHERE ORDER_NUMBER=?"; 
+		String sql = "UPDATE userorder_detail SET PRODUCT_COUNT=?, PRODUCT_PRICE=?, ORDER_DETAIL_STATUS=?, SHIPMENT = ? WHERE ORDER_NUMBER=?"; 
 		int re = -1; // 수정 실패
 		Connection conn = null;
 		PreparedStatement first_pstmt = null;
@@ -182,7 +184,8 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 			first_pstmt.setInt(1, omb.getProduct_count());
 			first_pstmt.setInt(2, omb.getProduct_price());
 			first_pstmt.setString(3,omb.getOrder_detail_status());
-			first_pstmt.setString(4,omb.getOrder_number());
+			first_pstmt.setString(4,omb.getShipment());
+			first_pstmt.setString(5,omb.getOrder_number());
 			first_pstmt.executeUpdate();
 			
 			sql = "UPDATE user_order SET RECEIVER_NAME=?, RECEIVER_PCODE=?\r\n" + 

@@ -23,6 +23,10 @@ public class ProductBean {
 	private int file_size;
 	private Timestamp create_date;
 	
+	//상품 개수 관련 속성
+	private int count;
+	private int noStock;
+	
 	//페이징 변수
 	public static int pageSize = 10; //한패이지에 보여줄 글 갯수
 	public static int pageCount = 1; //총 페이지 갯수
@@ -91,9 +95,26 @@ public class ProductBean {
 	}
 	//페이징 변수 끝
 	
+	
+	
 	public int getFile_number() {
 		return file_number;
 	}
+	public int getCount() {
+		return count;
+	}
+
+	public int getNoStock() {
+		return noStock;
+	}
+	public void setNoStock(int noStock) {
+		this.noStock = noStock;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public void setFile_number(int file_number) {
 		this.file_number = file_number;
 	}

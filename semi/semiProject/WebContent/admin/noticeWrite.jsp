@@ -82,7 +82,7 @@
                         <input type="password" name="n_pwd" id="example-password" class="form-control" placeholder="비밀번호를 입력해주세요.">
                       </div>
                   	<div style="text-align:center">
-	                  <div class="btn-group" role="group" aria-label="Basic example">
+	                  <div aria-label="Basic example">
 	                    <input type="button" class="btn btn-primary" value="목록" onclick="location.href='adminIndex.jsp?pages=noticeList&pageNum=<%=pageNum%>'" />
 		                 <input type="reset" class="btn btn-primary" value="다시 작성" />
 		                 <input type="button" class="btn btn-primary" value="작성" onclick="onclick_ok()" />

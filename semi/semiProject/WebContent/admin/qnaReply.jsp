@@ -78,8 +78,8 @@
                         <input type="text" id="example-palaceholder" class="form-control" name="b_title" value="[답변]<%= b_title %>" />
                       </div>
                       <div class="form-group mb-3">
-                        <label for="example-textarea">문의 답변</label>
-                        <textarea class="form-control" name="b_content" id="example-textarea" rows="10" placeholder="내용을 입력해주세요."></textarea>
+                      	<label for="example-textarea">답변 내용</label>
+                        <textarea class="form-control" name="b_content" id="example-textarea" rows="10"></textarea>
                       </div>
                       <div class="form-group mb-3">
                         <label for="customFile">사진 업로드</label>
@@ -104,7 +104,7 @@
             	</div>
                   </div>
                   	<div style="text-align:center">
-	                  <div class="btn-group" role="group" aria-label="Basic example">
+	                  <div aria-label="Basic example">
 	                    <input type="button" class="btn btn-primary" value="목록" onclick="location.href='adminIndex.jsp?pages=qnaList&pageNum=<%= pageNum %>'" />
 		                 <input type="reset" class="btn btn-primary" value="다시 작성" />
 		                 <input type="button" class="btn btn-primary" value="작성" onclick="check_ok()" />
@@ -134,28 +134,76 @@
 			$("#b_category > option[value='<%= b_category %>']").prop("selected", true);
 		});
 	</script>
-    <script>
-      $('#dataTable-1').DataTable(
+	<script type="text/javascript">
+    // editor
+    var editor = document.getElementById('editor');
+    if (editor)
+    {
+      var toolbarOptions = [
+        [
+        {
+          'font': []
+        }],
+        [
+        {
+          'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [
+        {
+          'header': 1
+        },
+        {
+          'header': 2
+        }],
+        [
+        {
+          'list': 'ordered'
+        },
+        {
+          'list': 'bullet'
+        }],
+        [
+        {
+          'script': 'sub'
+        },
+        {
+          'script': 'super'
+        }],
+        [
+        {
+          'indent': '-1'
+        },
+        {
+          'indent': '+1'
+        }], // outdent/indent
+        [
+        {
+          'direction': 'rtl'
+        }], // text direction
+        [
+        {
+          'color': []
+        },
+        {
+          'background': []
+        }], // dropdown with defaults from theme
+        [
+        {
+          'align': []
+        }],
+        ['clean'] // remove formatting button
+      ];
+      var quill = new Quill(editor,
       {
-        autoWidth: true,
-        "lengthMenu": [
-          [16, 32, 64, -1],
-          [16, 32, 64, "All"]
-        ]
+        modules:
+        {
+          toolbar: toolbarOptions
+        },
+        theme: 'snow'
       });
-    </script>
-    <script src="js/apps.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag()
-      {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'UA-56159088-1');
+    }
     </script>
   </body>
 </html>

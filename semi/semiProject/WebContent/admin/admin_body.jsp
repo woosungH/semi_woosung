@@ -1,3 +1,7 @@
+<%@page import="cs.QnABoardDBBean"%>
+<%@page import="cs.QnABoardBean"%>
+<%@page import="product.ProductBean"%>
+<%@page import="product.ProductDBBean"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.sql.Timestamp"%>
@@ -12,18 +16,20 @@
 	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
 	
 	int o_rank = 0;
-	int o_dNum, p_num, p_count, p_price;
-	String o_num, o_dStat, refund, stat, pageNum;
+	int o_dNum, p_num, p_count, p_price, productAllCount, noStock, qnaAllCount, qnaNoCount;
+	String o_num, o_dStat, refund, stat, pageNum, user_id, user_pwd, user_name
+	, user_phone1, user_phone2, user_phone3, user_email, user_pcode, user_raddr
+	, user_jibun, user_detailaddr;
+	Timestamp user_regdate;
 	
-/* 	if(request.getParameter("pageNum") == null){
-		pageNum = "1";
-	} else {
-		pageNum = request.getParameter("pageNum");
-	} */
 	ArrayList<OrderManageBean> list = omdb.orderList("1","N");
-	
 	String s_user_id="";
 	
+	int orderCount=list.size();
+	
+	if(orderCount > 5){
+		orderCount=5;
+	}
 	if(request.getParameter("search_user_id")!=null){
 		s_user_id = request.getParameter("search_user_id");
 	} 
@@ -34,13 +40,25 @@
 	ArrayList<MemberBean> memberList = memberDB.listMember("1",s_user_id);
 	ArrayList<Integer> n_numbers = new ArrayList<>();
 	
-	String user_id, user_pwd, user_name, user_phone1, user_phone2, user_phone3, user_email
-		, user_pcode, user_raddr, user_jibun, user_detailaddr;
-	Timestamp user_regdate;
-	
+	int memberCount = memberList.size();
+	if(memberCount > 5){
+		memberCount=5;
+	}
 	Date date = new Date();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	String today = sdf.format(date);
+	
+	ProductDBBean productDB = ProductDBBean.getInstance();
+	ProductBean product = new ProductBean();
+	product = productDB.productCount();
+	productAllCount = product.getCount();
+	noStock = product.getNoStock();
+	
+	QnABoardBean qna = new QnABoardBean();
+	QnABoardDBBean board = QnABoardDBBean.getInstance();
+	qna = board.getCount(today);
+	qnaNoCount = qna.getTodayNoAns();
+	qnaAllCount = qna.getAllNoAns();
 %>
 <!DOCTYPE html>
 <html>
@@ -60,8 +78,8 @@
             </span>
           </div>
           <div class="col pr-0">
-            <p class="small text-muted mb-0">신규 상품</p>
-            <span class="h3 mb-0 text-white"></span>
+            <p class="small text-muted mb-0">총 상품 수(재고 없는 상품)</p>
+            <span class="h3 mb-0 text-white"><%= productAllCount %>(<%= noStock %>)</span>
             <!-- 오늘 등록된 상품 수 -->
           </div>
         </div>
@@ -69,29 +87,25 @@
     </div>
   </div>
   <div class="col-md-6 col-xl-6 mb-4">
-    <div class="card shadow border-0">
+    <div class="card shadow bg-primary text-white border-0">
       <div class="card-body">
         <div class="row align-items-center">
           <div class="col-3 text-center">
-            <span class="circle circle-sm bg-primary">
-              <i class="fe fe-16 fe-filter text-white mb-0"></i>
+            <span class="circle circle-sm bg-primary-light">
+              <i class="fe fe-16 fe-shopping-bag text-white mb-0"></i>
             </span>
           </div>
-          <div class="col">
-            <p class="small text-muted mb-0">신규 문의</p>
-            <div class="row align-items-center no-gutters">
-              <div class="col-auto">
-                <span class="h3 mr-2 mb-0"> 86.6% </span>
-                <!-- 답변 체크가 안되어 있는 문의 수 -->
-              </div>
-            </div>
+          <div class="col pr-0">
+            <p class="small text-muted mb-0">미 답변 문의(신규 문의)</p>
+            <span class="h3 mb-0 text-white"><%= qnaAllCount %>(<%= qnaNoCount %>)</span>
+            <!-- 오늘 등록된 상품 수 -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="wrapper">
+<div class="row">
    <div class="container-fluid">
      <div class="row justify-content-center">
        <div class="col-12">
@@ -111,8 +125,8 @@
            </thead>
            <tbody>
     <%
-		for(int i=0; i < 5; i++) {
-			OrderManageBean omb = list.get(i); // 배열에 넣은 역순으로 board 객체에 값을 넣어줌
+		for(int i=0; i < orderCount; i++) {
+			OrderManageBean omb = list.get(i);
 			o_rank++;
 			o_dNum = omb.getOrder_detail_number();
 			o_num = omb.getOrder_number();
@@ -145,7 +159,7 @@
        </div> <!-- .row -->
      </div> <!-- .container-fluid -->
  </div> <!-- .wrapper -->
- <div class="wrapper">
+ <div class="row">
         <div class="container-fluid">
           <div class="row justify-content-center">
             <div class="col-12">
@@ -170,7 +184,7 @@
                         </thead>
                         <tbody>
 		<%
-			for(int i=0; i<5;i++){
+			for(int i=0; i<memberCount;i++){
 				member = memberList.get(i);
 				
 				user_id = member.getUser_id();
@@ -186,7 +200,6 @@
 				user_detailaddr=member.getUser_detailaddr();
 				user_regdate=member.getUser_regdate();
 			
-				System.out.println(today);
 				if(today.equals(sdf.format(user_regdate))){
 				
 		%>
