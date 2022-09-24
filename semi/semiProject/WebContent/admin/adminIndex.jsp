@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%
 	request.setCharacterEncoding("UTF-8");
+
+	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
 	String pages = "";
 	if(request.getParameter("pages")!=null){
 		pages = request.getParameter("pages");		
@@ -20,22 +23,22 @@
     <!-- 부트스트랩 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <!-- Simple bar CSS -->
-    <link rel="stylesheet" href="css/simplebar.css">
+    <link rel="stylesheet" href="../css/simplebar.css">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
-    <link rel="stylesheet" href="css/feather.css">
-    <link rel="stylesheet" href="css/select2.css">
-    <link rel="stylesheet" href="css/dropzone.css">
-    <link rel="stylesheet" href="css/uppy.min.css">
-    <link rel="stylesheet" href="css/jquery.steps.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-    <link rel="stylesheet" href="css/quill.snow.css">
+    <link rel="stylesheet" href="../css/feather.css">
+    <link rel="stylesheet" href="../css/select2.css">
+    <link rel="stylesheet" href="../css/dropzone.css">
+    <link rel="stylesheet" href="../css/uppy.min.css">
+    <link rel="stylesheet" href="../css/jquery.steps.css">
+    <link rel="stylesheet" href="../css/jquery.timepicker.css">
+    <link rel="stylesheet" href="../css/quill.snow.css">
     <!-- Date Range Picker CSS -->
-    <link rel="stylesheet" href="css/daterangepicker.css">
+    <link rel="stylesheet" href="../css/daterangepicker.css">
     <!-- App CSS -->
-    <link rel="stylesheet" href="css/app-light.css" id="lightTheme" disabled>
-    <link rel="stylesheet" href="css/app-dark.css" id="darkTheme?a=b">
+    <link rel="stylesheet" href="../css/app-light.css" id="lightTheme" disabled>
+    <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme?a=b">
   </head>
   <body class="vertical  dark  ">
     <div class="wrapper">
@@ -44,18 +47,41 @@
 	          <i class="fe fe-menu navbar-toggler-icon"></i>
 	        </button>
 	        <ul class="nav">
-	          <li class="nav-item dropdown">
-	            <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	              <span class="avatar avatar-sm mt-2">
-	                <img src="assets/avatars/face-1.jpg" alt="..." class="avatar-img rounded-circle">
-	              </span>
-	            </a>
-	            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-	              <a class="dropdown-item" href="#">Profile</a>
-	              <a class="dropdown-item" href="#">Settings</a>
-	            </div>
-	          </li>
-	        </ul>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-muted pr-0" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="avatar avatar-sm mt-2">
+              <%
+              	if (name != null) {
+              %>
+              	<mark style="background-color:#1B68FE; color:#fff"><%= name %></mark>
+              <%
+              	}
+              %>
+              </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+  			<%
+				if(session.getAttribute("Member") == null){ // 회원이 아닌 경우
+			%>
+				<a class="dropdown-item" href="main.jsp?pages=../user_log/login">로그인</a>
+              <a class="dropdown-item" href="main.jsp?pages=../user_log/register">회원가입</a>
+			<%
+    			} else if(id.equals("admin")) {
+			%>
+				<a class="dropdown-item" href="../admin/adminIndex.jsp">관리페이지</a>
+				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user.jsp">마이페이지</a>
+              	<a class="dropdown-item" href="../user_log/logout.jsp">로그아웃</a>
+			<%
+				} else {
+			%>
+				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user.jsp">마이페이지</a>
+              	<a class="dropdown-item" href="../user_log/logout.jsp">로그아웃</a>
+			<%
+    			}
+			%>
+            </div>
+          </li>
+        </ul>
 	      </nav>
 	      <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
         	<a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
@@ -90,38 +116,38 @@
         </div> <!-- .container-fluid -->
       </main>
     </div> <!-- .wrapper -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/moment.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/simplebar.min.js"></script>
-    <script src='js/daterangepicker.js'></script>
-    <script src='js/jquery.stickOnScroll.js'></script>
-    <script src="js/tinycolor-min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/d3.min.js"></script>
-    <script src="js/topojson.min.js"></script>
-    <script src="js/datamaps.all.min.js"></script>
-    <script src="js/datamaps-zoomto.js"></script>
-    <script src="js/datamaps.custom.js"></script>
-    <script src="js/Chart.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/moment.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/simplebar.min.js"></script>
+    <script src='../js/daterangepicker.js'></script>
+    <script src='../js/jquery.stickOnScroll.js'></script>
+    <script src="../js/tinycolor-min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/d3.min.js"></script>
+    <script src="../js/topojson.min.js"></script>
+    <script src="../js/datamaps.all.min.js"></script>
+    <script src="../js/datamaps-zoomto.js"></script>
+    <script src="../js/datamaps.custom.js"></script>
+    <script src="../js/Chart.min.js"></script>
     <script>
       /* defind global options */
       Chart.defaults.global.defaultFontFamily = base.defaultFontFamily;
       Chart.defaults.global.defaultFontColor = colors.mutedColor;
     </script>
-    <script src="js/gauge.min.js"></script>
-    <script src="js/jquery.sparkline.min.js"></script>
-    <script src="js/apexcharts.min.js"></script>
-    <script src="js/apexcharts.custom.js"></script>
-    <script src='js/jquery.mask.min.js'></script>
-    <script src='js/select2.min.js'></script>
-    <script src='js/jquery.steps.min.js'></script>
-    <script src='js/jquery.validate.min.js'></script>
-    <script src='js/jquery.timepicker.js'></script>
-    <script src='js/dropzone.min.js'></script>
-    <script src='js/uppy.min.js'></script>
-    <script src='js/quill.min.js'></script>
+    <script src="../js/gauge.min.js"></script>
+    <script src="../js/jquery.sparkline.min.js"></script>
+    <script src="../js/apexcharts.min.js"></script>
+    <script src="../js/apexcharts.custom.js"></script>
+    <script src='../js/jquery.mask.min.js'></script>
+    <script src='../js/select2.min.js'></script>
+    <script src='../js/jquery.steps.min.js'></script>
+    <script src='../js/jquery.validate.min.js'></script>
+    <script src='../js/jquery.timepicker.js'></script>
+    <script src='../js/dropzone.min.js'></script>
+    <script src='../js/uppy.min.js'></script>
+    <script src='../js/quill.min.js'></script>
     <script>
       $('.select2').select2(
       {
@@ -325,7 +351,7 @@
         });
       }
     </script>
-    <script src="js/apps.js"></script>
+    <script src="../js/apps.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
     <script>

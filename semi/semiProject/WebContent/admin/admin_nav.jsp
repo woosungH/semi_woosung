@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,5 +54,19 @@
           </a>
         </li>
     </ul>
+        <%
+		if(session.getAttribute("Member") == null){ // 회원이 아닌 경우
+	%>
+		<a href="main.jsp?pages=../user_log/login" class="btn mb-2 btn-primary btn-lg btn-block" role="button"><i class="fe fe-log-in fe-16"></i> 로그인</a>
+	    <a href="main.jsp?pages=../user_log/register" class="btn mb-2 btn-secondary btn-lg btn-block" role="button"><i class="fe fe-user-plus fe-16"></i> 회원가입</a>
+	<%
+    	} else if(id.equals("admin")) {
+	%>
+		<p>안녕하세요 <%= id %> 님</p>
+		<a href="../main/main.jsp" class="btn mb-2 btn-primary btn-lg btn-block" role="button"><i class="fe fe-log-in fe-16"></i> 홈</a>
+	    <a href="../user_log/logout.jsp" class="btn mb-2 btn-secondary btn-lg btn-block" role="button"><i class="fe fe-log-out fe-16"></i> 로그아웃</a>
+	<%
+		}
+	%>
 </body>
 </html>
