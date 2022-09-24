@@ -11,7 +11,7 @@
 	
 	omb.setOrder_number(orderNum);
 	
-	int re = omdb.refundOrder(omb);
+	int re = omdb.refundOrder(orderNum);
 	if(re == 1){
 %>
 		<script>

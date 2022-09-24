@@ -7,9 +7,10 @@
 <%
 	String pageNum = request.getParameter("pageNum");
 	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
-	
+	String orderNum = omb.getOrder_number();
 	int re = omdb.editOrder(omb);
-	if(re == 1){
+	int rs = omdb.reduceStock(orderNum);
+	if(re == 1 && rs == 1){
 %>
 		<script>
 			alert("주문이 수정되었습니다.");

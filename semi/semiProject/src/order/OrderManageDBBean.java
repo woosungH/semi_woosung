@@ -226,30 +226,95 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		}
 		return re;
 	}
-	public int refundOrder(OrderManageBean omb) throws Exception {
+	public int refundOrder(String orderNum) throws Exception {
 		String sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='환불 완료' WHERE ORDER_NUMBER=?"; 
-		int re = -1; // 수정 실패
 		Connection conn = null;
-		PreparedStatement first_pstmt = null;
-		PreparedStatement second_pstmt = null;
+		PreparedStatement pstmt = null;
+		OrderManageBean omb = null;
+		ResultSet rs = null;
+		
+		int re=-1; // 환불 실패
+		
 		try {
 			conn = getConnection();
-			first_pstmt = conn.prepareStatement(sql);
-			first_pstmt.setString(1,omb.getOrder_number());
-			first_pstmt.executeUpdate();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,orderNum);
+			pstmt.executeUpdate();
 			
+			sql="SELECT PRODUCT_NUMBER, PRODUCT_COUNT FROM userorder_detail WHERE ORDER_NUMBER=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,orderNum);
+			rs = pstmt.executeQuery();
 			
-			re = 1; // 수정 성공
+			if(rs.next()) {
+				omb = new OrderManageBean();
+				omb.setProduct_number(rs.getInt(1));
+				omb.setProduct_count(rs.getInt(2));
+			}
+			
+			sql = "UPDATE PRODUCT SET PRODUCT_STOCK = PRODUCT_STOCK +"+omb.getProduct_count()
+					+"WHERE PRODUCT_NUMBER ="+omb.getProduct_number();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
+			re = 1; // 환불 성공
 		}catch (SQLException ex) {
+			re = -1; // 환불 실패
 			System.out.print("수정 실패");
 			ex.printStackTrace();
 		} finally {
 			try {
-				if (first_pstmt != null) {
-					first_pstmt.close();
+				if (pstmt != null) {
+					pstmt.close();
 				}
-				if (second_pstmt != null) {
-					second_pstmt.close();
+				if (rs != null) {
+					rs.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	public int reduceStock(String orderNum) throws Exception {
+		String sql =  "SELECT PRODUCT_NUMBER, PRODUCT_COUNT FROM userorder_detail where ORDER_NUMBER = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int re=-1; // 수정 실패
+		OrderManageBean omb = null;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, orderNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				omb = new OrderManageBean();
+				omb.setProduct_number(rs.getInt(1));
+				omb.setProduct_count(rs.getInt(2));
+			}
+			
+			sql =  "UPDATE PRODUCT SET PRODUCT_STOCK = PRODUCT_STOCK -"+omb.getProduct_count()
+			+" WHERE PRODUCT_NUMBER ="+omb.getProduct_number();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+						
+			re = 1; // 수정 성공
+		}catch (SQLException ex) {
+			re = -1; // 수정 실패
+			System.out.print("수정 실패");
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
 				}
 				if (conn != null) {
 					conn.close();
