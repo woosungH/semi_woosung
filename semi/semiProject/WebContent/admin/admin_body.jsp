@@ -116,18 +116,18 @@
          <table class="table table-borderless table-hover">
            <thead>
              <tr role="row">
-               <th>주문 순서</th>
                <th>주문 번호</th>
-               <th>제품 번호</th>
+               <th>상품 이름(번호)</th>
                <th>수량</th>
                <th>금액</th>
+               <th>주문자</th>
+               <th>주문일자</th>
              </tr>
            </thead>
            <tbody>
     <%
 		for(int i=0; i < orderCount; i++) {
 			OrderManageBean omb = list.get(i);
-			o_rank++;
 			o_dNum = omb.getOrder_detail_number();
 			o_num = omb.getOrder_number();
 			p_num = omb.getProduct_number();
@@ -136,15 +136,20 @@
 			o_dStat = omb.getOrder_detail_status();
 			refund = omb.getRefund_check();
 
+			omb = omdb.getOrder(o_dNum);
+			String p_name = omb.getProduct_name();
+			String u_id = omb.getUser_id();
+			String o_date = sdf.format(omb.getOrder_date());
+			
 			if(o_dStat.equals("입금 완료")){
 	%>
            		 <tr>
-                  	<td><%=o_rank%></td>
 					<td><%=o_num%></td>
-					<td><%=p_num%></td>
+					<td><%=p_name%>(<%=p_num%>)</td>
 					<td><%= p_count %></td>
 					<td><%=p_price%></td>
-					
+					<td><%=u_id%></td>
+					<td><%=o_date%></td>
 	<%	
 			}
 		}
