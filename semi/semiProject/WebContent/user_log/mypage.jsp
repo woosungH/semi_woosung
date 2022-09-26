@@ -1,19 +1,23 @@
+<%@page import="member.MemberBean"%>
+<%@page import="member.MemberDBBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	request.setCharacterEncoding("utf-8");
-%>
+	String id = (String) session.getAttribute("id");
+
+	MemberDBBean manager = MemberDBBean.getInstance();
+	MemberBean mb = manager.getMember(id);
+%> 
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
-    <title>회원가입</title>
-    <link rel="stylesheet" href="../css/simplebar.css">
+    <title>myPage</title>
     <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/simplebar.css">
     <link rel="stylesheet" href="../css/feather.css">
     <link rel="stylesheet" href="../css/daterangepicker.css">
     <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
@@ -28,10 +32,11 @@
     input#sample4_postcode{width: 50%; display: inline-block; margin-right: 20px; margin-bottom: 10px;}
     input#sample4_roadAddress {margin-bottom: 10px;}
     #juso{height: 28px; font-size: 12px; background-color: #1B68FF; border-color: #1B68FF; border-radius: 3px; color: white;
-    font-family: sans-serif;}
+    font-family: sans-serif;};
   </style>
   <script type="text/javascript" src="script.js" charset="utf-8"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js">
+  </script>
 <script>
     //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
     function sample4_execDaumPostcode() {
@@ -90,8 +95,9 @@
     }
 </script>
   <body class="light ">
+    <div class="wrapper vh-100">
       <div class="row align-items-center h-100">
-        <form class="col-lg-6 col-md-8 col-10 mx-auto" name="reg_frm" action="main.jsp?pages=../user_log/registerOk" method="post">
+        <form class="col-lg-6 col-md-8 col-10 mx-auto" name="upd_frm" method="post" action="main.jsp?pages=../user_log/mypage_update">
           <div class="mx-auto text-center my-4">
             <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="./index.html">
               <svg version="1.1" id="logo" class="navbar-brand-img brand-md" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
@@ -102,69 +108,66 @@
                 </g>
               </svg>
             </a>
-            <h2 class="my-3">회원가입</h2>
+            <h2 class="my-3"><strong>마이페이지</strong></h2>
           </div>
-          <div class="row mb-12">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="ID"><strong>ID</strong></label>
-	            <input type="text" class="form-control" id="ID" name="user_id" placeholder="4자리 이상 입력해주세요.">
-              </div>
-              <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputPassword5"><strong>비밀번호</strong></label>
-                <input type="password" class="form-control" id="inputPassword5" name="user_pwd"  placeholder="4자리 이상 입력해주세요.">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="inputPassword6"><strong>비밀번호 확인</strong></label>
-                <input type="password" class="form-control" id="inputPassword6" name="user_pwdch"  placeholder="비밀번호와 같은 값을 입력하세요.">
-              </div>
-              </div>
-              <div class="form-group">
-                <label for="inputPassword6"><strong>이름</strong></label>
-                <input type="text" class="form-control" name="user_name"  placeholder="예) 홍길동">
-              </div>
+          <div class="form-group1">
+            <p class="idArea"><mark style="background-color:#1B68FE; color:#fff"><b><%= id %></b> 님의 개인정보</mark></p>
+          </div>
+          <hr class="my-4">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="firstname"><strong>이름</strong></label>
+              <input type="text" id="firstname" class="form-control" name="user_name" value="<%= mb.getUser_name() %>">
             </div>
+	        <div class="form-group col-md-6">
+              <label for="inputEmail4"><strong>Email</strong></label>
+              <input type="email" class="form-control" id="inputEmail4" name="user_email" value="<%= mb.getUser_email() %>">
+          </div>
           </div>
           <div class="form-row">
-	          <div class="col-md-2 mb-3">
+	          <div class="col-md-4 mb-3">
 	            <label for="phone1"><strong>전화번호</strong></label>
-	            <input type="text" class="form-control" id="validationCustom01" name="user_phone1" maxlength="3" required placeholder="ex) 010">
+	            <input value="<%= mb.getUser_phone1() %>" type="text" class="form-control" id="validationCustom01" name="user_phone1" maxlength="3" required>
 	          </div>
-	          <div class="col-md-2 mb-3">
+	          <div class="col-md-4 mb-3">
 	            <label for="phone2"> &nbsp;   &nbsp;   &nbsp; </label>
-	            <input type="text" class="form-control" id="validationCustom02" name="user_phone2" maxlength="4" required placeholder="1234">
+	            <input value="<%= mb.getUser_phone2() %>" type="text" class="form-control" id="validationCustom02" name="user_phone2" maxlength="4" required>
 	          </div>
-	          <div class="col-md-2 mb-3">
+	          <div class="col-md-4 mb-3">
 	            <label for="phone3"> &nbsp;   &nbsp;   &nbsp; </label>
-	            <input type="text" class="form-control" id="validationCustom02" name="user_phone3" maxlength="4" required placeholder="5678">
+	            <input value="<%= mb.getUser_phone3() %>" type="text" class="form-control" id="validationCustom02" name="user_phone3" maxlength="4" required>
 	          </div>
-          <div class="form-group col-md-6">
-            <label for="inputEmail4"><strong>이메일</strong></label>
-            <input type="email" class="form-control" id="inputEmail4" name="user_email" placeholder="example@example.com">
-          </div>
           </div>
           <div class="form-row1">
             <label for="sample4_postcode"><strong>주소</strong></label>
             <br>
             <div class="input-group">
-              <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" name="user_pcode" id="sample4_postcode"  placeholder="우편번호" >
+              <input type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" name="user_pcode" id="sample4_postcode"  placeholder="우편번호" value="<%= mb.getUser_pcode() %>">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button" onclick="sample4_execDaumPostcode()" id="juso">우편번호 찾기</button>
               </div>
             </div>
-           
-            <input type="text" class="form-control" name="user_raddr" id="sample4_roadAddress" placeholder="도로명주소">
-            <input type="hidden" name="user_jibun" id="sample4_jibunAddress" placeholder="지번주소">
+            <input type="text" class="form-control" name="user_raddr" id="sample4_roadAddress" placeholder="도로명주소" value="<%= mb.getUser_raddr()%>">
+            <input type="hidden" name="user_jibun" id="sample4_jibunAddress" placeholder="지번주소" value="<%= mb.getUser_jibun() %>">
             <span id="guide" style="color:#999;display:none"></span>
-            <input type="text" class="form-control" name="user_detailaddr" id="sample4_detailAddress" placeholder="상세주소">
+            <input type="text" class="form-control" name="user_detailaddr" id="sample4_detailAddress" placeholder="상세주소" value="<%= mb.getUser_detailaddr()%>">
             <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
           </div>
           <hr class="my-4">
-          <button class="btn btn-lg btn-primary btn-block" onclick="check_ok()">가입완료</button>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="inputPassword5"><strong>비밀번호</strong></label>
+                <input type="password" class="form-control" id="inputPassword5" name="user_pwd" placeholder="비밀번호 입력">
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">수정</button>
           <p class="mt-5 mb-3 text-muted text-center">© 2022 GREENSHOP</p>
         </form>
       </div>
+    </div>
     
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>

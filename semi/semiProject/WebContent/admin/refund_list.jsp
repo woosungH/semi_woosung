@@ -5,7 +5,8 @@
     pageEncoding="UTF-8"%>
 <%
 	int o_rank = 0;
-	int o_dNum, p_num, p_count, p_price;
+	int p_num, p_count, p_price;
+	long o_dNum;
 	String o_num, o_dStat, refund, pageNum;
 	
 	if(request.getParameter("pageNum") == null){

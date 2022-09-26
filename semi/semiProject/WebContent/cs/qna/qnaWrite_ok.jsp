@@ -1,11 +1,13 @@
-<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
-<%@page import="java.util.Enumeration"%>
-<%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="cs.QnABoardDBBean"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
+<%@page import="java.net.InetAddress"%>
+<%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean class="cs.QnABoardBean" id="qBoard"></jsp:useBean>
 <% request.setCharacterEncoding("UTF-8"); %>
+<jsp:useBean class="cs.QnABoardBean" id="qBoard"></jsp:useBean>
 <%
 	String path = request.getRealPath("upload");
 	int size = 1024*1024*20; // 20MB로 크기 제한
@@ -23,11 +25,9 @@
 	}
 %>
 <%
-	String pageNum = multi.getParameter("pageNum");
 	String content = multi.getParameter("b_content");
 	content = content.replace("\r\n", "<br>"); 
 		
-	qBoard.setB_id(Integer.parseInt(request.getParameter("b_id")));
 	qBoard.setU_id(session.getAttribute("id").toString());
 	qBoard.setB_category(multi.getParameter("b_category"));
 	qBoard.setB_title(multi.getParameter("b_title"));
@@ -38,6 +38,11 @@
 	} else {
 		qBoard.setB_secret("N");
 	}
+	qBoard.setB_date(new Timestamp(System.currentTimeMillis()));
+	
+	InetAddress address = InetAddress.getLocalHost();
+	String ip = address.getHostAddress();
+	qBoard.setB_ip(ip);
 	
 	if(file != null){
 		qBoard.setB_fname(file);
@@ -46,29 +51,11 @@
 	}
 	
 	QnABoardDBBean qdb = QnABoardDBBean.getInstance();
-	int re = qdb.editBoard(qBoard);
-	
+	int re = qdb.insertBoard(qBoard);
 	
 	if(re == 1){
-%>
-		<script>
-			alert("글이 수정되었습니다.");
-			location.href= "main.jsp?pages=qnaList_u&pageNum=<%= pageNum %>";
-		</script>
-<%
-	}  else if(re == 0) {
-%>
-		<script>
-			alert("비밀번호가 틀렸습니다.")
-			history.go(-1);
-		</script>
-<%
-	}else if(re == -1) {
-%>
-		<script>
-			alert("수정에 실패했습니다.")
-			history.go(-1);
-		</script>
-<%
+		response.sendRedirect("main.jsp?pages=qnaList_u");
+	}else{
+		response.sendRedirect("main.jsp?pages=qnaWrite");
 	}
 %>

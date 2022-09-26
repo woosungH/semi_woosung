@@ -34,6 +34,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+     <!-- 부트스트랩 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- Simple bar CSS -->
+    <link rel="stylesheet" href="css/simplebar.css">
+    <!-- Fonts CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="css/feather.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap4.css">
+    <!-- Date Range Picker CSS -->
+    <link rel="stylesheet" href="css/daterangepicker.css">
+    <!-- App CSS -->
+    <link rel="stylesheet" href="css/app-dark.css?" id="darkTheme">
+    <link rel="stylesheet" href="css/app-light.css?a=b" id="lightTheme" disabled>
 </head>
  <body class="vertical  dark  ">
     <div class="wrapper">
@@ -76,7 +90,7 @@
 				<tr>
 					<td  align="center"><%= n_num%></td>
 					<td  align="center" style="text-align: left">
-						<a href="noticeShow.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>">
+						<a href="showNotice.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>">
 							<%= n_title %>
 						</a>
 					</td>
@@ -105,11 +119,13 @@
 				      
 				    </tbody>
 				</table>
-				<nav aria-label="Table Paging" class="mb-0 text-muted">
-        			<ul class="pagination justify-content-center mb-0">
-						<%= NoticeBean.userPageNumber(5) %>
-					</ul>
-				</nav>
+				<div style="text-align:center;">
+					<%= NoticeBean.pageNumber(5) %>
+				</div>
+				<div style="text-align: right; margin: 20px 5% 0px 5%">
+					<input class="btn btn-primary" type="button" value="글쓰기" 
+								onclick="location.href='writeNotice.jsp?pageNum=<%= pageNum %>&n_user_id=<%= n_user_id %>'">		
+				</div>
 		<%
 				}
 		%>

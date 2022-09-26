@@ -13,18 +13,22 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import cs.NoticeBean;
+import cs.QnABoardBean;
+
+
 public class MemberDBBean {
 	private static MemberDBBean instance = new MemberDBBean();
 
 	public static MemberDBBean getInstance() {
-		// 媛믪쓣 �엯�젰諛쏅뒗 硫붿냼�뱶
-		return instance; // BoardDBBean�쓽 媛앹껜瑜� �엯�젰諛쏆쓬.
+		// 값을 입력받는 메소드
+		return instance; // BoardDBBean의 객체를 입력받음.
 
 	}
 
 	public static Connection getConnection() throws Exception {
-		// 荑쇰━�옉�뾽 �궗�슜�븷 Connection媛앹껜 由ы꽩�븯�뒗 硫붿냼�뱶
-		// �뵲濡쒕쭔�뱺 �씠�쑀 -> �뿬�윭踰� �궗�슜�븯湲� �쐞�빐�꽌
+		// 쿼리작업 사용할 Connection객체 리턴하는 메소드
+		// 따로만든 이유 -> 여러번 사용하기 위해서
 
 		Context ctx = new InitialContext();
 		DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/oracle");
@@ -33,13 +37,13 @@ public class MemberDBBean {
 	
 	
 	/*
-	 * �옉�꽦�옄 : �씠誘쇳븯
-	 * �씪  �떆 : 2022.09.20
-	 * �옉  �뾽 : �닔�젙 = �뀒�씠釉� 蹂�寃쎌뿉 �뵲瑜� �닔�젙
+	 * 작성자 : 이민하
+	 * 일  시 : 2022.09.20
+	 * 작  업 : 수정 = 테이블 변경에 따른 수정
 	 * */
-	// �쑀�� 媛��엯 硫붿냼�뱶
+	// 유저 가입 메소드
 	public static int register(MemberBean member) throws Exception {
-        //媛믪쓣 異붽��븯�뒗 硫붿냼�뱶
+        //값을 추가하는 메소드
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs =null;
@@ -51,26 +55,26 @@ public class MemberDBBean {
 			sql = "insert into user_table"
 					+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			pstmt = con.prepareStatement(sql);
-			//pstmt瑜� �뿰寃�
-			pstmt.setString(1, member.getUser_id()); //異붽� 
-			pstmt.setString(2, member.getUser_pwd()); //異붽� 
-			pstmt.setString(3, member.getUser_name()); //異붽� 
+			//pstmt를 연결
+			pstmt.setString(1, member.getUser_id()); //추가 
+			pstmt.setString(2, member.getUser_pwd()); //추가 
+			pstmt.setString(3, member.getUser_name()); //추가 
 			pstmt.setString(4, member.getUser_phone1());
 			pstmt.setString(5, member.getUser_phone2());
 			pstmt.setString(6, member.getUser_phone3());
-			pstmt.setString(7, member.getUser_email()); //異붽� 
-			pstmt.setString(8, member.getUser_pcode()); //異붽� 
-			pstmt.setString(9, member.getUser_raddr()); //異붽� 
-			pstmt.setString(10, member.getUser_jibun()); //異붽� 
-			pstmt.setString(11, member.getUser_detailaddr()); //異붽� 
-			pstmt.setInt(12, member.getUser_grade()); //異붽� 
-			pstmt.setTimestamp(13, member.getUser_regdate()); //異붽� 
+			pstmt.setString(7, member.getUser_email()); //추가 
+			pstmt.setString(8, member.getUser_pcode()); //추가 
+			pstmt.setString(9, member.getUser_raddr()); //추가 
+			pstmt.setString(10, member.getUser_jibun()); //추가 
+			pstmt.setString(11, member.getUser_detailaddr()); //추가 
+			pstmt.setInt(12, member.getUser_grade()); //추가 
+			pstmt.setTimestamp(13, member.getUser_regdate()); //추가 
 			pstmt.executeUpdate();
 
-			System.out.println("�쉶�썝媛��엯 �꽦怨�");
+			System.out.println("회원가입 성공");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("�쉶�썝媛��엯 �떎�뙣");
+			System.out.println("회원가입 실패");
 		}finally {
 			try {
 				if(pstmt != null) pstmt.close();
@@ -82,19 +86,19 @@ public class MemberDBBean {
 		return 1;
 	}
 	public int confirmID(String id) throws Exception{
-		//以묐났�솗�씤�쓣 �쐞�븳 硫붿냼�뱶
+		//중복확인을 위한 메소드
 		Connection con =null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int re= -1;
 		String sql = "select mem_id from memberT where mem_id =?";
-		//�뙆�씪誘명꽣媛믪쓣 ?濡� 諛쏆쓬.
+		//파라미터값을 ?로 받음.
 		
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
-			rs = pstmt.executeQuery(); //sql�쓽 寃곌낵媛�.
+			rs = pstmt.executeQuery(); //sql의 결과값.
 		
 			if(rs.next()) {
 				re =1;
@@ -112,12 +116,12 @@ public class MemberDBBean {
 	}
 	
 	/*
-	 * �옉�꽦�옄 : �씠誘쇳븯
-	 * �씪  �떆 : 2022.09.20
-	 * �옉  �뾽 : �닔�젙 = �뀒�씠釉� 蹂�寃쎌뿉 �뵲瑜� �닔�젙
+	 * 작성자 : 이민하
+	 * 일  시 : 2022.09.20
+	 * 작  업 : 수정 = 테이블 변경에 따른 수정
 	 * */
 	public MemberBean getMember(String id) throws Exception{
-		//�븘�씠�뵒媛� �씪移섑븯�뒗 硫ㅻ쾭�쓽 �젙蹂대�� �뼸�뼱�삤�뒗 硫붿냼�뱶
+		//아이디가 일치하는 멤버의 정보를 얻어오는 메소드
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -133,7 +137,7 @@ public class MemberDBBean {
 		
 		if(rs.next()) {
 			member = new MemberBean();
-			// 濡쒓렇�씤�븷�븣 �엯�젰�븯�뒗 �븘�씠�뵒瑜� bean�뿉 �꽔�뼱以� 
+			// 로그인할때 입력하는 아이디를 bean에 넣어줌 
 			member.setUser_id(rs.getString("user_id")); 
 			member.setUser_pwd(rs.getString("user_pwd"));
 			member.setUser_name(rs.getString("user_name"));  
@@ -192,11 +196,35 @@ public class MemberDBBean {
 
 		  return re;
 	 }
+	 
+	 public String findId(String user_name, String user_phone) {
+		String re=null;
+		
+		try {			
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			
+			String sql = "select user_id from user_table where user_name=? and user_phone=? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user_name);
+			pstmt.setString(2, user_phone);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				re = rs.getString("user_id");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return re;
+	 }
 	
 	/*
-	 * �옉�꽦�옄 : �씠誘쇳븯
-	 * �씪  �떆 : 2022.09.20
-	 * �옉  �뾽 : 硫붿냼�뱶 �깮�꽦 = 由ъ뒪�듃 �뜲�씠�꽣 select
+	 * 작성자 : 이민하
+	 * 일  시 : 2022.09.20
+	 * 작  업 : 메소드 생성 = 리스트 데이터 select
 	 * */
 	 public ArrayList<MemberBean> listMember(String pageNumber, String user_id) throws Exception{
 		ArrayList<MemberBean> memberList = new ArrayList<>();
@@ -237,7 +265,7 @@ public class MemberDBBean {
 				pageSet.close();
 			}
 			
-			if(dbCount%MemberBean.pageSize==0) { //dbCount => 珥� �닽�옄 , pageSize =10 => ex) 84%10 = 4
+			if(dbCount%MemberBean.pageSize==0) { //dbCount => 총 숫자 , pageSize =10 => ex) 84%10 = 4
 				MemberBean.pageCount = dbCount / MemberBean.pageSize; //80/10=> 8
 			} else {
 				MemberBean.pageCount = dbCount / MemberBean.pageSize +1;//84/10 +1=> 8+1 => 9
@@ -282,7 +310,7 @@ public class MemberDBBean {
 			}
 			
 		}catch(SQLException ex){
-			System.out.println("議고쉶 �떎�뙣");
+			System.out.println("조회 실패");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -296,9 +324,9 @@ public class MemberDBBean {
 	}
 		
 	/*
-	 * �옉�꽦�옄 : �씠誘쇳븯
-	 * �씪  �떆 : 2022.09.20
-	 * �옉  �뾽 : 硫붿냼�뱶 �깮�꽦 = �뜲�씠�꽣 �궘�젣
+	 * 작성자 : 이민하
+	 * 일  시 : 2022.09.20
+	 * 작  업 : 메소드 생성 = 데이터 삭제
 	 * */
 	public int deleteMember(String user_id) throws Exception {
 		Connection conn = null;
@@ -314,10 +342,10 @@ public class MemberDBBean {
 			pstmt.setString(1, user_id);
 			pstmt.executeUpdate();
 			
-			System.out.println("�궘�젣 �꽦怨�");
+			System.out.println("삭제 성공");
 			
 		}catch(SQLException ex){
-			System.out.println("蹂�寃� �떎�뙣");
+			System.out.println("변경 실패");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -331,9 +359,9 @@ public class MemberDBBean {
 	}
 
 	/*
-	 * �옉�꽦�옄 : �씠誘쇳븯
-	 * �씪  �떆 : 2022.09.20
-	 * �옉  �뾽 : 硫붿냼�뱶 �깮�꽦 = �뜲�씠�꽣 �뾽�뜲�씠�듃 
+	 * 작성자 : 이민하
+	 * 일  시 : 2022.09.20
+	 * 작  업 : 메소드 생성 = 데이터 업데이트 
 	 * */
 	public int editMember(MemberBean member) throws Exception{
 		Connection conn = null;
@@ -377,11 +405,11 @@ public class MemberDBBean {
 			
 			re=pstmt.executeUpdate();
 			
-			System.out.println("蹂�寃� �꽦怨�");
+			System.out.println("변경 성공");
 			re=1;
 			
 		}catch(SQLException ex){
-			System.out.println("蹂�寃� �떎�뙣");
+			System.out.println("변경 실패");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -450,6 +478,17 @@ public class MemberDBBean {
 			try {
 				conn = getConnection();
 				pstmt = conn.prepareStatement(sql);
+				System.out.println("@@@### member.getMem_name() ===>"+member.getUser_name());
+				System.out.println("@@@### member.getMem_phone1() ===>"+member.getUser_phone1());
+				System.out.println("@@@### member.getMem_phone2() ===>"+member.getUser_phone2());
+				System.out.println("@@@### member.getMem_phone3() ===>"+member.getUser_phone3());
+				System.out.println("@@@### member.getMem_email() ===>"+member.getUser_email());
+				System.out.println("@@@### member.getMem_pcode() ===>"+member.getUser_pcode());
+				System.out.println("@@@### member.getMem_raddr() ===>"+member.getUser_raddr());
+				System.out.println("@@@### member.getMem_jibun() ===>"+member.getUser_jibun());
+				System.out.println("@@@### member.getMem_detailaddr() ===>"+member.getUser_detailaddr());
+				System.out.println("@@@### member.getMem_id() ===>"+member.getUser_id());
+				System.out.println("@@@### member.getMem_pwd() ===>"+member.getUser_pwd());
 				
 				pstmt.setString(1, member.getUser_name());
 				pstmt.setString(2, member.getUser_phone1());
@@ -465,7 +504,9 @@ public class MemberDBBean {
 				
 				re = pstmt.executeUpdate();
 				re = 1;
+				System.out.println("@@@### re ===>"+re);
 			}catch(SQLException ex){
+				System.out.println("수정실패");
 				ex.printStackTrace();
 			}finally{
 				try{
@@ -494,7 +535,7 @@ public class MemberDBBean {
 	        int len = charSet.length;
 	        for (int i=0; i<size; i++) {
 	            // idx = (int) (len * Math.random());
-	            idx = sr.nextInt(len);    // 媛뺣젰�븳 �궃�닔瑜� 諛쒖깮�떆�궎湲� �쐞�빐 SecureRandom�쓣 �궗�슜�븳�떎.
+	            idx = sr.nextInt(len);    // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
 	            sb.append(charSet[idx]);
 	        }
 
@@ -511,6 +552,10 @@ public class MemberDBBean {
 			try {
 				conn = getConnection();
 				pstmt = conn.prepareStatement(sql);
+				System.out.println("@@@### pwd ===>"+pwd);
+				System.out.println("@@@### id ===>"+id);
+				System.out.println("@@@### name ===>"+name);
+				System.out.println("@@@### email ===>"+email);
 				
 				pstmt.setString(1, pwd);
 				pstmt.setString(2, id);
@@ -521,7 +566,7 @@ public class MemberDBBean {
 				re = 1;
 				System.out.println("@@@### re ===>"+re);
 			}catch(SQLException ex){
-				System.out.println("�닔�젙�떎�뙣");
+				System.out.println("수정실패");
 				ex.printStackTrace();
 			}finally{
 				try{
@@ -552,7 +597,7 @@ public class MemberDBBean {
 		
 		if(rs.next()) {
 			MemberBean member = new MemberBean();
-			// 濡쒓렇�씤�븷�븣 �엯�젰�븯�뒗 �븘�씠�뵒瑜� bean�뿉 �꽔�뼱以� 
+			// 로그인할때 입력하는 아이디를 bean에 넣어줌 
 			member.setUser_id(rs.getString("user_id"));  
 			member.setUser_pwd(rs.getString("user_pwd"));  
 			member.setUser_name(rs.getString("user_name"));  

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class OrderManageBean {
 	private String order_number;
-	private int order_detail_number;
+	private long order_detail_number;
 	private String product_name;
 	private int product_number;
 	private int product_count;
@@ -12,6 +12,7 @@ public class OrderManageBean {
 	private String order_detail_status;
 	private String refund_check;
 	private String shipment;
+	private String requested;
 	
 	private String user_id;
 	private Timestamp order_date;
@@ -25,41 +26,48 @@ public class OrderManageBean {
 	private String receiver_detailaddr;
 	
 	
-	//ÆäÀÌÂ¡ º¯¼ö
-		public static int pageSize = 10; //ÇÑÆĞÀÌÁö¿¡ º¸¿©ÁÙ ±Û °¹¼ö
-		public static int pageCount = 1; //ÃÑ ÆäÀÌÁö °¹¼ö
-		public static int pageNum = 1; //ÃÑ ÆäÀÌÁö °¹¼ö
-	//ÆäÀÌÁö ¸Ş¼Òµå
+	//ï¿½ï¿½ï¿½ï¿½Â¡ ï¿½ï¿½ï¿½ï¿½
+		public static int pageSize = 10; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		public static int pageCount = 1; //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		public static int pageNum = 1; //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş¼Òµï¿½
 		public static String pageNumber(int limit, String url) {
 			String str = "";
 			int temp = (pageNum-1) % limit;
 			int startPage = pageNum - temp;
 			
 			if(startPage - limit > 0) {
-				str ="<li class=\"page-item\"><a class=\"page-link\" href ='adminIndex.jsp?pageNum="+(startPage-limit)+"&pages="+url+"'>ÀÌÀü</a></li>";
+				str ="<li class=\"page-item\"><a class=\"page-link\" href ='adminIndex.jsp?pageNum="+(startPage-limit)+"&pages="+url+"'>ï¿½ï¿½ï¿½ï¿½</a></li>";
 			}
-			for (int i = startPage; i < (startPage+limit); i++) {//¾ÈÂÊ ÆäÀÌÁö ¹øÈ£
+			for (int i = startPage; i < (startPage+limit); i++) {//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£
 				str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages="+url+"'>"+i+"</a></li>";
 				if (i >= pageCount) { 
 					break;
 				}
 			}
 			if ((startPage + limit) <= pageCount) {
-				str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages="+url+"'>´ÙÀ½</a></li>";
+				str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages="+url+"'>ï¿½ï¿½ï¿½ï¿½</a></li>";
 			}
 			return str;
 		}
-		//ÆäÀÌÂ¡ º¯¼ö ³¡
+		//ï¿½ï¿½ï¿½ï¿½Â¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+	
 	
 		
-	public String getReceiver_phone1() {
-		return receiver_phone1;
+	public String getRequested() {
+		return requested;
+	}
+	public void setRequested(String requested) {
+		this.requested = requested;
 	}
 	public String getShipment() {
 		return shipment;
 	}
 	public void setShipment(String shipment) {
 		this.shipment = shipment;
+	}
+	public String getReceiver_phone1() {
+		return receiver_phone1;
 	}
 	public void setReceiver_phone1(String receiver_phone1) {
 		this.receiver_phone1 = receiver_phone1;
@@ -126,10 +134,10 @@ public class OrderManageBean {
 	public void setOrder_number(String order_number) {
 		this.order_number = order_number;
 	}
-	public int getOrder_detail_number() {
+	public long getOrder_detail_number() {
 		return order_detail_number;
 	}
-	public void setOrder_detail_number(int order_detail_number) {
+	public void setOrder_detail_number(long order_detail_number) {
 		this.order_detail_number = order_detail_number;
 	}
 	public String getProduct_name() {

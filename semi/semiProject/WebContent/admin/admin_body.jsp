@@ -16,10 +16,11 @@
 	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
 	
 	int o_rank = 0;
-	int o_dNum, p_num, p_count, p_price, productAllCount, noStock, qnaAllCount, qnaNoCount;
+	long o_dNum;
+	int p_num, p_count, p_price, productAllCount, noStock, qnaAllCount, qnaNoCount;
 	String o_num, o_dStat, refund, stat, pageNum, user_id, user_pwd, user_name
 	, user_phone1, user_phone2, user_phone3, user_email, user_pcode, user_raddr
-	, user_jibun, user_detailaddr;
+	, user_jibun, user_detailaddr, requested;
 	Timestamp user_regdate;
 	
 	ArrayList<OrderManageBean> list = omdb.orderList("1","N");
@@ -122,6 +123,7 @@
                <th>금액</th>
                <th>주문자</th>
                <th>주문일자</th>
+               <th>요청사항</th>
              </tr>
            </thead>
            <tbody>
@@ -135,7 +137,11 @@
 			p_price = omb.getProduct_price();
 			o_dStat = omb.getOrder_detail_status();
 			refund = omb.getRefund_check();
-
+			if(omb.getRequested() != null){
+				requested = omb.getRequested();
+			} else {
+				requested = "없음";
+			}
 			omb = omdb.getOrder(o_dNum);
 			String p_name = omb.getProduct_name();
 			String u_id = omb.getUser_id();
@@ -150,6 +156,7 @@
 					<td><%=p_price%></td>
 					<td><%=u_id%></td>
 					<td><%=o_date%></td>
+					<td><%=requested%></td>
 	<%	
 			}
 		}

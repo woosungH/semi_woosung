@@ -111,6 +111,16 @@ function exitCheck() {
 		location.href=href;
     }
 }
+function refundCheck() {
+    var checking = confirm("환불 승인하시겠습니까?");
+    if (checking == false) {
+        alert("환불이 취소되었습니다.");
+    } else {
+        alert("환불이 승인되었습니다.");
+		var href = document.getElementById("refund").value;
+		location.href=href;
+    }
+}
 function delCheck() {
     var checking = confirm("상품을 삭제하시겠습니까?");
     if (checking == false) {

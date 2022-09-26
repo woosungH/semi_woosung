@@ -7,7 +7,8 @@
 <%
 	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
 	
-	int o_dNum, p_num, p_count, p_price;
+	long o_dNum;
+	int p_num, p_count, p_price;
 	String o_num, o_dStat, refund, stat, pageNum, shipment;
 	
 	if(request.getParameter("pageNum") == null){

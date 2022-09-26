@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.naming.Context;
@@ -15,22 +13,22 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 /*
- * UploadProductBeanÀÇ ¸Å°³º¯¼ö´Â upbd·Î ÅëÀÏ
- * UploadProudctDBBeanÀÇ ¸Å°³º¯¼ö´Â updb·Î ÅëÀÏ
+ * UploadProductBeanå ì™ì˜™ å ì‹ ê³¤ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ upbdå ì™ì˜™ å ì™ì˜™å ì™ì˜™
+ * UploadProudctDBBeanå ì™ì˜™ å ì‹ ê³¤ì˜™å ì™ì˜™å ì™ì˜™å ì™ì˜™ updbå ì™ì˜™ å ì™ì˜™å ì™ì˜™
  * */
 
 public class ProductDBBean {
 	private static ProductDBBean instance = new ProductDBBean();
 	
-	// UploadProductDBBean °´Ã¼ »ı¼º
+	// UploadProductDBBean å ì™ì˜™ì²´ å ì™ì˜™å ì™ì˜™
 	public static ProductDBBean getInstance() {
 		return instance;
 	}
 	
-	//db¿¬°á
+	//dbå ì™ì˜™å ì™ì˜™
 	public static Connection getConnection() throws Exception {
-		// Äõ¸®ÀÛ¾÷ »ç¿ëÇÒ Connection°´Ã¼ ¸®ÅÏÇÏ´Â ¸Ş¼Òµå
-		// µû·Î¸¸µç ÀÌÀ¯ -> ¿©·¯¹ø »ç¿ëÇÏ±â À§ÇØ¼­
+		// å ì™ì˜™å ì™ì˜™å ìŒœì–µì˜™ å ì™ì˜™å ì™ì˜™å ï¿½ Connectionå ì™ì˜™ì²´ å ì™ì˜™å ì™ì˜™å ì‹¹ëŒì˜™ å ìŒ¨ì†Œë“¸ì˜™
+		// å ì™ì˜™å ì‹¸ëªŒì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ -> å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™æ­å ï¿½ å ì™ì˜™å ìŒ”ì‡½ì˜™
 
 		Context ctx = new InitialContext();
 		DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/oracle");
@@ -102,7 +100,7 @@ public class ProductDBBean {
 			re=1;
 			
 		}catch(SQLException ex){
-			System.out.println("Ãß°¡ ½ÇÆĞ");
+			System.out.println("å ìŒ©ê³¤ì˜™ å ì™ì˜™å ì™ì˜™");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -143,7 +141,7 @@ public class ProductDBBean {
 			pageSet = stmt.executeQuery(sql2);
 			
 			if(pageSet.next()) {
-				dbCount = pageSet.getInt(1); // ÃÑ ±Û °¹¼ö
+				dbCount = pageSet.getInt(1); // å ì™ì˜™ å ì™ì˜™ å ì™ì˜™å ì™ì˜™
 				pageSet.close();
 			}
 			if (dbCount % ProductBean.pageSize == 0) {
@@ -183,7 +181,7 @@ public class ProductDBBean {
 				}
 			}
 		} catch (SQLException ex) {
-			System.out.println("Á¶È¸ ½ÇÆĞ");
+			System.out.println("å ì™ì˜™íšŒ å ì™ì˜™å ì™ì˜™");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -221,7 +219,6 @@ public class ProductDBBean {
 				upbd.setFile_size(rs.getInt("file_size"));
 				upbd.setCreate_date(rs.getTimestamp("create_date"));
 			}
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -243,7 +240,7 @@ public class ProductDBBean {
 			conn = getConnection();
 			
 			if (odercount == true) {
-				sql="UPDATE PRODUCT SET product_ordered_count=product_ordered_count+1 WHERE product_number=?";
+				sql="UPDATE PRODUCT SET product_ordered_count=product_ordered_count+1 from WHERE product_number=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, pnumber);
 				pstmt.executeUpdate();
@@ -276,7 +273,7 @@ public class ProductDBBean {
 				upbd.setProduct_desc(rs.getString(8));
 			}
 		}catch(SQLException ex){
-			System.out.println("Á¶È¸ ½ÇÆĞ");
+			System.out.println("å ì™ì˜™íšŒ å ì™ì˜™å ì™ì˜™");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -313,7 +310,7 @@ public class ProductDBBean {
 			pstmt.setString(5, upbd.getProduct_desc());
 			pstmt.setInt(6, upbd.getProduct_number());
 			pstmt.executeUpdate();
-			// »óÇ° ¼öÁ¤ ½Ã »çÁøÀÌ ¹Ù²ğ ¼ö ÀÖ¾î Äõ¸®¹® Ãß°¡
+			// å ì™ì˜™í’ˆ å ì™ì˜™å ì™ì˜™ å ì™ì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ìŒ•ë€ì˜™ å ì™ì˜™ å ìŒì–µì˜™ å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ìŒ©ê³¤ì˜™
 			sql = "UPDATE product_imagefile SET ORGIN_FILE_NAME=?,STORED_FILE_NAME=?\r\n" + 
 					"     , STORED_THUMBNAIL=?, FILE_SIZE=?, CREATE_DATE=SYSDATE\r\n" + 
 					"  WHERE PRODUCT_NUMBER=?";
@@ -328,7 +325,7 @@ public class ProductDBBean {
 			re=1;
 			
 		}catch(SQLException ex){
-			System.out.println("¼öÁ¤ ½ÇÆĞ");
+			System.out.println("å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -361,9 +358,9 @@ public class ProductDBBean {
 			pstmt.setInt(1, product_number);
 			pstmt.executeUpdate();
 			re=1;
-			System.out.println("»èÁ¦ ¼º°ø");
+			System.out.println("å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™");
 		}catch(SQLException ex){
-			System.out.println("»èÁ¦ ½ÇÆĞ");
+			System.out.println("å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -441,4 +438,5 @@ public class ProductDBBean {
 		}
 		return upbd;
 	}
+	
 }

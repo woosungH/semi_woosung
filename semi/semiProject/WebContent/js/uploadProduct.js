@@ -1,5 +1,5 @@
 function check_ok() {
-	if(reg_frm.category_code.value == "none"){
+	if(reg_frm.category_code.value.length == 0){
 		alert("카테고리를 지정해주세요.");
 		reg_frm.category_code.focus();
 		return;
@@ -28,7 +28,6 @@ function check_ok() {
 		reg_frm.product_desc.focus();
 		return;
 	}*/
-	// 상세설명 디자인 때문에 주석 처리
 	const element = document.getElementsByClassName("ql-editor")[0];
 	
 	document.getElementById("content").value = element.innerHTML;

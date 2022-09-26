@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 public class ProductBean {
 	
 	//product table
-	
 	private int product_number;
 	private String category_code;
 	private String product_name;
@@ -23,7 +22,6 @@ public class ProductBean {
 	private int file_size;
 	private Timestamp create_date;
 	
-	//상품 개수 관련 속성
 	private int count;
 	private int noStock;
 	
@@ -96,7 +94,6 @@ public class ProductBean {
 	//페이징 변수 끝
 	
 	
-	
 	public int getFile_number() {
 		return file_number;
 	}
@@ -104,15 +101,16 @@ public class ProductBean {
 		return count;
 	}
 
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public int getNoStock() {
 		return noStock;
 	}
+
 	public void setNoStock(int noStock) {
 		this.noStock = noStock;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
 	}
 
 	public void setFile_number(int file_number) {

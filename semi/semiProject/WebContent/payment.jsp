@@ -20,7 +20,7 @@ textarea {
 <body>
 <h2>kakao</h2>
 
-	<form action="kakao.jsp">
+	<form action="/buy/kakao.jsp">
 
 		<p>
 			<span>이름:</span> <input type="text" name="name">
