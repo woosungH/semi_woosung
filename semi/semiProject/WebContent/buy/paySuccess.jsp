@@ -61,7 +61,7 @@
          <div class="card-body p-5">
            <div class="row mb-5">
              <div class="col-12 text-center mb-4">
-               <img src="./assets/images/logo.svg" class="navbar-brand-img brand-sm mx-auto mb-4" alt="...">
+               <img src="../assets/images/logo.svg" class="navbar-brand-img brand-sm mx-auto mb-4" alt="...">
                <h2 class="mb-0 text-uppercase">Invoice</h2>
                <p class="text-muted"> 대한민국<br /> 부산광역시 부산진구 중앙대로 688 한준빌딩 2층 </p>
              </div>
@@ -93,6 +93,7 @@
                  <th scope="col">Description</th>
                  <th scope="col" class="text-right">개당 가격</th>
                  <th scope="col" class="text-right">수량</th>
+                 <th scope="col" class="text-right">배송비</th>
                  <th scope="col" class="text-right">총 가격</th>
                </tr>
              </thead>
@@ -102,6 +103,7 @@
                  <td><%= p_name %></td>
                  <td class="text-right"><%= one_price %>원</td>
                  <td class="text-right"><%= count %>개</td>
+                 <td class="text-right"><%= ship %>원</td>
                  <td class="text-right"><%= price %>원</td>
                </tr>
              </tbody>
@@ -116,7 +118,7 @@
                <div class="text-right mr-2">
                  <p class="mb-2 h6">
                    <span class="text-muted">Total : </span>
-                   <span><%= price %></span>
+                   <span><%= price %>원</span>
                  </p>
                </div>
              </div>

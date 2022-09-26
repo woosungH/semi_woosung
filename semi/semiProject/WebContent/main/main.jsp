@@ -160,12 +160,12 @@
     			} else if(id.equals("admin")) {
 			%>
 				<a class="dropdown-item" href="../admin/adminIndex.jsp">관리페이지</a>
-				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user.jsp">마이페이지</a>
+				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user">마이페이지</a>
               	<a class="dropdown-item" href="../user_log/logout.jsp">로그아웃</a>
 			<%
 				} else {
 			%>
-				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user.jsp">마이페이지</a>
+				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user">마이페이지</a>
               	<a class="dropdown-item" href="../user_log/logout.jsp">로그아웃</a>
 			<%
     			}
