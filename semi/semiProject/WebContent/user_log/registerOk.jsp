@@ -7,7 +7,6 @@
 %>
 <jsp:useBean id="mb" class="member.MemberBean"></jsp:useBean>>
 <jsp:setProperty property = "*" name="mb"/>
-
 <%
 	MemberDBBean manager = MemberDBBean.getInstance();
 	
@@ -30,8 +29,8 @@
 		if(re == 1){
 %>
 		<script>
-			alert("회원가입을 축하드립니다.\n 회원으로 로그인 해주세요.");
-			document.location.href="../main/main.jsp";
+			alert("회원가입이 완료되었습니다.\n로그인해주세요");
+		  	location.href= "main.jsp?pages=../user_log/login";
 		</script>
 <%
 		}else{ 

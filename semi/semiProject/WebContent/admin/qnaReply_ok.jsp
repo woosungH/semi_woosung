@@ -9,7 +9,7 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean class="cs.QnABoardBean" id="qBoard"></jsp:useBean>
 <%
-	String path = request.getRealPath("upload");
+	String path = request.getSession().getServletContext().getRealPath("\\upload");
 	int size = 1024*1024*20; // 20MB로 크기 제한
 	int fileSize = 0;
 	String file = "";

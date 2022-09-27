@@ -13,10 +13,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import cs.NoticeBean;
-import cs.QnABoardBean;
-
-
 public class MemberDBBean {
 	private static MemberDBBean instance = new MemberDBBean();
 
@@ -42,7 +38,7 @@ public class MemberDBBean {
 	 * 작  업 : 수정 = 테이블 변경에 따른 수정
 	 * */
 	// 유저 가입 메소드
-	public static int register(MemberBean member) throws Exception {
+	public int register(MemberBean member) throws Exception {
         //값을 추가하는 메소드
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -91,7 +87,7 @@ public class MemberDBBean {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int re= -1;
-		String sql = "select mem_id from memberT where mem_id =?";
+		String sql = "select USER_ID from user_table where USER_ID =?";
 		//파라미터값을 ?로 받음.
 		
 		try {
@@ -251,7 +247,8 @@ public class MemberDBBean {
 				"     , user_grade\r\n" + 
 				"     , user_regdate\r\n" + 
 				"  from user_table\r\n"+
-				" where user_id like '%"+user_id+"%'";
+				" where user_id like '%"+user_id+"%'\r\n"+
+				" order by user_regdate desc";
 		
 		sql2="SELECT COUNT(user_id) FROM user_table where user_id like '%"+user_id+"%'";
 		try {

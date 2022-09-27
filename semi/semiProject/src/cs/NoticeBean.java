@@ -18,7 +18,7 @@ public class NoticeBean {
 	public static int pageCount=1;
 	public static int pageNum=1;
 	
-
+//수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public static String pageNumber(int limit) {
 		String str = "";
 		int temp = (pageNum-1)%limit;
@@ -44,19 +44,20 @@ public class NoticeBean {
 		int startPage = pageNum - temp; // 시작 페이지 > 한번에 보여지는 페이지 번호의 처음 숫자
 		
 		if ((startPage - limit) > 0) { // 시작 페이지가
-			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'noticeList_u.jsp?pageNum="+(startPage-1)+"'>이전</a></li>";
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/notice/noticeList_u&pageNum="+(startPage-1)+"'>이전</a></li>";
 		}
 		for (int i = startPage; i < (startPage+limit) ; i++) {
-			str+="<li class=\"page-item\"><a class=\"page-link\" href='noticeList_u.jsp?pageNum="+i+"'>"+i+"</a></li>";
+			str+="<li class=\"page-item\"><a class=\"page-link\" href='main.jsp?pages=../cs/notice/noticeList_u&pageNum="+i+"'>"+i+"</a></li>";
 			if (i >= pageCount) { 
 				break;
 			}
 		}
 		if ((startPage + limit) <= pageCount) {
-			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'noticeList_u.jsp?pageNum="+(startPage+limit)+"'>다음</a></li>";
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/notice/noticeList_u&pageNum="+(startPage+limit)+"'>다음</a></li>";
 		}
 		return str;
 	}
+//수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	
 	public int getBefore() {
 		return before;

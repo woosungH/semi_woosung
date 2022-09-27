@@ -23,7 +23,7 @@ public class QnABoardBean {
 	
 	static private int b_nm;
 	
-	//��ǰ ���� ���� �Ӽ�
+	//占쏙옙품 占쏙옙占쏙옙 占쏙옙占쏙옙 占쌈쇽옙
 	private int allNoAns;
 	private int todayNoAns;
 	
@@ -32,14 +32,14 @@ public class QnABoardBean {
 	public static int pageCount=1;
 	public static int pageNum=1;
 	
-
+//수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public static String pageNumber(int limit) {
 		String str = "";
 		int temp = (pageNum-1)%limit;
-		int startPage = pageNum - temp; // ���� ������ > �ѹ��� �������� ������ ��ȣ�� ó�� ����
+		int startPage = pageNum - temp; // 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 > 占싼뱄옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙호占쏙옙 처占쏙옙 占쏙옙占쏙옙
 		
-		if ((startPage - limit) > 0) { // ���� ��������
-			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage-1)+"&pages=qnaList'>����</a></li>";
+		if ((startPage - limit) > 0) { // 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage-1)+"&pages=qnaList'>이후</a></li>";
 		}
 		for (int i = startPage; i < (startPage+limit) ; i++) {
 			str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages=qnaList'>"+i+"</a></li>";
@@ -48,29 +48,31 @@ public class QnABoardBean {
 			}
 		}
 		if ((startPage + limit) <= pageCount) {
-			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=qnaList'>����</a></li>";
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=qnaList'>이전</a></li>";
 		}
 		return str;
 	}
+	
 	public static String userPageNumber(int limit) {
 		String str = "";
 		int temp = (pageNum-1)%limit;
-		int startPage = pageNum - temp; // ���� ������ > �ѹ��� �������� ������ ��ȣ�� ó�� ����
+		int startPage = pageNum - temp; // 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 > 占싼뱄옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙호占쏙옙 처占쏙옙 占쏙옙占쏙옙
 		
-		if ((startPage - limit) > 0) { // ���� ��������
-			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'qnaList_u.jsp?pageNum="+(startPage-1)+"'>����</a></li>";
+		if ((startPage - limit) > 0) { // 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙占쏙옙
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/qna/qnaList_u&pageNum="+(startPage-1)+"'>이전</a></li>";
 		}
 		for (int i = startPage; i < (startPage+limit) ; i++) {
-			str+="<li class=\"page-item\"><a class=\"page-link\" href='qnaList_u.jsp?pageNum="+i+"'>"+i+"</a></li>";
+			str+="<li class=\"page-item\"><a class=\"page-link\" href='main.jsp?pages=../cs/qna/qnaList_u&pageNum="+i+"'>"+i+"</a></li>";
 			if (i >= pageCount) { 
 				break;
 			}
 		}
 		if ((startPage + limit) <= pageCount) {
-			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'qnaList_u.jsp?pageNum="+(startPage+limit)+"'>����</a></li>";
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/qna/qnaList_u&pageNum="+(startPage+limit)+"'>다음</a></li>";
 		}
 		return str;
 	}
+//수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	
 	
 	public int getAllNoAns() {
@@ -93,7 +95,7 @@ public class QnABoardBean {
 		QnABoardBean.b_nm = b_nm;
 	}
 
-	private String u_grade; // ȸ�� ���
+	private String u_grade; // 회占쏙옙 占쏙옙占�
 	
 	public String getU_grade() {
 		return u_grade;
@@ -103,7 +105,7 @@ public class QnABoardBean {
 		this.u_grade = u_grade;
 	}
 	
-	private int count; // ��ü �� ����
+	private int count; // 占쏙옙체 占쏙옙 占쏙옙占쏙옙
 	
 	public int getCount() {
 		return count;

@@ -9,15 +9,18 @@
     pageEncoding="UTF-8"%>
 <% 
 	String id = (String)session.getAttribute("id");
+
 	String name="", phone="", email="";
-	if(session.getAttribute(id) == null){
+	//수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	if(id.equals("")){
+		//수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		response.sendRedirect("main.jsp?pages=../user_log/login");
 	} else {
 		MemberBean mb = new MemberBean();
 		MemberDBBean mdb = MemberDBBean.getInstance();
-		
-		System.out.println("===========>"+id);
+		//System.out.println("===========>"+id);
 		mb = mdb.getMember(id);
+		//System.out.print(mb);
 		name = mb.getUser_name();
 		phone = mb.getUser_phone1()+""+mb.getUser_phone2()+""+mb.getUser_phone3();
 		email = mb.getUser_email();
@@ -41,7 +44,9 @@
             <div class="col-12">
               <h2 class="page-title">문의 작성</h2>
               <br />
-              <form action="qna_write_ok.jsp" method="post" name="write_frm" enctype="multipart/form-data"">
+              		<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+              <form action="main.jsp?pages=../cs/qna/qna_write_ok" method="post" name="write_frm" enctype="multipart/form-data">
+              		<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
               <div class="card shadow mb-2">
                   <div class="card shadow">
                     <div class="card-body">
@@ -78,11 +83,15 @@
                         <textarea class="form-control" name="b_content" id="example-textarea" rows="10"></textarea>
                       </div>
                       <div class="form-group mb-3">
-                        <label for="customFile">이미지</label>
-                        <div class="custom-file">
-                          <input type="file" name="b_fname" id="customFile"/>
-                          <label for="customFile"></label>
-                        </div>
+                        <label for="fileinput">이미지</label>
+	                        <!-- 첨부파일(이미지파일만 업로드가능) -->
+							<input type="file" id="fileinput" name="b_fname" accept="image/*">
+							
+							<!-- 이미지 미리보기 영역 -->
+							<div id="imgViewArea" style="margin-top:10px; display:none;">
+								<img id="imgArea" style="width:250px; height:250px;" onerror="imgAreaError()"/>
+							</div>
+	                      <div style="text-align:center;">
                       </div>
                       <div class="form-group mb-3">
                         <label for="example-password">비밀번호</label>
@@ -106,5 +115,31 @@
           	</div> <!-- end section -->
         </div> <!-- .col-12 -->
       </div> <!-- .row -->
+     <script src="../js/jquery.min.js"></script>
+    <script type="text/javascript">
+	// 콘텐츠 수정 :: 사진 수정 시 이미지 미리보기
+	function readURL(input) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$('#imgArea').attr('src', e.target.result); 
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	$(":input[name='b_fname']").change(function() {
+		if( $(":input[name='b_fname']").val() == '' ) {
+			$('#imgArea').attr('src' , '');  
+		}
+		$('#imgViewArea').css({ 'display' : '' });
+		readURL(this);
+	});
+
+	// 이미지 에러 시 미리보기영역 미노출
+	function imgAreaError(){
+		$('#imgViewArea').css({ 'display' : 'none' });
+	}
+</script>
   </body>
 </html>

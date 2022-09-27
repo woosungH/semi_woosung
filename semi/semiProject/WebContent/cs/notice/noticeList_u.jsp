@@ -46,7 +46,9 @@
                   <h2 class="h4 mb-1">공지 사항</h2>
                   <br />
                   <div class="col-md-12 my-4">
-                  	<a href="../../main.jsp">스토어 홈</a>> <a href="../cs_main.jsp">고객센터</a>> 공지사항
+                  <!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+                  	<a href="main.jsp">스토어 홈</a>> <a href="main.jsp?pages=../cs/cs_main">고객센터</a>> 공지사항
+                  <!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
                   </div>
                   <div class="card shadow">
                     <div class="card-body">
@@ -76,7 +78,7 @@
 				<tr>
 					<td  align="center"><%= n_num%></td>
 					<td  align="center" style="text-align: left">
-						<a href="noticeShow.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>">
+						<a href="main.jsp?pages=../cs/notice/noticeShow&n_num=<%= n_num %>&pageNum=<%= pageNum %>">
 							<%= n_title %>
 						</a>
 					</td>
@@ -107,7 +109,9 @@
 				</table>
 				<nav aria-label="Table Paging" class="mb-0 text-muted">
         			<ul class="pagination justify-content-center mb-0">
+        			<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 						<%= NoticeBean.userPageNumber(5) %>
+					<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 					</ul>
 				</nav>
 		<%
@@ -121,7 +125,5 @@
           </div> <!-- .row -->
         </div> <!-- .container-fluid -->
     </div> <!-- .wrapper -->
-</body>
-</html>
 </body>
 </html>

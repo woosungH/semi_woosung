@@ -62,7 +62,7 @@
            <div class="row mb-5">
              <div class="col-12 text-center mb-4">
                <img src="../assets/images/logo.svg" class="navbar-brand-img brand-sm mx-auto mb-4" alt="...">
-               <h2 class="mb-0 text-uppercase">Invoice</h2>
+               <h2 class="mb-0 text-uppercase">주문내역서</h2>
                <p class="text-muted"> 대한민국<br /> 부산광역시 부산진구 중앙대로 688 한준빌딩 2층 </p>
              </div>
              <div class="col-md-7">

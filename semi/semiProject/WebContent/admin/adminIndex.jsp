@@ -2,16 +2,31 @@
     pageEncoding="UTF-8"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-
+	String user_grade = "";
+	int grade = 0;
 	String id = (String)session.getAttribute("id");
 	String name = (String)session.getAttribute("name");
+	if(session.getAttribute("grade") == null){
+		response.sendRedirect("../main/main.jsp?pages=error");
+	} else {
+		user_grade = String.valueOf(session.getAttribute("grade"));
+		grade = Integer.parseInt(user_grade);
+	}
 	String pages = "";
 	if(request.getParameter("pages")!=null){
 		pages = request.getParameter("pages");		
 	} else{
 		pages = "admin_body";
 	}
-%> 
+	if (grade != 1) {
+%>
+	<script type="text/javascript">
+		location.href="../main/main.jsp?pages=error";
+	</script>
+<%
+	}
+%>
+
 <!doctype html>
 <html lang="ko">
   <head>
@@ -39,6 +54,7 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="../css/app-light.css" id="lightTheme" disabled>
     <link rel="stylesheet" href="../css/app-dark.css" id="darkTheme?a=b">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   </head>
   <body class="vertical  dark  ">
     <div class="wrapper">
@@ -63,19 +79,19 @@
   			<%
 				if(session.getAttribute("Member") == null){ // 회원이 아닌 경우
 			%>
-				<a class="dropdown-item" href="main.jsp?pages=../user_log/login">로그인</a>
-              <a class="dropdown-item" href="main.jsp?pages=../user_log/register">회원가입</a>
+				<a class="dropdown-item" href="../main/main.jsp?pages=../user_log/login">로그인</a>
+              <a class="dropdown-item" href="../main/main.jsp?pages=../user_log/register">회원가입</a>
 			<%
     			} else if(id.equals("admin")) {
 			%>
-				<a class="dropdown-item" href="../admin/adminIndex.jsp">관리페이지</a>
-				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user.jsp">마이페이지</a>
-              	<a class="dropdown-item" href="../user_log/logout.jsp">로그아웃</a>
+				<a class="dropdown-item" href="adminIndex.jsp">관리페이지</a>
+				<a class="dropdown-item" href="../main/main.jsp?pages=../user_log/mypage">마이페이지</a>
+              	<a class="dropdown-item" href="../main/main.jsp?pages=../user_log/logout">로그아웃</a>
 			<%
 				} else {
 			%>
-				<a class="dropdown-item" href="main.jsp?pages=../user_log/mypage_user.jsp">마이페이지</a>
-              	<a class="dropdown-item" href="../user_log/logout.jsp">로그아웃</a>
+				<a class="dropdown-item" href="../main/main.jsp?pages=../user_log/mypage">마이페이지</a>
+              	<a class="dropdown-item" href="../main/main.jsp?pages=../user_log/logout">로그아웃</a>
 			<%
     			}
 			%>
@@ -116,6 +132,7 @@
         </div> <!-- .container-fluid -->
       </main>
     </div> <!-- .wrapper -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.34/dist/sweetalert2.all.min.js"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/moment.min.js"></script>
@@ -148,6 +165,7 @@
     <script src='../js/dropzone.min.js'></script>
     <script src='../js/uppy.min.js'></script>
     <script src='../js/quill.min.js'></script>
+
     <script>
       $('.select2').select2(
       {

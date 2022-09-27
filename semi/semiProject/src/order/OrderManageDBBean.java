@@ -236,13 +236,13 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		return re;
 	}
 	public int refundOrder(String orderNum) throws Exception {
-		String sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='ȯ�� �Ϸ�' WHERE ORDER_NUMBER=?"; 
+		String sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='환불 완료' WHERE ORDER_NUMBER=?"; 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		OrderManageBean omb = null;
 		ResultSet rs = null;
 		
-		int re=-1; // ȯ�� ����
+		int re=-1;
 		
 		try {
 			conn = getConnection();
@@ -266,9 +266,9 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
 			
-			re = 1; // ȯ�� ����
+			re = 1;
 		}catch (SQLException ex) {
-			re = -1; // ȯ�� ����
+			re = -1;
 			ex.printStackTrace();
 		} finally {
 			try {
@@ -288,39 +288,6 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		return re;
 	}
 
-	/*
-	 * public int insertOrder(OrderManageBean omb) throws Exception { int re=-1;
-	 * Connection conn=null; PreparedStatement pstmt=null; ResultSet rs=null; String
-	 * sql=""; int p_num = omb.getProduct_number(); Date nowDate = new Date();
-	 * SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss"); SimpleDateFormat
-	 * sdf2 = new SimpleDateFormat("yyMMddHHmmssSSS"); String today =
-	 * sdf.format(nowDate); String orderDNum = p_num+today; String orderNum =
-	 * sdf2.format(nowDate); long o_dNum = Long.parseLong(orderDNum); try { conn =
-	 * getConnection();
-	 * sql="INSERT INTO user_order VALUES(?,?,sysdate,?,?,?,?,?,?,?,?)"; pstmt =
-	 * conn.prepareStatement(sql);
-	 * 
-	 * pstmt.setString(1, orderNum); pstmt.setString(2, omb.getUser_id());
-	 * pstmt.setString(3, omb.getReceiver_name()); pstmt.setString(4,
-	 * omb.getReceiver_phone1()); pstmt.setString(5, omb.getReceiver_phone2());
-	 * pstmt.setString(6, omb.getReceiver_phone3()); pstmt.setString(7,
-	 * omb.getReceiver_pcode()); pstmt.setString(8, omb.getReceiver_raddr());
-	 * pstmt.setString(9, omb.getReceiver_jibun()); pstmt.setString(10,
-	 * omb.getReceiver_detailaddr()); pstmt.executeUpdate();
-	 * 
-	 * sql="INSERT INTO userorder_detail VALUES(?,?,?,?,?,'입금 완료','N',null)"; pstmt
-	 * = conn.prepareStatement(sql);
-	 * 
-	 * pstmt.setLong(1, o_dNum); pstmt.setString(2, orderNum); pstmt.setInt(3,
-	 * omb.getProduct_number()); pstmt.setInt(4, omb.getProduct_count());
-	 * pstmt.setInt(5, omb.getProduct_price()); pstmt.executeUpdate();
-	 * 
-	 * re=1; }catch(SQLException ex){ ex.printStackTrace(); }finally{ try{ if(pstmt
-	 * != null) pstmt.close(); if (rs != null) rs.close(); if(conn != null)
-	 * conn.close(); }catch(Exception e){ e.printStackTrace(); } }
-	 * 
-	 * return re; }
-	 */
 	public int insertOrder(OrderManageBean omb) throws Exception {
 		String sql;
 		
@@ -400,6 +367,49 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 				}
 				if (pstmt != null) {
 					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	
+	public int changeOrderState(long orderDetailNumber, boolean change) throws Exception {
+		// 고객의 환불 요청 또는 구매 확정을 처리하는 메소드 
+		String sql = ""; 
+		
+		if (change) {
+			sql="UPDATE userorder_detail SET refund_chk ='Y' WHERE ORDER_NUMBER=?";
+		} else {
+			sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='구매 확정' WHERE ORDER_NUMBER=?";
+		}
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int re=-1;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1,orderDetailNumber);
+			pstmt.executeUpdate();
+						
+			re = 1;
+		}catch (SQLException ex) {
+			re = -1;
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
 				}
 				if (conn != null) {
 					conn.close();

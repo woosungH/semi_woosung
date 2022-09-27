@@ -14,6 +14,7 @@
 	int b_id,b_view, b_level, b_fsize;
 	String b_category, u_id, b_title, b_content, b_pwd, b_secret, b_anschk, content;
 	Timestamp b_date;
+	String b_titleS="";
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	
@@ -35,13 +36,20 @@
 	FAQDBBean faqdbBean = FAQDBBean.getInstance();
 	QnABoardDBBean qnadbBean = QnABoardDBBean.getInstance();
 	ArrayList<QnABoardBean> list = faqdbBean.listBoardFAQ(b_titleSearch,category[b_categorySearch]);
+	
+	if(request.getParameter("b_titleS")!=null){
+		b_titleS = request.getParameter("b_titleS");
+	}
 %>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="jquery.min.js"></script>
-<script type="text/javascript" src="faq.js?a=b"></script>
+<script src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/faq.js?a=b"></script>
+<style type="text/css">
+	.h6:hover{cursor: pointer;}
+</style>
 </head>
 <body class="vertical  light  ">
     <div class="wrapper">
@@ -152,7 +160,7 @@
                   </div>
                 </div>
               </div> <!-- end section -->
-              <input type="radio" name="category" id="001" onclick="location.href='main.jsp?pages=../cs/faq/faq&b_categoryS=1'"
+              <input type="radio" name="category" id="001" onclick="location.href='main.jsp?pages=../cs/faq/faq_main&b_categoryS=1&b_titleS=<%= b_titleS %>'"
         	<%
     			if(b_categorySearch == 1){
     				%>
@@ -160,7 +168,7 @@
     				<%
     			}
       		%> style="display: none;">
-			  <input type="radio" name="category" id="002" onclick="location.href='main.jsp?pages=../cs/faq/faq&b_categoryS=2'"        	
+			  <input type="radio" name="category" id="002" onclick="location.href='main.jsp?pages=../cs/faq/faq_main&b_categoryS=2&b_titleS=<%= b_titleS %>'"        	
 			<%
 	  			if(b_categorySearch == 2){
 					%>
@@ -168,7 +176,7 @@
 					<%
 				}
 	  		%> style="display: none;">
-			  <input type="radio" name="category" id="003" onclick="location.href='main.jsp?pages=../cs/faq/faq&b_categoryS=3'"
+			  <input type="radio" name="category" id="003" onclick="location.href='main.jsp?pages=../cs/faq/faq_main&b_categoryS=3&b_titleS=<%= b_titleS %>'"
         	<%
     			if(b_categorySearch == 3){
     				%>
@@ -176,7 +184,7 @@
     				<%
     			}
       		%> style="display: none;">
-			  <input type="radio" name="category" id="004" onclick="location.href='main.jsp?pages=../cs/faq/faq&b_categoryS=4'"
+			  <input type="radio" name="category" id="004" onclick="location.href='main.jsp?pages=../cs/faq/faq_main&b_categoryS=4&b_titleS=<%= b_titleS %>'"
         	<%
     			if(b_categorySearch == 4){
     				%>
@@ -184,7 +192,7 @@
     				<%
     			}
       		%> style="display: none;">
-			  <input type="radio" name="category" id="005" onclick="location.href='main.jsp?pages=../cs/faq/faq&b_categoryS=5'"
+			  <input type="radio" name="category" id="005" onclick="location.href='main.jsp?pages=../cs/faq/faq_main&b_categoryS=5&b_titleS=<%= b_titleS %>'"
         	<%
     			if(b_categorySearch == 5){
     				%>
@@ -192,7 +200,7 @@
     				<%
     			}
       		%> style="display: none;">
-			  <input type="radio" name="category" id="006" onclick="location.href='main.jsp?pages=../cs/faq/faq&b_categoryS=6'"
+			  <input type="radio" name="category" id="006" onclick="location.href='main.jsp?pages=../cs/faq/faq_main&b_categoryS=6&b_titleS=<%= b_titleS %>'"
         	<%
     			if(b_categorySearch == 6){
     				%>
@@ -220,8 +228,10 @@
 				b_fsize = board.getB_fsize();
 				b_secret = board.getB_secret();
 		%>
+		<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
                       <div class="card-header" id="heading<%=i+1 %>">
-                        <a role="button" href="#collapse1" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                        <a role="button" href="#collapse<%=i+1 %>" data-toggle="collapse" data-target="#collapse<%=i+1 %>" 
+                        aria-expanded="false" aria-controls="collapse<%=i+1 %>">
                           <strong>
 			<div><!-- 조회순 20개의 질문글 -->
 				<div>[<%= b_category %>]<%= b_title %></div>
@@ -229,9 +239,10 @@
                           </strong>
                         </a>
                       </div>
-                      <div id="collapse<%=i+1 %>" class="collapse show" aria-labelledby="heading1" data-parent="#accordion1">
+                      <div id="collapse<%=i+1 %>" class="collapse" aria-labelledby="heading<%=i+1 %>" data-parent="#accordion1">
                         <div class="card-body">
             <div><!-- 위의 질문글에 대한 답변 -->
+		<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 		<%
 				board2 = faqdbBean.getBoardFAQ(b_id, false);
 		

@@ -438,5 +438,88 @@ public class ProductDBBean {
 		}
 		return upbd;
 	}
-	
+	public ArrayList<ProductBean> productList(String pageNumber, String category) throws Exception {
+		Connection conn=null;
+		Statement stmt=null;
+		PreparedStatement pstmt = null;
+		ResultSet rs=null;
+		ResultSet pageSet=null;
+		int dbCount = 0;
+		int absolutePage = 1;
+		
+		String sql = "SELECT PRODUCT_NUMBER\r\n" + 
+				"     , PRODUCT_NAME\r\n" + 
+				"     , PRODUCT_PRICE\r\n" + 
+				"     , CATEGORY_CODE\r\n" + 
+				"     , PRODUCT_STOCK\r\n" + 
+				"     , PRODUCT_DATE\r\n" + 
+				"     FROM PRODUCT\r\n" + 
+				"     WHERE CATEGORY_CODE = '"+category+"'\r\n" + 
+				"     ORDER BY PRODUCT_NUMBER ASC";
+		
+		String sql2 = "SELECT COUNT(product_number) from product";
+
+		ArrayList<ProductBean> productList = new ArrayList<ProductBean>();
+		
+		try {
+			conn = getConnection();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			
+			pageSet = stmt.executeQuery(sql2);
+			
+			if(pageSet.next()) {
+				dbCount = pageSet.getInt(1);
+				pageSet.close();
+			}
+			
+			if (dbCount % ProductBean.pageSize == 0) {
+				ProductBean.pageCount = dbCount / ProductBean.pageSize;
+			} else {
+				ProductBean.pageCount = dbCount / ProductBean.pageSize+1;
+			}
+			
+			if(pageNumber != null) { 
+				ProductBean.pageNum = Integer.parseInt(pageNumber);
+				absolutePage = (ProductBean.pageNum - 1) * ProductBean.pageSize + 1;
+			}
+			
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				rs.absolute(absolutePage);
+				int count = 0;
+				
+				while(count < ProductBean.pageSize) {
+					ProductBean upbd = new ProductBean();
+					
+					upbd.setProduct_number(rs.getInt(1));
+					upbd.setProduct_name(rs.getString(2));
+					upbd.setProduct_price(rs.getInt(3));
+					upbd.setCategory_code(rs.getString(4));
+					upbd.setProduct_stock(rs.getInt(5));
+					upbd.setProduct_date(rs.getTimestamp(6));
+					
+					productList.add(upbd);
+					
+					if(rs.isLast()) {
+						break;
+					} else {
+						rs.next();
+					}
+					count++;
+				}
+			}
+		} catch (SQLException ex) {
+			System.out.println("fail");
+			ex.printStackTrace();
+		}finally{
+			try{
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return productList;
+	}
 }

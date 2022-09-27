@@ -5,6 +5,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
+	String id = (String)session.getAttribute("id");
 	ProductDBBean updb = ProductDBBean.getInstance();
 
 	ArrayList<ProductBean> productList = updb.productList("1");
@@ -28,8 +29,10 @@
 <head>
 <meta charset="UTF-8">
 <title>index_body</title>
+
 </head>
 <body>
+
 	<div class="container-fluid">
 	  <div class="row justify-content-center">
 	      <div class="row">
@@ -42,14 +45,16 @@
 		<%
 			for(int i=0; i < productList.size(); i++) {
 		%>
-			<div class="single-products-catagory clearfix">
-				<a href="main.jsp?pages=../product/product_detail&product_number=<%=product_number[i]%>"><img src="${pageContext.request.contextPath}/img/<%=stored_file_name[i]%>" style="width: 583px; height: 633px"> <!-- Hover Content -->
+			<div class="single-products-catagory clearfix" style="width: 433px; height: 593px;">
+				<a href="main.jsp?pages=../product/product_detail&product_number=<%=product_number[i]%>" style="width: 433px; height: 593px;">
+					<img src="${pageContext.request.contextPath}/img/<%=stored_file_name[i]%>" style="width: 433px; height: 593px;"> <!-- Hover Content -->
 					<div class="hover-content">
 						<div class="line"></div>
 						<!-- &#8361; 원 특수문자 표시 -->
 						<p>
 							&#8361;
-							<%=product_price[i]%></p>
+							<%=product_price[i]%>
+						</p>
 						<h4><%=product_name[i]%></h4>
 					</div>
 				</a>

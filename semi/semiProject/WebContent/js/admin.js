@@ -1,15 +1,3 @@
-/*orderEdit.jsp 사용*/
-
-/*주문 수량을 변경하면 가격이 자동으로 설정되는 스크립트*/
-function priceCal(){
-	var ori_count = document.getElementById("ori_count").value;
-	var count = document.getElementById("count").value;
-	var ori_price = document.getElementById("p_price").value/ori_count;
-	document.getElementById("price").value = (parseInt(count) * parseInt(ori_price));
-	var percent = document.getElementById("price").value;
-	console.log(price);
-}
-
 function check(){
 	if(!order_frm.receiver_name.value){
 		alert("이름을 작성해주세요");
@@ -101,35 +89,95 @@ function sample4_execDaumPostcode() {
     }).open();
 }
 
-function exitCheck() {
-    var checking = confirm("탈퇴하시겠습니까?");
-    if (checking == false) {
-        alert("취소되었습니다.");
-    } else {
-        alert("탈퇴되었습니다.");
-		var href = document.getElementById("delete").value;
-		location.href=href;
-    }
+function exitCheck(a) {
+	var deleted = "delete"+a;
+	var href = document.getElementById(deleted).value;
+    var checking = Swal.fire({
+					   title: '해당 회원을 탈퇴 시키겠습니까?',
+					   text: '한번 탈퇴시킨 회원의 정보는 복구할 수 없습니다.',
+					   icon: 'warning',
+					   
+					   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+					   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					   
+					   reverseButtons: true, // 버튼 순서 거꾸로
+					   
+					}).then(result => {
+					   // 만약 Promise리턴을 받으면,
+					   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					      Swal.fire(
+							'승인이 완료되었습니다.',
+							'해당 회원은 탈퇴 되었습니다.',
+							'success'
+						  );
+						  setTimeout(function() {
+						  	location.href=href;
+						  }, 3000);
+					   }
+					});
 }
-function refundCheck() {
-    var checking = confirm("환불 승인하시겠습니까?");
-    if (checking == false) {
-        alert("환불이 취소되었습니다.");
-    } else {
-        alert("환불이 승인되었습니다.");
-		var href = document.getElementById("refund").value;
-		location.href=href;
-    }
+function refundCheck(a) {
+	var refunded = "refund"+a;
+	var href = document.getElementById(refunded).value;
+    var checking = Swal.fire({
+					   title: '해당 주문을 환불하시겠습니까?',
+					   text: '환불 후 주문 상태를 변경할 수 없습니다.',
+					   icon: 'warning',
+					   
+					   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+					   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					   
+					   reverseButtons: true, // 버튼 순서 거꾸로
+					   
+					}).then(result => {
+					   // 만약 Promise리턴을 받으면,
+					   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					      Swal.fire(
+							'승인이 완료되었습니다.',
+							'해당 주문은 환불 되었습니다.',
+							'success'
+						  );
+						  setTimeout(function() {
+						  	location.href=href;
+						  }, 3000);
+					   }
+					});
 }
-function delCheck() {
-    var checking = confirm("상품을 삭제하시겠습니까?");
-    if (checking == false) {
-        alert("취소되었습니다.");
-    } else {
-        alert("삭제되었습니다.");
-		var href = document.getElementById("delete").value;
-		location.href=href;
-    }
+function delCheck(a) {
+	var deleted = "delete"+a;
+	var href = document.getElementById(deleted).value;
+    var checking = Swal.fire({
+					   title: '해당 상품을 삭제 하겠습니까?',
+					   text: '한번 삭제한 상품의 정보는 복구할 수 없습니다.',
+					   icon: 'warning',
+					   
+					   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+					   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					   
+					   reverseButtons: true, // 버튼 순서 거꾸로
+					   
+					}).then(result => {
+					   // 만약 Promise리턴을 받으면,
+					   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					      Swal.fire(
+							'승인이 완료되었습니다.',
+							'해당 상품은 삭제 되었습니다.',
+							'success'
+						  );
+						  setTimeout(function() {
+						  	location.href=href;
+						  }, 3000);
+					   }
+					});
 }
 
 function onclick_ok(){

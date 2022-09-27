@@ -28,9 +28,9 @@ function check_ok(){
 }
 
 function delete_ok(){
-	if(del_frm.pwd.value.length == 0){
+	if(del_frm.b_pwd.value.length == 0){
 		alert("비밀번호를 써주세요");
-		del_frm.pwd.focus();
+		del_frm.b_pwd.focus();
 		return;
 	}
 	document.del_frm.submit();

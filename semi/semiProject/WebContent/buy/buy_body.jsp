@@ -5,43 +5,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	int p_num = 0,price=0,count=0,ship=0,totalPrice=0;
+	String phone1="",phone2="",phone3="",email="",pcode="",raddr="",jibun="",detailaddr="",p_name="",phone="",address="",name="",id="";
 	if(session.getAttribute("Member") == null){ 
 	// member가 null(초기화)되면  main으로 들어갈 수 없게 
 	// jsp:forward로 login으로 돌아감.
 %>
-		<jsp:forward page="main.jsp?pages=../login/login" />
+	<script type="text/javascript">
+		alert("로그인이 필요한 항목입니다.");
+		location.href="main.jsp?pages=../user_log/login";
+	</script>
 <%
-	}
-%>
-<%
-	String id = (String)session.getAttribute("id"); // 타입을 맞도록 해야함.
-	String name = (String)session.getAttribute("name");
+	} else {
+	id = (String)session.getAttribute("id"); // 타입을 맞도록 해야함.
+	name = (String)session.getAttribute("name");
 	
 	MemberDBBean member = MemberDBBean.getInstance();
 	MemberBean mb = member.getMember(id);
 	ProductDBBean pdb = ProductDBBean.getInstance();
 	
-	String phone1 = mb.getUser_phone1();
-	String phone2 = mb.getUser_phone2();
-	String phone3 = mb.getUser_phone3();
-	String email = mb.getUser_email();
-	String pcode = mb.getUser_pcode();
-	String raddr = mb.getUser_raddr();
-	String jibun = mb.getUser_jibun();
-	String detailaddr = mb.getUser_detailaddr();
+	phone1 = mb.getUser_phone1();
+	phone2 = mb.getUser_phone2();
+	phone3 = mb.getUser_phone3();
+	email = mb.getUser_email();
+	pcode = mb.getUser_pcode();
+	raddr = mb.getUser_raddr();
+	jibun = mb.getUser_jibun();
+	detailaddr = mb.getUser_detailaddr();
 	
-	String p_name = request.getParameter("product_name");
-    int p_num = Integer.parseInt(request.getParameter("product_number"));
-    int count = Integer.parseInt(request.getParameter("product_count"));
-    int price = Integer.parseInt(request.getParameter("product_price"))*count;
-    int ship;
+	p_name = request.getParameter("product_name");
+    p_num = Integer.parseInt(request.getParameter("product_number"));
+    count = Integer.parseInt(request.getParameter("product_count"));
+    price = Integer.parseInt(request.getParameter("product_price"))*count;
     if(price>=20000){
     	ship = 0;
     } else {
     	ship = 3000;
     }
-    int totalPrice = price+ship;
-    String address = raddr+detailaddr;
+    totalPrice = price+ship;
+    address = raddr+detailaddr;
+    
+	}
 %>
 <html>
 <head>

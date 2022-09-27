@@ -37,7 +37,9 @@
                   <h2 class="h4 mb-1">Q & A</h2>
                   <br />
                   <div class="col-md-12 my-4">
-                  	<a href="../../main.jsp">스토어 홈</a>> <a href="../cs_main.jsp">고객센터</a>> QnA
+                   <!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+                  	<a href="main.jsp">스토어 홈</a>> <a href="main.jsp?pages=../cs/cs_main">고객센터</a>> QnA
+                  	<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
                   </div>
                   <div class="card shadow">
                     <div class="card-body">
@@ -85,11 +87,11 @@
 								<%
 										}
 								%>
-									<img src="../../images/replyE.png" style="width:20px;" />
+									<img src="../images/replyE.png" style="width:20px;" />
 								<%
 									}
 								%>
-								<a href="qnaShow.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>"><%=b_title%></a>
+								<a href="main.jsp?pages=../cs/qna/qnaShow&b_id=<%= b_id %>&pageNum=<%= pageNum %>"><%=b_title%></a>
 							</td>
 							<td class="mb-0 text-muted"><%= u_id %></td>
 							<td class="mb-0 text-muted"><%=sdf.format(b_date)%></td>
@@ -98,7 +100,7 @@
 								<%
 									if(b_fsize != 0) {
 								%>
-										<img src="../../images/image.png" style="width:30px;" />
+										<img src="../images/image.png" style="width:30px;" />
 								<%
 									}
 								%>
@@ -107,7 +109,7 @@
 								<%
 									if(b_secret.equals("Y")) {
 								%>
-										<img src="../../images/lock.png" style="width:30px;" />
+										<img src="../images/lock.png" style="width:30px;" />
 								<%
 									}
 								%>
@@ -121,17 +123,19 @@
                       </div>
 				<nav aria-label="Table Paging" class="mb-0 text-muted">
 		        	<ul class="pagination justify-content-center mb-0">
-						<%= QnABoardBean.pageNumber(5) %>
+		        	<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+						<%= QnABoardBean.userPageNumber(5) %>
+					<!-- 수정된 부분@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 					</ul>
 	<%
-				 /* if(session.getAttribute("id") != null){ */
+				 if(session.getAttribute("id") != null){
 	%>
 						<div style="text-align:right">
 							<a href="main.jsp?pages=../cs/qna/qnaWrite&pageNum=<%= pageNum %>" class="btn mb-2 btn-outline-primary">글 쓰 기</a>
 						</div>
 			
 	<% 
-		/* } */
+		 } 
 	%>
                       </nav>
                     </div>

@@ -46,7 +46,7 @@
                       </div>
                       <div style="text-align: center;">
                       	수량&nbsp;&nbsp;&nbsp;&nbsp; 
-                      	<input type="number" step="1" min="1" max="10" value="1" name="product_count">
+                      	<input type="number" step="1" min="1" max="10" value="1" id="count" name="product_count">
                       </div>
 			 <div class="btn-box w-100 mt-1 mb-1">
 				<a href="main.jsp?pages=../product/likeButton&product_number=<%= product_number %>" target="_blank" class="btn mb-2 btn-primary btn-lg btn-block">
@@ -54,7 +54,7 @@
 				</a>
 			 </div>
 			 <div class="btn-box w-100 mt-1 mb-1">
-				<a href="#" target="_blank" class="btn mb-2 btn-primary btn-lg btn-block">
+				<a href="#" target="_blank" class="btn mb-2 btn-primary btn-lg btn-block" onclick="count()">
 					<i class="fe fe-shopping-cart fe-12 mx-2"></i><span class="small">장바구니</span>
 				</a>
 			 </div>
@@ -70,5 +70,11 @@
   </div> <!-- /.col-12 -->
 </div> <!-- .row -->
 </div> <!-- .container-fluid -->
+<script type="text/javascript">
+	function count(){
+		var count = document.getElementById("count").value;
+		location.href="main.jsp?pages=cart&count="+count;
+	}
+</script>
 </body>
 </html>

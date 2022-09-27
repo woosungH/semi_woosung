@@ -53,7 +53,7 @@
 %>
 		<script>
 			alert("글이 수정되었습니다.");
-			location.href= "main.jsp?pages=qnaList_u&pageNum=<%= pageNum %>";
+			location.href= "main.jsp?pages=../cs/qnaqnaList_u&pageNum=<%= pageNum %>";
 		</script>
 <%
 	}  else if(re == 0) {

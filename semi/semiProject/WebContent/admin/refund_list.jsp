@@ -68,8 +68,8 @@
 						<td><%=p_price%></td>
 						<td><%=o_dStat%></td>
 						<td>
-							<input class="btn mb-2" type="hidden" id="refund" value="refund_ok.jsp?pageNum=<%= pageNum %>&orderNum=<%= o_num%>" />
-                       		<a class="btn mb-2" href="#" onclick="refundCheck()">승인</a>
+							<input class="btn mb-2" type="hidden" id="refund<%=i%>" value="refund_ok.jsp?pageNum=<%= pageNum %>&orderNum=<%= o_num%>" />
+                       		<a class="btn mb-2" href="#" onclick="refundCheck(<%=i%>)">승인</a>
 						</td>
 		<%			
 			}

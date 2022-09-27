@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%
 	String id = (String)session.getAttribute("id");
-	String name = (String)session.getAttribute("name");
+	String pageNum = request.getParameter("pageNum");
 	
 	String pages = "";
 	if(request.getParameter("pages")!=null){
@@ -15,16 +15,7 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <title>Order progress</title>
-    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/simplebar.css">
-    <link rel="stylesheet" href="../css/feather.css">
-    <link rel="stylesheet" href="../css/dataTables.bootstrap4.css">
-    <link rel="stylesheet" href="../css/daterangepicker.css">
-    <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
   </head>
   <body class="vertical  light  ">
     <div class="wrapper">
@@ -42,47 +33,56 @@
                       <table class="table table-borderless table-hover">
                         <thead>
                           <tr>
+                            <th>주문 상세 번호</th>
                             <th>제품사진</th>
                             <th>제품이름</th>
-                            <th>카테고리</th>
+                            <th>수령자 번호</th>
+                            <th>수령지</th>
                             <th>운송장번호</th>
-                            <th class="w-25">전화번호</th>
-                            <th class="w-25">제품 설명</th>
                             <th>주문날짜</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td>
+                              <p class="mb-0 text-muted"><strong>주문 상세 번호</strong></p>
+                              <!-- 제품명 가져오기 -->
+                            </td>
+                            <td>
                               <div class="avatar avatar-md">
-                                <img src="./assets/avatars/face-3.jpg" alt="제품사진" class="avatar-img rounded-circle">
+                                <img src="" alt="제품사진" class="avatar-img rounded-circle">
                                 <!-- 사진 가져오기 -->
                               </div>
                             </td>
                             <td>
-                              <p class="mb-0 text-muted"><strong>제품 이름 가져오기</strong></p>
+                              <p class="mb-0 text-muted"><strong>제품 이름</strong></p>
                               <!-- 제품명 가져오기 -->
                             </td>
                             <td>
-                              <p class="mb-0 text-muted">카테고리 가져오기</p>
+                              <p class="mb-0 text-muted">수령자 번호</p>
                               <!-- 제품 카테고리 가져오기-->
-                            </td><td>
-                              <p class="mb-0 text-muted">운송장번호 가져오기</p>
+                            </td>
+                            <td>
+                              <p class="mb-0 text-muted">수령지</p>
                               <!-- 운송장번호 가져오기 -->
                             </td>
                             <td>
-                              <p class="mb-0 text-muted"><a href="#" class="text-muted">고객 전화번호 가져오기</a></p>
+                              <p class="mb-0 text-muted">운송장번호</p>
+                              <!-- 운송장번호 가져오기 -->
+                            </td>
+                            <td>
+                              <p class="mb-0 text-muted"><a href="#" class="text-muted">주문날짜</a></p>
                               <!-- 전화번호 가져오기 -->
                             </td>
-                            <td class="w-25"><small class="text-muted">주소 가져오기</small></td>
-                            <td class="text-muted">13/09/2020</td>
-                            <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <td>
+                            <button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="text-muted sr-only">Action</span>
                               </button>
                               <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="main.jsp?pages=../buy/buy_body">배송지 변경</a>
-                                <a class="dropdown-item" href="#">환불 및 교환</a>
-                                <a class="dropdown-item" href="#">구매확정</a>
+                                <%-- <a class="dropdown-item" href="main.jsp?pages=../order/order_edit&o_dNum=<%=%>">배송지 변경</a>
+                                <a class="dropdown-item" href="../order/order_change.jsp?o_dNum=<%= %>&change=true">환불요청</a>
+                                <a class="dropdown-item" href="../order/order_change.jsp?o_dNum=<%= %>&change=false">구매확정</a> --%>
                               </div>
                             </td>
                           </tr>

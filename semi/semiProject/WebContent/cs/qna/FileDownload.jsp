@@ -8,9 +8,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	int bid = Integer.parseInt(request.getParameter("fileNum"));
+	/* int bid = Integer.parseInt(request.getParameter("fileNum")); */
 	QnABoardDBBean qdb = QnABoardDBBean.getInstance();
-	QnABoardBean qbb = qdb.getFileName(bid);
+	QnABoardBean qbb = qdb.getFileName(153);
 	
 	String fName = "";
 	String rfName = "";

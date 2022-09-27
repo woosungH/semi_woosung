@@ -147,7 +147,7 @@
 			String u_id = omb.getUser_id();
 			String o_date = sdf.format(omb.getOrder_date());
 			
-			if(o_dStat.equals("입금 완료")){
+			if(o_dStat.equals("입금 완료")&&o_date.equals(today)){
 	%>
            		 <tr>
 					<td><%=o_num%></td>
@@ -212,7 +212,7 @@
 				user_detailaddr=member.getUser_detailaddr();
 				user_regdate=member.getUser_regdate();
 			
-				if(today.equals(sdf.format(user_regdate))){
+				if(sdf.format(user_regdate).equals(today)){
 				
 		%>
 				<tr>

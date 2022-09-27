@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="../css/quill.snow.css">
     <link rel="stylesheet" href="../css/daterangepicker.css">
     <link rel="stylesheet" href="../css/app-light.css" id="lightTheme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
   </head>
   <style type="text/css">
    .main-content {
@@ -198,6 +199,7 @@
           	<jsp:include page='<%= pages +".jsp" %>'/>
           </main>
     </div> <!-- .wrapper -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.34/dist/sweetalert2.all.min.js"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/moment.min.js"></script>

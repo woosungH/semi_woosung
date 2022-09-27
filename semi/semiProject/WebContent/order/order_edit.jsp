@@ -18,7 +18,7 @@
 	int p_price = omb.getProduct_price();
 	String shipment;
 	if(omb.getShipment() == null){
-		shipment = "";
+		shipment = "운송장 번호 없음";
 	} else{
 		shipment = omb.getShipment();
 	}
@@ -54,17 +54,11 @@
                           </div>
                           <div class="form-group col-md-3">
                             <label for="status">주문 상태</label>
-                            <select id="status" class="form-control" name="order_detail_status">
-	                            <option value="입금 완료">입금 완료</option>
-		                        <option value="배송 준비">배송 준비</option>
-		                        <option value="배송중">배송중</option>
-		                        <option value="배송 완료">배송 완료</option>
-		                        <option value="구매 확정">구매 확정</option>
-                            </select>
+                            <input type="text" class="form-control" name="order_number" id="number" value="<%= omb.getOrder_detail_status() %>" readonly />
                           </div>
                           <div class="form-group col-md-3">
                             <label for="shipment">운송장 번호</label>
-                            <input type="text" class="form-control" name="shipment" id="shipment" value="<%= shipment %>" onchange="statusChange()" />
+                            <input type="text" class="form-control" name="shipment" id="shipment" value="<%= shipment %>" readonly />
                           </div>
                         </div>
                         <div class="form-row">
@@ -153,20 +147,5 @@
     </div> <!-- .wrapper -->
 	<script src="../js/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/admin.js" charset="UTF-8"></script>
-    <script type="text/javascript">
-		/*주문 수정 페이지에서 넘겨 받은 주문 상태가 기본으로 선택되게 하는 스크립트(Jquery 필요)*/
-		$(function(){
-			$("#status > option[value='<%= o_dStat %>']").prop("selected", true);
-		});
-		/* 변수를 받아야해서 스크립트 파일에 넣지 못함 */
-	</script>
-	<script type="text/javascript"> 
-		$("#shipment").on("change keyup paste", function(){
-			$(function(){
-				$("#status > option[value='배송중']").prop("selected", true);
-			});
-		})
-		//운송장 번호가 입력되면 주문 상태가 배송중으로 변경
-	</script>
   </body>
 </html>

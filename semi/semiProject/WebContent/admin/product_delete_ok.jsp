@@ -13,7 +13,7 @@
 	String fname = upbd.getStored_file_name();
 	//System.out.println(fname);
 	
-	String path = request.getSession().getServletContext().getRealPath("\\img");
+	String path = application.getRealPath("/img");
 	
 	//String file_folder = "C:\\jsp_project\\semiProject\\WebContent\\img";
 	//System.out.println("path======>"+path);
@@ -25,6 +25,8 @@
 		if(fname != null) {//업로드 파일 삭제
 			File file = new File(path+"\\"+fname);  //생성자 매개변수: 폴더경로+파일이름
 			file.delete();//파일 삭제하는 코드
+			File file1 = new File(path+"\\sm_"+fname);  //생성자 매개변수: 폴더경로+파일이름
+			file1.delete();//파일 삭제하는 코드
 		}
 %>
 		<script type="text/javascript">

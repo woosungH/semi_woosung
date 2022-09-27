@@ -13,7 +13,7 @@
   <body class="dark ">
     <div class="wrapper vh-100">
       <div class="row align-items-center h-100">
-        <form method="post" action="qnaDelete_ok.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>" name="del_frm" class="col-lg-3 col-md-4 col-10 mx-auto text-center" style="min-width:400px;">
+        <form method="post" action="main.jsp?pages=../cs/qna/qnaDelete_ok&b_id=<%= b_id %>&pageNum=<%= pageNum %>" name="del_frm" class="col-lg-3 col-md-4 col-10 mx-auto text-center" style="min-width:400px;">
           <div class="mx-auto text-center my-6">
             <h2 class="my-6">삭제하시겠습니까?</h2>
           </div>
@@ -31,7 +31,7 @@
         </form>
       </div>
     </div>
-    <script type="text/javascript" src="../../js/board.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../js/board.js?123" charset="UTF-8"></script>
   </body>
 </html>
 </body>

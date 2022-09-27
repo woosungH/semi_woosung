@@ -111,8 +111,8 @@
                               <span class="text-muted sr-only">Action</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dr1">
-								<input class="btn mb-2" type="hidden" id="delete" value="member_delete_ok.jsp?user_id=<%=user_id%>&pageNum=<%=pageNum%>" />
-                           		<a class="dropdown-item" href="#" onclick="exitCheck()">탈퇴</a>
+								<input class="btn mb-2" type="hidden" id="delete<%=i%>" value="member_delete_ok.jsp?user_id=<%=user_id%>&pageNum=<%=pageNum%>" />
+                           		<a class="dropdown-item" href="#" id="confirmStart" onclick="exitCheck(<%=i%>)">탈퇴</a>
                             </div>
                         </div>
 					</td>

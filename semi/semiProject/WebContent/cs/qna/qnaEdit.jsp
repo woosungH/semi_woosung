@@ -25,21 +25,13 @@
             <div class="col-12">
               <h2 class="page-title">글 수정</h2>
               <br />
-              <form action="qnaEdit_ok.jsp?b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>" method="post" name="write_frm" enctype="multipart/form-data"">
+              <form action="main.jsp?pages=../cs/qna/qnaEdit_ok&b_id=<%= qbb.getB_id() %>&pageNum=<%= pageNum %>" method="post" name="write_frm" enctype="multipart/form-data">
               <div class="card shadow mb-2">
                   <div class="card shadow">
                     <div class="card-body">
                       <div class="form-group mb-3">
                         <label for="custom-select">문의 유형</label>
-                        <select name="b_category" class="custom-select" id="b_category">
-	                        <option value="nonSelect" selected>문의 유형을 선택해 주세요.</option>
-	                        <option value="회원정보">회원정보</option>	
-	                        <option value="상품문의">상품문의</option>
-	                        <option value="주문/결제">주문/결제</option>
-	                        <option value="배송">배송</option>
-	                        <option value="교환/취소">교환/취소</option>
-	                        <option value="서비스">서비스</option>
-                        </select>
+                        <input type="text" id="custom-select" class="form-control" name="b_category" value="<%=b_category %>" readonly />
                       </div>
                       <div class="form-group mb-3">
                         <label for="example-palaceholder">제목</label>
@@ -65,7 +57,7 @@
                         <input class="form-check-input" type="checkbox" name="b_secret" id="defaultCheck1">비밀글
                       </div>
                   	<div style="text-align:center">
-	                  <div class="btn-group" role="group" aria-label="Basic example">
+	                  <div aria-label="Basic example">
 	                    <input type="button" class="btn btn-primary" value="목록" onclick="location.href='main.jsp?pages=../cs/qna/qnaList_u&pageNum=<%= pageNum %>'" />
 		                 <input type="reset" class="btn btn-primary" value="다시 작성" />
 		                 <input type="button" class="btn btn-primary" value="작성" onclick="check_ok()" />
