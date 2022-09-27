@@ -420,4 +420,127 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		}
 		return re;
 	}
+	public ArrayList<OrderManageBean> getDetail(String user_id) throws Exception {
+		ArrayList<OrderManageBean> ombList = new ArrayList<>();
+		ArrayList<OrderManageBean> ombList2 = new ArrayList<>();
+		ArrayList<OrderManageBean> ombList3 = new ArrayList<>();
+		String sql;
+		int order_count;
+		String order_number;
+		int product_number;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ResultSet rs2 = null;
+		ResultSet rs3 = null;
+		OrderManageBean omb = null;
+		OrderManageBean omb2 = null;
+		OrderManageBean omb3 = null;
+		
+		try {
+			conn = getConnection();
+			sql = "select count(order_number) from user_order where user_id =?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				order_count = rs.getInt(1);
+				
+				for (int i = 0; i < order_count; i++) {				
+					sql = "select order_number\r\n" + 
+							"     , user_id\r\n" + 
+							"     , order_date\r\n" + 
+							"     , receiver_name\r\n" + 
+							"     , receiver_phone1\r\n" + 
+							"     , receiver_phone2\r\n" + 
+							"     , receiver_phone3\r\n" + 
+							"     , receiver_pcode\r\n" + 
+							"     , receiver_raddr\r\n" + 
+							"     , receiver_jibun\r\n" + 
+							"     , receiver_detailaddr\r\n" + 
+							"  from user_order\r\n" + 
+							" where user_id = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, user_id);
+					rs2 = pstmt.executeQuery();
+					
+					if (rs.next()) {
+						omb = new OrderManageBean();
+					order_number = rs.getString(1);
+						omb.setOrder_number(order_number);
+						omb.setUser_id(rs.getString(2));
+						omb.setOrder_date(rs.getTimestamp(3));
+						omb.setReceiver_name(rs.getString(4));
+						omb.setReceiver_pcode(rs.getString(5));
+						omb.setReceiver_phone1(rs.getString(6));
+						omb.setReceiver_phone2(rs.getString(7));
+						omb.setReceiver_phone3(rs.getString(8));
+						omb.setReceiver_raddr(rs.getString(9));
+						omb.setReceiver_jibun(rs.getString(10));
+						omb.setReceiver_detailaddr(rs.getString(11));
+						
+						ombList.add(omb);
+					}
+				}
+			
+				for (int i = 0; i < order_count; i++) {
+					
+					omb2= ombList.get(i);
+					order_number= omb.getOrder_number();
+					sql =	" select order_detail_number\r\n" + 
+							"     , product_number\r\n" + 
+							"     , product_count\r\n" + 
+							"     , product_price\r\n" + 
+							"     , order_detail_status\r\n" + 
+							"     , refund_check\r\n" + 
+							"     , shipment\r\n" + 
+							"     , requested\r\n" + 
+							"  from userorder_detail\r\n" + 
+							" where order_number = ?";
+					pstmt.clearParameters();
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, order_number);
+					rs3 = pstmt.executeQuery();
+					if(rs.next()) {
+						omb2.setOrder_number(order_number);
+						omb2.setOrder_detail_number(rs.getLong(1));
+						omb2.setProduct_number(rs.getInt(2));
+						omb2.setProduct_count(rs.getInt(3));
+						omb2.setProduct_price(rs.getInt(4));
+						omb2.setOrder_detail_status(rs.getString(5));
+						omb2.setRefund_check(rs.getString(6));
+						omb2.setShipment(rs.getString(7));
+						omb2.setRequested(rs.getString(8));
+						
+						ombList2.add(omb2);
+					}
+				}	
+			}
+			
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs3 != null) {
+					rs3.close();
+				}
+				if (rs2 != null) {
+					rs2.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ombList.clear();
+		}
+		return ombList2;
+	}
 }

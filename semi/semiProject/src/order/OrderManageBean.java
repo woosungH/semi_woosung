@@ -13,6 +13,7 @@ public class OrderManageBean {
 	private String refund_check;
 	private String shipment;
 	private String requested;
+	private String product_image;
 	
 	private String user_id;
 	private Timestamp order_date;
@@ -53,9 +54,15 @@ public class OrderManageBean {
 		//����¡ ���� ��
 	
 	
-		
+	
 	public String getRequested() {
 		return requested;
+	}
+	public String getProduct_image() {
+		return product_image;
+	}
+	public void setProduct_image(String product_image) {
+		this.product_image = product_image;
 	}
 	public void setRequested(String requested) {
 		this.requested = requested;

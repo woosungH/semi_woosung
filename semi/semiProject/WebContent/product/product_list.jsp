@@ -45,7 +45,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Tiny Dashboard - A Bootstrap Dashboard Template</title>
+    <title></title>
 
     <style>
       .card-deck {
@@ -72,8 +72,7 @@
             <h6 class="mb-3">상품리스트</h6>
             <div class="card-deck mb-4">
 	      <%
-			String stored_file_name;
-			System.out.print(productList.size());
+				String stored_file_name;
 				for(i=0; i<productList.size(); i++){
 					ProductBean product = productList.get(i);
 					
