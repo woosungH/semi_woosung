@@ -1,0 +1,36 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="order.OrderManageDBBean"%>
+<%@page import="order.OrderManageBean"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%
+	OrderManageBean order = new OrderManageBean();
+	OrderManageDBBean orderDB = OrderManageDBBean.getInstance();
+
+	Timestamp today = new Timestamp(System.currentTimeMillis());
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	String todatDate = sdf.format(today);
+	for(int i = 0;i<100;i++){
+		order.setOrder_detail_number(i);
+		order.setOrder_number(todatDate+i);
+		order.setProduct_number(i);
+		
+		
+		noticeDBBean.insertNotice(notice);
+		
+		if(i==70){
+			System.out.print(i);
+		}
+	}
+	
+%>
+</body>
+</html>

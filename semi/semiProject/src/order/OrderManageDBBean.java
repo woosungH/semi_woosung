@@ -12,6 +12,8 @@ import java.util.Date;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import product.ProductBean;
+
 public class OrderManageDBBean {
 private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 	
@@ -34,9 +36,9 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		String sql = "SELECT ORDER_DETAIL_NUMBER, ORDER_NUMBER, PRODUCT_NUMBER, PRODUCT_COUNT\r\n" + 
 				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS, REFUND_CHECK, SHIPMENT\r\n" + 
 				"  FROM USERORDER_DETAIL\r\n" + 
-				" WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != 'ȯ�� �Ϸ�'\r\n" + 
-				" ORDER BY ORDER_DETAIL_NUMBER";
-		String sql2 = "SELECT COUNT(ORDER_NUMBER) from USERORDER_DETAIL WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != 'ȯ�� �Ϸ�'";
+				" WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != '환불 완료'" + 
+				" ORDER BY ORDER_NUMBER desc";
+		String sql2 = "SELECT COUNT(ORDER_NUMBER) from USERORDER_DETAIL WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != '환불 완료'";
 
 		ArrayList<OrderManageBean> list = new ArrayList<OrderManageBean>();
 		
@@ -47,7 +49,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 			pageSet = stmt.executeQuery(sql2);
 			
 			if(pageSet.next()) {
-				dbCount = pageSet.getInt(1); // �� �� ����
+				dbCount = pageSet.getInt(1); // 占쏙옙 占쏙옙 占쏙옙占쏙옙
 				pageSet.close();
 			}
 			if (dbCount % OrderManageBean.pageSize == 0) {
@@ -88,7 +90,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 				}
 			}
 		} catch (SQLException ex) {
-			System.out.println("��ȸ ����");
+			System.out.println("占쏙옙회 占쏙옙占쏙옙");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -162,7 +164,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 				omb.setProduct_name(rs.getString(1));
 			}
 		} catch (SQLException ex) {
-			System.out.print("��ȸ ����");
+			System.out.print("占쏙옙회 占쏙옙占쏙옙");
 			ex.printStackTrace();
 		} finally {
 			try {
@@ -183,7 +185,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 	}
 	public int editOrder(OrderManageBean omb) throws Exception {
 		String sql = "UPDATE userorder_detail SET PRODUCT_COUNT=?, PRODUCT_PRICE=?, ORDER_DETAIL_STATUS=?, SHIPMENT = ? WHERE ORDER_NUMBER=?"; 
-		int re = -1; // ���� ����
+		int re = -1; // 占쏙옙占쏙옙 占쏙옙占쏙옙
 		Connection conn = null;
 		PreparedStatement first_pstmt = null;
 		PreparedStatement second_pstmt = null;
@@ -214,9 +216,9 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 			second_pstmt.setString(9,omb.getOrder_number());
 			second_pstmt.executeUpdate();
 			
-			re = 1; // ���� ����
+			re = 1; // 占쏙옙占쏙옙 占쏙옙占쏙옙
 		}catch (SQLException ex) {
-			System.out.print("���� ����");
+			System.out.print("占쏙옙占쏙옙 占쏙옙占쏙옙");
 			ex.printStackTrace();
 		} finally {
 			try {
@@ -287,7 +289,75 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		}
 		return re;
 	}
-
+	public int insertUserOrder(OrderManageBean omb) throws Exception {
+		String sql;
+		
+		int re = -1;
+		int product_stock;
+		int p_num = omb.getProduct_number();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			sql = "select product_stock from product where product_number = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, omb.getProduct_number());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {				 //占쎌젫占쎈�뱄옙�뵠 鈺곕똻�삺占쎈릭占쎈뮉筌욑옙 占쎈솇占쎈뼊
+				product_stock = rs.getInt("product_stock");
+				if(product_stock >= omb.getProduct_count()) { 			//占쎌젫占쎈�� 占쎌삺�⑥쥓�쎗 占쎌넇占쎌뵥
+					pstmt.clearParameters();
+					
+					sql="update product\r\n" + 
+							"   set product_stock = product_stock - ?\r\n" + 
+							" where product_number = ?";
+					pstmt=conn.prepareStatement(sql);
+					pstmt.setInt(1, omb.getProduct_count());
+					pstmt.setInt(2, p_num);
+					pstmt.executeUpdate();
+					
+					pstmt.clearParameters();
+					
+					sql="INSERT INTO user_order VALUES(?,?,sysdate,?,?,?,?,?,?,?,?)"; 
+					pstmt =	conn.prepareStatement(sql);
+					pstmt.setString(1, omb.getOrder_number());
+					pstmt.setString(2, omb.getUser_id());
+					pstmt.setString(3, omb.getReceiver_name()); 
+					pstmt.setString(4, omb.getReceiver_phone1()); 
+					pstmt.setString(5, omb.getReceiver_phone2());
+					pstmt.setString(6, omb.getReceiver_phone3()); 
+					pstmt.setString(7, omb.getReceiver_pcode()); 
+					pstmt.setString(8, omb.getReceiver_raddr());
+					pstmt.setString(9, omb.getReceiver_jibun()); 
+					pstmt.setString(10, omb.getReceiver_detailaddr()); 
+					
+					pstmt.executeUpdate();
+					
+					re=1;
+				}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
 	public int insertOrder(OrderManageBean omb) throws Exception {
 		String sql;
 		
@@ -305,9 +375,9 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setInt(1, omb.getProduct_number());
 			rs = pstmt.executeQuery();
-			if(rs.next()) {				 //제품이 존재하는지 판단
+			if(rs.next()) {				 //占쎌젫占쎈�뱄옙�뵠 鈺곕똻�삺占쎈릭占쎈뮉筌욑옙 占쎈솇占쎈뼊
 				product_stock = rs.getInt("product_stock");
-				if(product_stock >= omb.getProduct_count()) { 			//제품 재고량 확인
+				if(product_stock >= omb.getProduct_count()) { 			//占쎌젫占쎈�� 占쎌삺�⑥쥓�쎗 占쎌넇占쎌뵥
 					pstmt.clearParameters();
 					
 					sql="update product\r\n" + 
@@ -318,22 +388,20 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 					pstmt.setInt(2, p_num);
 					pstmt.executeUpdate();
 					
-					pstmt.clearParameters();
-					
-					sql="INSERT INTO user_order VALUES(?,?,sysdate,?,?,?,?,?,?,?,?)"; 
-					pstmt =	conn.prepareStatement(sql);
-					pstmt.setString(1, omb.getOrder_number()); 
-					pstmt.setString(2, omb.getUser_id());
-					pstmt.setString(3, omb.getReceiver_name()); 
-					pstmt.setString(4, omb.getReceiver_phone1()); 
-					pstmt.setString(5, omb.getReceiver_phone2());
-					pstmt.setString(6, omb.getReceiver_phone3()); 
-					pstmt.setString(7, omb.getReceiver_pcode()); 
-					pstmt.setString(8, omb.getReceiver_raddr());
-					pstmt.setString(9, omb.getReceiver_jibun()); 
-					pstmt.setString(10, omb.getReceiver_detailaddr()); 
-					
-					pstmt.executeUpdate();
+					/*
+					 * pstmt.clearParameters();
+					 * 
+					 * sql="INSERT INTO user_order VALUES(?,?,sysdate,?,?,?,?,?,?,?,?)"; pstmt =
+					 * conn.prepareStatement(sql); pstmt.setString(1, omb.getOrder_number());
+					 * pstmt.setString(2, omb.getUser_id()); pstmt.setString(3,
+					 * omb.getReceiver_name()); pstmt.setString(4, omb.getReceiver_phone1());
+					 * pstmt.setString(5, omb.getReceiver_phone2()); pstmt.setString(6,
+					 * omb.getReceiver_phone3()); pstmt.setString(7, omb.getReceiver_pcode());
+					 * pstmt.setString(8, omb.getReceiver_raddr()); pstmt.setString(9,
+					 * omb.getReceiver_jibun()); pstmt.setString(10, omb.getReceiver_detailaddr());
+					 * 
+					 * pstmt.executeUpdate();
+					 */
 					
 					pstmt.clearParameters();
 					
@@ -344,20 +412,18 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 					pstmt.setString(2, omb.getOrder_number());
 					pstmt.setInt(3, p_num);
 					pstmt.setInt(4, omb.getProduct_count());
-					pstmt.setInt(5, omb.getProduct_price()); // 배송비 때문에 가격 차이 있을 수 있음
-					pstmt.setString(6, omb.getRequested()); // 배송 요청사항 추가
+					pstmt.setInt(5, omb.getProduct_price()); // 獄쏄퀣�꽊�뜮占� 占쎈르�눧紐꾨퓠 揶쏉옙野껓옙 筌△뫁�뵠 占쎌뿳占쎌뱽 占쎈땾 占쎌뿳占쎌벉
+					pstmt.setString(6, omb.getRequested()); // 獄쏄퀣�꽊 占쎌뒄筌ｏ옙占쎄텢占쎈퉮 �빊遺쏙옙
 					pstmt.executeUpdate();
 					
 					re=1;
 				}else {
 					re=2;
-					System.out.println("재고 부족");
 				}
 			} else {
-				System.out.println("제품이 존재하지 않습니다.");
 				re=-1;
 			}
-			//스크립트 작성
+			//占쎈뮞占쎄쾿�뵳���뱜 占쎌삂占쎄쉐
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -378,12 +444,12 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		return re;
 	}
 	
-	public int changeOrderState(long orderDetailNumber, boolean change) throws Exception {
-		// 고객의 환불 요청 또는 구매 확정을 처리하는 메소드 
+	public int changeOrderState(String order_number, boolean change) throws Exception {
+		// 怨좉컼�쓽 �솚遺� �슂泥� �삉�뒗 援щℓ �솗�젙�쓣 泥섎━�븯�뒗 硫붿냼�뱶 
 		String sql = ""; 
 		
 		if (change) {
-			sql="UPDATE userorder_detail SET refund_chk ='Y' WHERE ORDER_NUMBER=?";
+			sql="UPDATE userorder_detail SET refund_check ='Y' WHERE ORDER_NUMBER=?";
 		} else {
 			sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='구매 확정' WHERE ORDER_NUMBER=?";
 		}
@@ -396,7 +462,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setLong(1,orderDetailNumber);
+			pstmt.setString(1,order_number);
 			pstmt.executeUpdate();
 						
 			re = 1;
@@ -420,118 +486,111 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 		}
 		return re;
 	}
-	public ArrayList<OrderManageBean> getDetail(String user_id) throws Exception {
+	public ArrayList<OrderManageBean> getDetail(String pageNumber,String user_id) throws Exception {
 		ArrayList<OrderManageBean> ombList = new ArrayList<>();
-		ArrayList<OrderManageBean> ombList2 = new ArrayList<>();
-		ArrayList<OrderManageBean> ombList3 = new ArrayList<>();
-		String sql;
-		int order_count;
-		String order_number;
-		int product_number;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ResultSet rs2 = null;
-		ResultSet rs3 = null;
-		OrderManageBean omb = null;
-		OrderManageBean omb2 = null;
-		OrderManageBean omb3 = null;
+		String sql= "select order_detail_number\r\n" + 
+				"     , D.product_number\r\n" + 
+				"     , product_name\r\n" + 
+				"     , product_count\r\n" + 
+				"     , D.product_price\r\n" + 
+				"     , order_detail_status\r\n" + 
+				"     , refund_check\r\n" + 
+				"     , shipment\r\n" + 
+				"     , requested\r\n" + 
+				"     , order_date\r\n" + 
+				"     , O.order_number\r\n" + 
+				"     , receiver_name\r\n" + 
+				"     , receiver_phone1\r\n" + 
+				"     , receiver_phone2\r\n" + 
+				"     , receiver_phone3\r\n" + 
+				"     , receiver_pcode\r\n" + 
+				"     , receiver_raddr\r\n" + 
+				"     , receiver_jibun\r\n" + 
+				"     , receiver_detailaddr\r\n" + 
+				"  from userorder_detail D join user_order O\r\n" + 
+				"    on D.order_number = O.order_number\r\n" +
+				"  join product P\r\n" + 
+				"    on P.product_number = D.product_number" + 
+				" where user_id = '"+user_id+"'";
+		String sql2 = "SELECT COUNT(ORDER_NUMBER) from USER_ORDER where user_id = '"+user_id+"'";
 		
+		Connection conn = null;
+		Statement stmt=null;
+		ResultSet rs=null;
+		ResultSet pageSet=null;
+		int dbCount = 0;
+		int absolutePage = 1;
+		OrderManageBean omb = null;
 		try {
 			conn = getConnection();
-			sql = "select count(order_number) from user_order where user_id =?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user_id);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				order_count = rs.getInt(1);
-				
-				for (int i = 0; i < order_count; i++) {				
-					sql = "select order_number\r\n" + 
-							"     , user_id\r\n" + 
-							"     , order_date\r\n" + 
-							"     , receiver_name\r\n" + 
-							"     , receiver_phone1\r\n" + 
-							"     , receiver_phone2\r\n" + 
-							"     , receiver_phone3\r\n" + 
-							"     , receiver_pcode\r\n" + 
-							"     , receiver_raddr\r\n" + 
-							"     , receiver_jibun\r\n" + 
-							"     , receiver_detailaddr\r\n" + 
-							"  from user_order\r\n" + 
-							" where user_id = ?";
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, user_id);
-					rs2 = pstmt.executeQuery();
-					
-					if (rs.next()) {
-						omb = new OrderManageBean();
-					order_number = rs.getString(1);
-						omb.setOrder_number(order_number);
-						omb.setUser_id(rs.getString(2));
-						omb.setOrder_date(rs.getTimestamp(3));
-						omb.setReceiver_name(rs.getString(4));
-						omb.setReceiver_pcode(rs.getString(5));
-						omb.setReceiver_phone1(rs.getString(6));
-						omb.setReceiver_phone2(rs.getString(7));
-						omb.setReceiver_phone3(rs.getString(8));
-						omb.setReceiver_raddr(rs.getString(9));
-						omb.setReceiver_jibun(rs.getString(10));
-						omb.setReceiver_detailaddr(rs.getString(11));
-						
-						ombList.add(omb);
-					}
-				}
 			
-				for (int i = 0; i < order_count; i++) {
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			
+			pageSet = stmt.executeQuery(sql2);
+			
+			if(pageSet.next()) {
+				dbCount = pageSet.getInt(1); // 占쏙옙 占쏙옙 占쏙옙占쏙옙
+				pageSet.close();
+			}
+			if (dbCount % OrderManageBean.pageSize == 0) {
+				OrderManageBean.pageCount = dbCount / OrderManageBean.pageSize;
+			}else {
+				OrderManageBean.pageCount = dbCount / OrderManageBean.pageSize+1;
+			}
+			if(pageNumber != null) { 
+				OrderManageBean.pageNum = Integer.parseInt(pageNumber);
+				absolutePage = (OrderManageBean.pageNum - 1) * OrderManageBean.pageSize + 1;
+			}
+			
+			rs = stmt.executeQuery(sql.toLowerCase());
+			
+			while(rs.next()) {
+				rs.absolute(absolutePage);
+				
+				int count = 0;
+				
+				while(count < ProductBean.pageSize) {
+					omb = new OrderManageBean();
+					omb.setOrder_detail_number(rs.getLong("order_detail_number"));
+					omb.setProduct_number(rs.getInt("product_number"));
+					omb.setProduct_name(rs.getString("product_name"));
+					omb.setProduct_count(rs.getInt("product_count"));
+					omb.setProduct_price(rs.getInt("product_price"));
+					omb.setOrder_detail_status(rs.getString("order_detail_status"));
+					omb.setRefund_check(rs.getString("refund_check"));
+					omb.setShipment(rs.getString("shipment"));
+					omb.setRequested(rs.getString("requested"));
+					omb.setOrder_date(rs.getTimestamp("order_date"));
+					omb.setOrder_number(rs.getString("order_number"));
+					omb.setReceiver_name(rs.getString("receiver_name"));
+					omb.setReceiver_phone1(rs.getString("receiver_phone1"));
+					omb.setReceiver_phone2(rs.getString("receiver_phone2"));
+					omb.setReceiver_phone3(rs.getString("receiver_phone3"));
+					omb.setReceiver_pcode(rs.getString("receiver_pcode"));
+					omb.setReceiver_raddr(rs.getString("receiver_raddr"));
+					omb.setReceiver_jibun(rs.getString("receiver_jibun"));
+					omb.setReceiver_detailaddr(rs.getString("receiver_detailaddr"));
 					
-					omb2= ombList.get(i);
-					order_number= omb.getOrder_number();
-					sql =	" select order_detail_number\r\n" + 
-							"     , product_number\r\n" + 
-							"     , product_count\r\n" + 
-							"     , product_price\r\n" + 
-							"     , order_detail_status\r\n" + 
-							"     , refund_check\r\n" + 
-							"     , shipment\r\n" + 
-							"     , requested\r\n" + 
-							"  from userorder_detail\r\n" + 
-							" where order_number = ?";
-					pstmt.clearParameters();
-					pstmt = conn.prepareStatement(sql);
-					pstmt.setString(1, order_number);
-					rs3 = pstmt.executeQuery();
-					if(rs.next()) {
-						omb2.setOrder_number(order_number);
-						omb2.setOrder_detail_number(rs.getLong(1));
-						omb2.setProduct_number(rs.getInt(2));
-						omb2.setProduct_count(rs.getInt(3));
-						omb2.setProduct_price(rs.getInt(4));
-						omb2.setOrder_detail_status(rs.getString(5));
-						omb2.setRefund_check(rs.getString(6));
-						omb2.setShipment(rs.getString(7));
-						omb2.setRequested(rs.getString(8));
-						
-						ombList2.add(omb2);
+					ombList.add(omb);
+					
+					if(rs.isLast()) {
+						break;
+					}else {
+						rs.next();
 					}
-				}	
+					
+				}
 			}
 			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
 			try {
-				if (rs3 != null) {
-					rs3.close();
-				}
-				if (rs2 != null) {
-					rs2.close();
-				}
 				if (rs != null) {
 					rs.close();
 				}
-				if (pstmt != null) {
-					pstmt.close();
+				if (stmt != null) {
+					stmt.close();
 				}
 				if (conn != null) {
 					conn.close();
@@ -539,8 +598,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			ombList.clear();
 		}
-		return ombList2;
+		return ombList;
 	}
 }

@@ -22,7 +22,7 @@
 <head>
 <meta charset="utf-8">
 <title></title>
-<script language="JavaScript" src="../js/uploadProduct.js?112" charset="utf-8"></script>
+<script language="JavaScript" src="../js/uploadProduct.js?" charset="utf-8"></script>
 </head>
 <body class="vertical  dark  ">
 	<div class="wrapper">
@@ -40,8 +40,8 @@
 	                            <select class="custom-select" id="custom-select" name="category_code">
 	                            <option selected value="none">카테고리를 선택하세요</option>
 	                            <option value="t-shirt">티셔츠</option>
-	                            <option value="hude-t">후드티</option>
-	                            <option value="nite">니트/스웨터</option>
+	                            <option value="hoodie">후드티</option>
+	                            <option value="knit">니트/스웨터</option>
 	                            <option value="shirt">셔츠/남방</option>
 	                            <option value="pants">바지</option>
 	                            <option value="blue-jeans">청바지</option>

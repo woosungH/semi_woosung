@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+D:\woosung\semi\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2266232018.index
+3932138973.index
+1909334017.index
+1192555980.index
+2670559494.index
+222347595.index

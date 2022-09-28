@@ -130,8 +130,8 @@
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-3 text-center">
-                          <span class="circle circle-md bg-secondary">
-                            <span class="fe fe-package fe-24 text-white"></span>
+                          <span class="circle circle-md bg-danger">
+                            <span class="fe fe-refresh-ccw fe-24 text-white"></span>
                           </span>
                         </div>
                         <div class="col">
@@ -147,8 +147,8 @@
                     <div class="card-body">
                       <div class="row align-items-center">
                         <div class="col-3 text-center">
-                          <span class="circle circle-md bg-secondary">
-                            <span class="fe fe-package fe-24 text-white"></span>
+                          <span class="circle circle-md bg-info">
+                            <span class="fe fe-smile fe-24 text-white"></span>
                           </span>
                         </div>
                         <div class="col">

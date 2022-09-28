@@ -1,0 +1,57 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="cart.CartDBBean"%>
+<%@page import="cart.CartBean"%>
+<%@page import="product.ProductBean"%>
+<%@page import="product.ProductDBBean"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%
+	String id = (String)session.getAttribute("id");
+	if(session.getAttribute("Member") == null && session.getAttribute("id") == null){ 
+		// member가 null(초기화)되면  main으로 들어갈 수 없게 
+		// jsp:forward로 login으로 돌아감.
+	%>
+		<script type="text/javascript">
+			alert("로그인이 필요한 항목입니다.");
+			location.href="main.jsp?pages=../user_log/login";
+		</script>
+	<%
+	} else {
+		int product_number = Integer.parseInt(request.getParameter("product_number"));
+		int count = Integer.parseInt(request.getParameter("count"));
+		CartDBBean cartdb = CartDBBean.getInstance();
+		
+		ProductDBBean product = ProductDBBean.getInstance();
+		ProductBean get = product.getproduct(product_number, false);
+		
+		ProductBean img = product.getImg(product_number);
+		
+		String p_name = get.getProduct_name();
+		int p_price = get.getProduct_price();
+		int img_number = img.getFile_number();
+		
+		String file_name = img.getStored_file_name();
+		ArrayList<CartBean> list = cartdb.getCart(id);
+		for(int i=0; i<list.size(); i++){
+			CartBean cart = list.get(i);
+			if(product_number == cart.getProduct_number()){
+	%>
+		<script type="text/javascript">
+			alert("장바구니에 추가된 상품입니다.");
+			history.go(-1);
+		</script>
+	<%
+			}
+		} 
+		cartdb.insertCart(id, product_number, count);
+	%>
+		<script>
+			alert("장바구니에 추가되었습니다.")
+			document.location.href="main.jsp?pages=../cart/cartList";
+		</script>
+	<%
+	
+	}
+	
+%>
+

@@ -79,26 +79,29 @@ public class LikeDBBean {
 		PreparedStatement pstmt = null;
 		ResultSet rs =null;
 		String sql = "";
+		int re = 0;
 		
 		try {
 			con = getConnection();
 			
-			sql = "insert into user_table"
+				sql = "insert into user_like"
 					+ " values(?,?,1,?,?,?)";
-			pstmt = con.prepareStatement(sql);
-			//pstmt瑜� �뿰寃�
-			pstmt.setString(1, u_id);
-			pstmt.setInt(2, p_number);
-			pstmt.setString(3, p_name);
-			pstmt.setInt(4, p_price);
-			pstmt.setInt(5, f_name);
+				pstmt = con.prepareStatement(sql);
+				//pstmt瑜� �뿰寃�
+				pstmt.setString(1, u_id);
+				pstmt.setInt(2, p_number);
+				pstmt.setString(3, p_name);
+				pstmt.setInt(4, p_price);
+				pstmt.setInt(5, f_name);
+				
+				pstmt.executeUpdate();
+				re = 1;
 			
-			pstmt.executeUpdate();
+			
+			
 
-			System.out.println("like �벑濡�");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("like �떎�뙣");
 		}finally {
 			try {
 				if(pstmt != null) pstmt.close();
@@ -107,7 +110,7 @@ public class LikeDBBean {
 				e2.printStackTrace();
 			}
 		}
-		return 1;
+		return re;
 	}
 	
 	public int deleteLike(String user_id, int product_number) throws Exception {
@@ -119,16 +122,16 @@ public class LikeDBBean {
 		try {
 			conn = getConnection();
 			
-			sql = "DELETE FROM PRODUCT_LIKE WHERE USER_ID = ? AND PRODUCT_NUMBER AND PRODUCT_LIKE = 1";
+			sql = "DELETE FROM user_LIKE WHERE USER_ID = ? AND PRODUCT_NUMBER=? AND PRODUCT_LIKE = 1";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
 			pstmt.setInt(2, product_number);
 			pstmt.executeUpdate();
 			
-			System.out.println("like �빐�젣");
+			System.out.println("like 삭제");
 			
 		}catch(SQLException ex){
-			System.out.println("蹂�寃� �떎�뙣");
+			System.out.println("삭제 실패 ");
 			ex.printStackTrace();
 		}finally{
 			try{
@@ -145,27 +148,22 @@ public class LikeDBBean {
 		  Connection con = null;
 		  PreparedStatement pstmt = null;
 		  ResultSet rs = null;
-		  String sql = "select product_like from product_like where user_id and product_number = ?";
+		  String sql = "select product_like from user_like where user_id=? and product_number=?";
 		  String db_user_like;
 		  int re = -1;
-
+		  System.out.println("넘버-==-=-=-=-=="+product_number);
+		  System.out.println("id-==-=-=-=-=="+user_id);
 		  try {
 		   con = getConnection();
 		   pstmt = con.prepareStatement(sql);
 		   pstmt.setString(1, user_id);
 		   pstmt.setInt(2, product_number);
 		   rs = pstmt.executeQuery();
-
-		   if(rs.next()) {
-		    db_user_like = rs.getString("product_like");
-		    
-		    if (db_user_like.equals("1"))
-		     re = -1;
-		    else
-		     re = 0;
-		     
+		  
+		   if(!rs.next()) {
+		    re = 1;
 		   } else {
-		    re = -1;
+			   re = 0;
 		   }
 		  } catch(Exception e) {
 		   System.out.println(e.getMessage()); 
@@ -177,5 +175,6 @@ public class LikeDBBean {
 
 		  return re;
 	 }
+	
 	 
 }

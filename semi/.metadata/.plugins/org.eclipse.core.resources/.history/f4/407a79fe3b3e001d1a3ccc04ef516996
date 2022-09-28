@@ -1,0 +1,19 @@
+<%@page import="order.OrderManageDBBean"%>
+<%@page import="order.OrderManageBean"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	long o_dNum = Long.parseLong(request.getParameter("o_dNum"));
+	boolean change = Boolean.parseBoolean(request.getParameter("change"));
+	
+	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
+	int result = omdb.changeOrderState(o_dNum, change);
+	
+	if(result == 1){
+%>
+	<script type="text/javascript">
+		alert("요청이 완료되었습니다.");
+	</script>
+<%
+	}
+%>

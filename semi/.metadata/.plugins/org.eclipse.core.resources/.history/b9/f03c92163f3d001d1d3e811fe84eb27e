@@ -1,0 +1,23 @@
+<%@page import="order.OrderManageDBBean"%>
+<%@page import="order.OrderManageBean"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%
+	long o_dNum = Long.parseLong(request.getParameter("orderDNum"));
+
+	OrderManageBean omb = new OrderManageBean();
+	OrderManageDBBean omdb = OrderManageDBBean.getInstance();
+	omdb.getOrder(o_dNum)
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>결제 완료</h1>
+
+
+</body>
+</html>

@@ -18,14 +18,14 @@ public class NoticeBean {
 	public static int pageCount=1;
 	public static int pageNum=1;
 	
-//¼öÁ¤µÈ ºÎºĞ@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public static String pageNumber(int limit) {
 		String str = "";
 		int temp = (pageNum-1)%limit;
-		int startPage = pageNum - temp; // ½ÃÀÛ ÆäÀÌÁö > ÇÑ¹ø¿¡ º¸¿©Áö´Â ÆäÀÌÁö ¹øÈ£ÀÇ Ã³À½ ¼ıÀÚ
+		int startPage = pageNum - temp; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ > ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		
-		if ((startPage - limit) > 0) { // ½ÃÀÛ ÆäÀÌÁö°¡
-			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage-1)+"&pages=noticeList'>ÀÌÀü</a></li>";
+		if ((startPage - limit) > 0) { // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage-1)+"&pages=noticeList'>ì´ì „</a></li>";
 		}
 		for (int i = startPage; i < (startPage+limit) ; i++) {
 			str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages=noticeList'>"+i+"</a></li>";
@@ -34,17 +34,17 @@ public class NoticeBean {
 			}
 		}
 		if ((startPage + limit) <= pageCount) {
-			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=noticeList'>´ÙÀ½</a></li>";
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages=noticeList'>ë‹¤ìŒ</a></li>";
 		}
 		return str;
 	}
 	public static String userPageNumber(int limit) {
 		String str = "";
 		int temp = (pageNum-1)%limit;
-		int startPage = pageNum - temp; // ½ÃÀÛ ÆäÀÌÁö > ÇÑ¹ø¿¡ º¸¿©Áö´Â ÆäÀÌÁö ¹øÈ£ÀÇ Ã³À½ ¼ıÀÚ
+		int startPage = pageNum - temp; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ > ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		
-		if ((startPage - limit) > 0) { // ½ÃÀÛ ÆäÀÌÁö°¡
-			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/notice/noticeList_u&pageNum="+(startPage-1)+"'>ÀÌÀü</a></li>";
+		if ((startPage - limit) > 0) { // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			str = "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/notice/noticeList_u&pageNum="+(startPage-1)+"'>ì´ì „</a></li>";
 		}
 		for (int i = startPage; i < (startPage+limit) ; i++) {
 			str+="<li class=\"page-item\"><a class=\"page-link\" href='main.jsp?pages=../cs/notice/noticeList_u&pageNum="+i+"'>"+i+"</a></li>";
@@ -53,11 +53,11 @@ public class NoticeBean {
 			}
 		}
 		if ((startPage + limit) <= pageCount) {
-			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/notice/noticeList_u&pageNum="+(startPage+limit)+"'>´ÙÀ½</a></li>";
+			str += "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pages=../cs/notice/noticeList_u&pageNum="+(startPage+limit)+"'>ë‹¤ìŒ</a></li>";
 		}
 		return str;
 	}
-//¼öÁ¤µÈ ºÎºĞ@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	
 	public int getBefore() {
 		return before;

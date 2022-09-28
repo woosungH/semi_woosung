@@ -38,7 +38,7 @@ public class OrderManageBean {
 			int startPage = pageNum - temp;
 			
 			if(startPage - limit > 0) {
-				str ="<li class=\"page-item\"><a class=\"page-link\" href ='adminIndex.jsp?pageNum="+(startPage-limit)+"&pages="+url+"'>����</a></li>";
+				str ="<li class=\"page-item\"><a class=\"page-link\" href ='adminIndex.jsp?pageNum="+(startPage-limit)+"&pages="+url+"'>이전</a></li>";
 			}
 			for (int i = startPage; i < (startPage+limit); i++) {//���� ������ ��ȣ
 				str+="<li class=\"page-item\"><a class=\"page-link\" href='adminIndex.jsp?pageNum="+i+"&pages="+url+"'>"+i+"</a></li>";
@@ -47,11 +47,29 @@ public class OrderManageBean {
 				}
 			}
 			if ((startPage + limit) <= pageCount) {
-				str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages="+url+"'>����</a></li>";
+				str += "<li class=\"page-item\"><a class=\"page-link\" href = 'adminIndex.jsp?pageNum="+(startPage+limit)+"&pages="+url+"'>다음</a></li>";
 			}
 			return str;
 		}
-		//����¡ ���� ��
+		public static String pageNumber(int limit) {
+			String str = "";
+			int temp = (pageNum-1) % limit;
+			int startPage = pageNum - temp;
+			
+			if(startPage - limit > 0) {
+				str ="<li class=\"page-item\"><a class=\"page-link\" href ='main.jsp?pageNum="+(startPage-limit)+"&pages=../order/order_body'>이전</a></li>";
+			}
+			for (int i = startPage; i < (startPage+limit); i++) {//���� ������ ��ȣ
+				str+="<li class=\"page-item\"><a class=\"page-link\" href='main.jsp?pageNum="+i+"&pages=../order/order_body'>"+i+"</a></li>";
+				if (i >= pageCount) { 
+					break;
+				}
+			}
+			if ((startPage + limit) <= pageCount) {
+				str += "<li class=\"page-item\"><a class=\"page-link\" href = 'main.jsp?pageNum="+(startPage+limit)+"&pages=../order/order_body'>다음</a></li>";
+			}
+			return str;
+		}
 	
 	
 	

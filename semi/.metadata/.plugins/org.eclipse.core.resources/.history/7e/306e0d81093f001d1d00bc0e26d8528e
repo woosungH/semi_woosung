@@ -1,0 +1,605 @@
+package order;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+import product.ProductBean;
+
+public class OrderManageDBBean {
+private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
+	
+	public static OrderManageDBBean getInstance() {
+		return OrderMangeDBBean;
+	}
+	
+	public Connection getConnection() throws Exception{
+		Connection conn = ((DataSource)(new InitialContext().lookup("java:comp/env/jdbc/oracle"))).getConnection();
+		return conn;
+	}
+	public ArrayList<OrderManageBean> orderList(String pageNumber, String refundCheck) throws Exception {
+		Connection conn=null;
+		Statement stmt=null;
+		ResultSet rs=null;
+		ResultSet pageSet=null;
+		int dbCount = 0;
+		int absolutePage = 1;
+		
+		String sql = "SELECT ORDER_DETAIL_NUMBER, ORDER_NUMBER, PRODUCT_NUMBER, PRODUCT_COUNT\r\n" + 
+				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS, REFUND_CHECK, SHIPMENT\r\n" + 
+				"  FROM USERORDER_DETAIL\r\n" + 
+				" WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != '환불 완료'" + 
+				" ORDER BY ORDER_NUMBER desc";
+		String sql2 = "SELECT COUNT(ORDER_NUMBER) from USERORDER_DETAIL WHERE REFUND_CHECK='"+refundCheck+"' AND ORDER_DETAIL_STATUS != '환불 완료'";
+
+		ArrayList<OrderManageBean> list = new ArrayList<OrderManageBean>();
+		
+		try {
+			conn = getConnection();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			
+			pageSet = stmt.executeQuery(sql2);
+			
+			if(pageSet.next()) {
+				dbCount = pageSet.getInt(1); // 占쏙옙 占쏙옙 占쏙옙占쏙옙
+				pageSet.close();
+			}
+			if (dbCount % OrderManageBean.pageSize == 0) {
+				OrderManageBean.pageCount = dbCount / OrderManageBean.pageSize;
+			}else {
+				OrderManageBean.pageCount = dbCount / OrderManageBean.pageSize+1;
+			}
+			if(pageNumber != null) { 
+				OrderManageBean.pageNum = Integer.parseInt(pageNumber);
+				absolutePage = (OrderManageBean.pageNum - 1) * OrderManageBean.pageSize + 1;
+			}
+			
+			rs = stmt.executeQuery(sql);
+			
+			if(rs.next()) {
+				rs.absolute(absolutePage);
+				int count = 0;
+				
+				while(count < OrderManageBean.pageSize) {
+					OrderManageBean omb = new OrderManageBean();
+					omb.setOrder_detail_number(rs.getLong("ORDER_DETAIL_NUMBER"));
+					omb.setOrder_number(rs.getString("ORDER_NUMBER"));
+					omb.setProduct_number(rs.getInt("PRODUCT_NUMBER"));
+					omb.setProduct_count(rs.getInt("PRODUCT_COUNT"));
+					omb.setProduct_price(rs.getInt("PRODUCT_PRICE"));
+					omb.setOrder_detail_status(rs.getString("ORDER_DETAIL_STATUS"));
+					omb.setRefund_check(rs.getString("REFUND_CHECK"));
+					omb.setShipment(rs.getString("SHIPMENT"));
+					list.add(omb);
+					
+					if(rs.isLast()) {
+						break;
+					}else {
+						rs.next();
+					}
+					
+					count++;
+				}
+			}
+		} catch (SQLException ex) {
+			System.out.println("占쏙옙회 占쏙옙占쏙옙");
+			ex.printStackTrace();
+		}finally{
+			try{
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
+	public OrderManageBean getOrder(long o_dNum) throws Exception {
+		String sql = "SELECT ORDER_NUMBER, PRODUCT_NUMBER, PRODUCT_COUNT\r\n" + 
+				"     , PRODUCT_PRICE, ORDER_DETAIL_STATUS, SHIPMENT\r\n" + 
+				"  FROM USERORDER_DETAIL\r\n" + 
+				" WHERE order_detail_number = ?";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		OrderManageBean omb = null;
+		String o_num="";
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, o_dNum);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				omb = new OrderManageBean();
+				omb.setOrder_number(rs.getString(1));
+				omb.setProduct_number(rs.getInt(2));
+				omb.setProduct_count(rs.getInt(3));
+				omb.setProduct_price(rs.getInt(4));
+				omb.setOrder_detail_status(rs.getString(5));
+				omb.setShipment(rs.getString(6));
+				o_num = rs.getString(1);
+			}
+			
+			sql = "SELECT USER_ID, ORDER_DATE, RECEIVER_NAME, RECEIVER_PCODE\r\n" + 
+					"     , RECEIVER_PHONE1, RECEIVER_PHONE2, RECEIVER_PHONE3\r\n" + 
+					"     , RECEIVER_RADDR, RECEIVER_JIBUN, RECEIVER_DETAILADDR\r\n" + 
+					"  FROM USER_ORDER\r\n" + 
+					" WHERE ORDER_NUMBER = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, o_num);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				omb.setUser_id(rs.getString(1));
+				omb.setOrder_date(rs.getTimestamp(2));
+				omb.setReceiver_name(rs.getString(3));
+				omb.setReceiver_pcode(rs.getString(4));
+				omb.setReceiver_phone1(rs.getString(5));
+				omb.setReceiver_phone2(rs.getString(6));
+				omb.setReceiver_phone3(rs.getString(7));
+				omb.setReceiver_raddr(rs.getString(8));
+				omb.setReceiver_jibun(rs.getString(9));
+				omb.setReceiver_detailaddr(rs.getString(10));
+			}
+			
+			sql = "SELECT PRODUCT_NAME FROM PRODUCT WHERE PRODUCT_NUMBER = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, omb.getProduct_number());
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				omb.setProduct_name(rs.getString(1));
+			}
+		} catch (SQLException ex) {
+			System.out.print("占쏙옙회 占쏙옙占쏙옙");
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return omb;
+	}
+	public int editOrder(OrderManageBean omb) throws Exception {
+		String sql = "UPDATE userorder_detail SET PRODUCT_COUNT=?, PRODUCT_PRICE=?, ORDER_DETAIL_STATUS=?, SHIPMENT = ? WHERE ORDER_NUMBER=?"; 
+		int re = -1; // 占쏙옙占쏙옙 占쏙옙占쏙옙
+		Connection conn = null;
+		PreparedStatement first_pstmt = null;
+		PreparedStatement second_pstmt = null;
+		try {
+			conn = getConnection();
+			first_pstmt = conn.prepareStatement(sql);
+			first_pstmt.setInt(1, omb.getProduct_count());
+			first_pstmt.setInt(2, omb.getProduct_price());
+			first_pstmt.setString(3,omb.getOrder_detail_status());
+			first_pstmt.setString(4,omb.getShipment());
+			first_pstmt.setString(5,omb.getOrder_number());
+			first_pstmt.executeUpdate();
+			
+			sql = "UPDATE user_order SET RECEIVER_NAME=?, RECEIVER_PCODE=?\r\n" + 
+					"     , RECEIVER_PHONE1=?, RECEIVER_PHONE2=?, RECEIVER_PHONE3=?\r\n" + 
+					"     , RECEIVER_RADDR=?, RECEIVER_JIBUN=?, RECEIVER_DETAILADDR=? \r\n" + 
+					" WHERE ORDER_NUMBER=?";
+			
+			second_pstmt = conn.prepareStatement(sql);
+			second_pstmt.setString(1,omb.getReceiver_name());
+			second_pstmt.setString(2,omb.getReceiver_pcode());
+			second_pstmt.setString(3,omb.getReceiver_phone1());
+			second_pstmt.setString(4,omb.getReceiver_phone2());
+			second_pstmt.setString(5,omb.getReceiver_phone3());
+			second_pstmt.setString(6,omb.getReceiver_raddr());
+			second_pstmt.setString(7,omb.getReceiver_jibun());
+			second_pstmt.setString(8,omb.getReceiver_detailaddr());
+			second_pstmt.setString(9,omb.getOrder_number());
+			second_pstmt.executeUpdate();
+			
+			re = 1; // 占쏙옙占쏙옙 占쏙옙占쏙옙
+		}catch (SQLException ex) {
+			System.out.print("占쏙옙占쏙옙 占쏙옙占쏙옙");
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (first_pstmt != null) {
+					first_pstmt.close();
+				}
+				if (second_pstmt != null) {
+					second_pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	public int refundOrder(String orderNum) throws Exception {
+		String sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='환불 완료' WHERE ORDER_NUMBER=?"; 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		OrderManageBean omb = null;
+		ResultSet rs = null;
+		
+		int re=-1;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,orderNum);
+			pstmt.executeUpdate();
+			
+			sql="SELECT PRODUCT_NUMBER, PRODUCT_COUNT FROM userorder_detail WHERE ORDER_NUMBER=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,orderNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				omb = new OrderManageBean();
+				omb.setProduct_number(rs.getInt(1));
+				omb.setProduct_count(rs.getInt(2));
+			}
+			
+			sql = "UPDATE PRODUCT SET PRODUCT_STOCK = PRODUCT_STOCK +"+omb.getProduct_count()
+					+"WHERE PRODUCT_NUMBER ="+omb.getProduct_number();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
+			re = 1;
+		}catch (SQLException ex) {
+			re = -1;
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	public int insertUserOrder(OrderManageBean omb) throws Exception {
+		String sql;
+		
+		int re = -1;
+		int product_stock;
+		int p_num = omb.getProduct_number();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			sql = "select product_stock from product where product_number = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, omb.getProduct_number());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {				 //占쎌젫占쎈�뱄옙�뵠 鈺곕똻�삺占쎈릭占쎈뮉筌욑옙 占쎈솇占쎈뼊
+				product_stock = rs.getInt("product_stock");
+				if(product_stock >= omb.getProduct_count()) { 			//占쎌젫占쎈�� 占쎌삺�⑥쥓�쎗 占쎌넇占쎌뵥
+					pstmt.clearParameters();
+					
+					sql="update product\r\n" + 
+							"   set product_stock = product_stock - ?\r\n" + 
+							" where product_number = ?";
+					pstmt=conn.prepareStatement(sql);
+					pstmt.setInt(1, omb.getProduct_count());
+					pstmt.setInt(2, p_num);
+					pstmt.executeUpdate();
+					
+					pstmt.clearParameters();
+					
+					sql="INSERT INTO user_order VALUES(?,?,sysdate,?,?,?,?,?,?,?,?)"; 
+					pstmt =	conn.prepareStatement(sql);
+					pstmt.setString(1, omb.getOrder_number());
+					pstmt.setString(2, omb.getUser_id());
+					pstmt.setString(3, omb.getReceiver_name()); 
+					pstmt.setString(4, omb.getReceiver_phone1()); 
+					pstmt.setString(5, omb.getReceiver_phone2());
+					pstmt.setString(6, omb.getReceiver_phone3()); 
+					pstmt.setString(7, omb.getReceiver_pcode()); 
+					pstmt.setString(8, omb.getReceiver_raddr());
+					pstmt.setString(9, omb.getReceiver_jibun()); 
+					pstmt.setString(10, omb.getReceiver_detailaddr()); 
+					
+					pstmt.executeUpdate();
+					
+					re=1;
+				}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	public int insertOrder(OrderManageBean omb) throws Exception {
+		String sql;
+		
+		int re = -1;
+		int product_stock;
+		int p_num = omb.getProduct_number();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConnection();
+			sql = "select product_stock from product where product_number = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, omb.getProduct_number());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {				 //占쎌젫占쎈�뱄옙�뵠 鈺곕똻�삺占쎈릭占쎈뮉筌욑옙 占쎈솇占쎈뼊
+				product_stock = rs.getInt("product_stock");
+				if(product_stock >= omb.getProduct_count()) { 			//占쎌젫占쎈�� 占쎌삺�⑥쥓�쎗 占쎌넇占쎌뵥
+					pstmt.clearParameters();
+					
+					sql="update product\r\n" + 
+							"   set product_stock = product_stock - ?\r\n" + 
+							" where product_number = ?";
+					pstmt=conn.prepareStatement(sql);
+					pstmt.setInt(1, omb.getProduct_count());
+					pstmt.setInt(2, p_num);
+					pstmt.executeUpdate();
+					
+					/*
+					 * pstmt.clearParameters();
+					 * 
+					 * sql="INSERT INTO user_order VALUES(?,?,sysdate,?,?,?,?,?,?,?,?)"; pstmt =
+					 * conn.prepareStatement(sql); pstmt.setString(1, omb.getOrder_number());
+					 * pstmt.setString(2, omb.getUser_id()); pstmt.setString(3,
+					 * omb.getReceiver_name()); pstmt.setString(4, omb.getReceiver_phone1());
+					 * pstmt.setString(5, omb.getReceiver_phone2()); pstmt.setString(6,
+					 * omb.getReceiver_phone3()); pstmt.setString(7, omb.getReceiver_pcode());
+					 * pstmt.setString(8, omb.getReceiver_raddr()); pstmt.setString(9,
+					 * omb.getReceiver_jibun()); pstmt.setString(10, omb.getReceiver_detailaddr());
+					 * 
+					 * pstmt.executeUpdate();
+					 */
+					
+					pstmt.clearParameters();
+					
+					sql = "INSERT INTO userorder_detail VALUES(?,?,?,?,?,'입금 완료','N',null,?)";
+					pstmt = conn.prepareStatement(sql);
+					
+					pstmt.setLong(1, omb.getOrder_detail_number());
+					pstmt.setString(2, omb.getOrder_number());
+					pstmt.setInt(3, p_num);
+					pstmt.setInt(4, omb.getProduct_count());
+					pstmt.setInt(5, omb.getProduct_price()); // 獄쏄퀣�꽊�뜮占� 占쎈르�눧紐꾨퓠 揶쏉옙野껓옙 筌△뫁�뵠 占쎌뿳占쎌뱽 占쎈땾 占쎌뿳占쎌벉
+					pstmt.setString(6, omb.getRequested()); // 獄쏄퀣�꽊 占쎌뒄筌ｏ옙占쎄텢占쎈퉮 �빊遺쏙옙
+					pstmt.executeUpdate();
+					
+					re=1;
+				}else {
+					re=2;
+				}
+			} else {
+				re=-1;
+			}
+			//占쎈뮞占쎄쾿�뵳���뱜 占쎌삂占쎄쉐
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	
+	public int changeOrderState(String order_number, boolean change) throws Exception {
+		// 怨좉컼�쓽 �솚遺� �슂泥� �삉�뒗 援щℓ �솗�젙�쓣 泥섎━�븯�뒗 硫붿냼�뱶 
+		String sql = ""; 
+		
+		if (change) {
+			sql="UPDATE userorder_detail SET refund_check ='Y' WHERE ORDER_NUMBER=?";
+		} else {
+			sql = "UPDATE userorder_detail SET ORDER_DETAIL_STATUS='구매 확정' WHERE ORDER_NUMBER=?";
+		}
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int re=-1;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,order_number);
+			pstmt.executeUpdate();
+						
+			re = 1;
+		}catch (SQLException ex) {
+			re = -1;
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return re;
+	}
+	public ArrayList<OrderManageBean> getDetail(String pageNumber,String user_id) throws Exception {
+		ArrayList<OrderManageBean> ombList = new ArrayList<>();
+		String sql= "select order_detail_number\r\n" + 
+				"     , D.product_number\r\n" + 
+				"     , product_name\r\n" + 
+				"     , product_count\r\n" + 
+				"     , D.product_price\r\n" + 
+				"     , order_detail_status\r\n" + 
+				"     , refund_check\r\n" + 
+				"     , shipment\r\n" + 
+				"     , requested\r\n" + 
+				"     , order_date\r\n" + 
+				"     , O.order_number\r\n" + 
+				"     , receiver_name\r\n" + 
+				"     , receiver_phone1\r\n" + 
+				"     , receiver_phone2\r\n" + 
+				"     , receiver_phone3\r\n" + 
+				"     , receiver_pcode\r\n" + 
+				"     , receiver_raddr\r\n" + 
+				"     , receiver_jibun\r\n" + 
+				"     , receiver_detailaddr\r\n" + 
+				"  from userorder_detail D join user_order O\r\n" + 
+				"    on D.order_number = O.order_number\r\n" +
+				"  join product P\r\n" + 
+				"    on P.product_number = D.product_number" + 
+				" where user_id = '"+user_id+"'";
+		String sql2 = "SELECT COUNT(ORDER_NUMBER) from USER_ORDER where user_id = '"+user_id+"'";
+		
+		Connection conn = null;
+		Statement stmt=null;
+		ResultSet rs=null;
+		ResultSet pageSet=null;
+		int dbCount = 0;
+		int absolutePage = 1;
+		OrderManageBean omb = null;
+		try {
+			conn = getConnection();
+			
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			
+			pageSet = stmt.executeQuery(sql2);
+			
+			if(pageSet.next()) {
+				dbCount = pageSet.getInt(1); // 占쏙옙 占쏙옙 占쏙옙占쏙옙
+				pageSet.close();
+			}
+			if (dbCount % OrderManageBean.pageSize == 0) {
+				OrderManageBean.pageCount = dbCount / OrderManageBean.pageSize;
+			}else {
+				OrderManageBean.pageCount = dbCount / OrderManageBean.pageSize+1;
+			}
+			if(pageNumber != null) { 
+				OrderManageBean.pageNum = Integer.parseInt(pageNumber);
+				absolutePage = (OrderManageBean.pageNum - 1) * OrderManageBean.pageSize + 1;
+			}
+			
+			rs = stmt.executeQuery(sql.toLowerCase());
+			
+			while(rs.next()) {
+				rs.absolute(absolutePage);
+				
+				int count = 0;
+				
+				while(count < ProductBean.pageSize) {
+					omb = new OrderManageBean();
+					omb.setOrder_detail_number(rs.getLong("order_detail_number"));
+					omb.setProduct_number(rs.getInt("product_number"));
+					omb.setProduct_name(rs.getString("product_name"));
+					omb.setProduct_count(rs.getInt("product_count"));
+					omb.setProduct_price(rs.getInt("product_price"));
+					omb.setOrder_detail_status(rs.getString("order_detail_status"));
+					omb.setRefund_check(rs.getString("refund_check"));
+					omb.setShipment(rs.getString("shipment"));
+					omb.setRequested(rs.getString("requested"));
+					omb.setOrder_date(rs.getTimestamp("order_date"));
+					omb.setOrder_number(rs.getString("order_number"));
+					omb.setReceiver_name(rs.getString("receiver_name"));
+					omb.setReceiver_phone1(rs.getString("receiver_phone1"));
+					omb.setReceiver_phone2(rs.getString("receiver_phone2"));
+					omb.setReceiver_phone3(rs.getString("receiver_phone3"));
+					omb.setReceiver_pcode(rs.getString("receiver_pcode"));
+					omb.setReceiver_raddr(rs.getString("receiver_raddr"));
+					omb.setReceiver_jibun(rs.getString("receiver_jibun"));
+					omb.setReceiver_detailaddr(rs.getString("receiver_detailaddr"));
+					
+					ombList.add(omb);
+					
+					if(rs.isLast()) {
+						break;
+					}else {
+						rs.next();
+					}
+					
+				}
+			}
+			
+		} catch (SQLException ex) {
+			System.out.print("議고쉶 �떎�뙣");
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ombList;
+	}
+}

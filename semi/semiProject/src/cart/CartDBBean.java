@@ -23,7 +23,7 @@ public class CartDBBean {
 		return ds.getConnection();
 	}
 	
-	// Àå¹Ù±¸´Ï¸¦ db¿¡ ÀúÀåÇÏ´Â ¸Þ¼­µå
+	// ï¿½ï¿½Ù±ï¿½ï¿½Ï¸ï¿½ dbï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public int insertCart(String user_id, int product_number, int product_count) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -36,7 +36,7 @@ public class CartDBBean {
 		try {
 			conn = getConnection();
 			
-			// cart_number¸¦ ¼¼ÆÃÇÏ±â À§ÇØ
+			// cart_numberï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
 			query = "select max(cart_number) from cart";
 			pstmt = conn.prepareStatement(query);
 			
@@ -48,14 +48,14 @@ public class CartDBBean {
 				number=1;
 			}
 			
-			// product_count¸¦ ¼¼ÆÃ+Ä«Æ®¿¡ ´ã±â
+			// product_countï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½+Ä«Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½
 			query = "select product_count from cart where user_id=? and product_number=?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
 			pstmt.setInt(2, product_number);
 			rs = pstmt.executeQuery();
 			
-			if (rs.next()) {	// °³¼ö¸¸ Ãß°¡µÉ ¶§
+			if (rs.next()) {	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½
 				count = rs.getInt(1)+product_count;
 				
 				query = "update cart set product_count=? where user_id=? and product_number=?";
@@ -67,7 +67,7 @@ public class CartDBBean {
 				re = pstmt.executeUpdate();
 				re = 1;
 				
-			} else {	//  »õ »óÇ°À» Ãß°¡ÇÑ °ÍÀÏ ¶§
+			} else {	//  ï¿½ï¿½ ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 				query = "insert into cart"
 						+ "(cart_number, user_id, product_number, product_count)"
 						+ "values(?,?,?,?)";
@@ -81,7 +81,7 @@ public class CartDBBean {
 				re = 1;
 			}
 			
-			System.out.println("Ãß°¡ ¼º°ø");
+			System.out.println("ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		}catch(SQLException ex){
 			ex.printStackTrace();
 		}finally{
@@ -96,12 +96,12 @@ public class CartDBBean {
 		return re;
 	}
 	
-	// user_id¿Í ÀÏÄ¡ÇÏ´Â cartÀÇ Á¤º¸¸¦ ¾ò¾î¿À´Â ¸Þ¼­µå
+	// user_idï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ cartï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public ArrayList<CartBean> getCart(String user_id) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String query = "select cart_number, product_number, product_count from cart where user_id=?";
+		String query = "select cart_number, product_number, product_count from cart where user_id=? order by cart_number";
 		
 		ArrayList<CartBean> cartArr = new ArrayList<CartBean>();
 		CartBean cart = null;
@@ -134,7 +134,7 @@ public class CartDBBean {
 		return cartArr;
 	}
 	
-	// cart_number ¿­À» »èÁ¦ÇÏ´Â ¸Þ¼­µå
+	// cart_number ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public int deleteCart(int cart_number) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -148,7 +148,7 @@ public class CartDBBean {
 			re = pstmt.executeUpdate();
 			re = 1;
 			
-			System.out.println("»èÁ¦ ¼º°ø");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		}catch(SQLException ex){
 			ex.printStackTrace();
 		}finally{
@@ -162,7 +162,7 @@ public class CartDBBean {
 		return re;
 	}
 	
-	// cart_numberÀÇ ±¸¸Å ¼ö·®À» ¼öÁ¤ÇÏ´Â ¸Þ¼­µå
+	// cart_numberï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
 	public int editCart(int cart_number, int product_count) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -177,7 +177,7 @@ public class CartDBBean {
 			re = pstmt.executeUpdate();
 			re = 1;
 			
-			System.out.println("¼öÁ¤ ¼º°ø");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		}catch(SQLException ex){
 			ex.printStackTrace();
 		}finally{
@@ -190,7 +190,7 @@ public class CartDBBean {
 		}
 		return re;
 	}
-	public CartBean getCartContent(String cartNum) throws Exception {
+	public CartBean getCartContent(int cartNum) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -201,13 +201,47 @@ public class CartDBBean {
 		try {
 			conn = getConnection();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, cartNum);
+			pstmt.setInt(1, cartNum);
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
 				cart = new CartBean();
 				cart.setProduct_number(rs.getInt("product_number"));
 				cart.setProduct_count(rs.getInt("product_count"));
+			}
+			
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}finally{
+			try{
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return cart;
+	}
+	public CartBean overlapTest(String user_id) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "select product_number, product_count, cart_number from cart where user_id=?";
+		
+		CartBean cart = null;
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				cart = new CartBean();
+				cart.setProduct_number(rs.getInt("product_number"));
+				cart.setProduct_count(rs.getInt("product_count"));
+				cart.setCart_number(rs.getInt("cart_number"));
 			}
 			
 		}catch(SQLException ex){
