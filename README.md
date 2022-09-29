@@ -28,3 +28,7 @@
 4. 서버의 url은 ip주소 : 톰캣서버 포트번호 / 첫화면 파일이름 이다.
     ex ) 192.000.000.000:8080/index.html
     단, ROOT파일이 먼저 실행되므로 파일이름이 ROOT가 아닌경우 따로 설정이 필요하다.
+
+  ==src파일의 주석들의 한글이 깨져있음.==
+  참고한 부트스트랩 : https://themewagon.com/themes/free-responsive-bootstrap-4-html5-admin-template-tinydash/
+                     https://technext.github.io/amado/product-details.html
