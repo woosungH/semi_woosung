@@ -70,7 +70,7 @@
                 </div> <!-- .col-md-->
                 <div class="col-md-6">
                   <div class="card shadow bg-success text-center mb-4">
-                    <div class="card-body p-5" onclick="location.href='main.jsp?pages=../product/cart'" style="cursor:pointer">
+                    <div class="card-body p-5" onclick="location.href='main.jsp?pages=../cart/cartList'" style="cursor:pointer">
                       <span class="circle circle-md bg-success-light">
                         <i class="fe fe-message-circle fe-24 text-white"></i>
                       </span>

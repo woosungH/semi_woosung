@@ -82,7 +82,7 @@
                           		<input type="checkbox" value="<%= cart_number %>" name="cart_number" id="cart<%=i%>" onchange="itemSum(cart_frm)"/>
                           	</td>
                           	<td>
-                          		<p style="line-height: 115px;"><%= cart_number %></p>
+                          		<p style="line-height: 115px;"><%= i+1 %></p>
                           		<%-- <input type="hidden" value="<%= cart_number %>" id="cart<%=i%>" > --%>
                           	</td>
                             <td>
@@ -125,8 +125,8 @@
 						%>		
                           <tr>
                           	<td colspan="2" style="text-align: right;">&nbsp;</td>
-                          	<td colspan="2" style="text-align: right;"></td>
-                          	<td colspan="2" style="text-align: right;"><strong>총 가격(원) &nbsp;&nbsp;:&nbsp;&nbsp; <span id="total"><%= total_price%></span>(소계) + <span id="ship"><%= ship %></span>(배송비) = </strong></td>
+                          	<td colspan="1" style="text-align: right;"></td>
+                          	<td colspan="3" style="text-align: right;"><strong>총 가격(원) &nbsp;&nbsp;:&nbsp;&nbsp; <span id="total"><%= total_price%></span>(소계) + <span id="ship"><%= ship %></span>(배송비) = </strong></td>
                           	<td colspan="2" style="text-align: center;"><strong style="color:red" id="ships"><b><%= total_price + ship %></b></strong></td>
                           </tr>
                           <tr>

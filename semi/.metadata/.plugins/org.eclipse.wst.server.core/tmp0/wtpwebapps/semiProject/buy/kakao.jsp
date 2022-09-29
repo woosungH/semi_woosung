@@ -20,7 +20,7 @@
      String[] p_nums = request.getParameterValues("p_num");
      String[] p_prices = request.getParameterValues("price");
      String requested = (String)request.getParameter("requested");
-     
+     String[] cart_numbers;
      
      int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));/* 
      int p_num = Integer.parseInt(request.getParameter("p_num"));
@@ -28,6 +28,10 @@
      int price = Integer.parseInt(request.getParameter("price")); */
      String phone = phone1+phone2+phone3;
      String address = raddr+detailaddr;
+     
+     if(request.getParameterValues("cart_number")!=null){
+    	 cart_numbers =request.getParameterValues("cart_number");
+     }
      
      // 주문번호, 상세번호 생성
 	Date nowDate = new Date();
@@ -86,18 +90,41 @@
 %>
 <input type="hidden" value="<%= re %>" id="re">
 
-	<form action="main.jsp" method="post" id="product">
+	<form action="main.jsp" method="post" id="product" name="product">
 <%
-	for(int i=0;i<p_name.length;i++){
+	if(request.getParameterValues("cart_number")!=null){
+		 cart_numbers =request.getParameterValues("cart_number");
+		for(int i=0;i<p_name.length;i++){
 %>
-		<input type="hidden" value="../buy/buy_body" name="pages">
-		<input type="hidden" value="<%= p_name[i] %>" name="p_name">
-		<input type="hidden" value="<%= p_nums[i] %>" name="p_num">
-		<input type="hidden" value="<%= p_prices[i] %>" name="p_price">
+			<input type="hidden" value="../buy/buy_body" name="pages">
+			<%-- <input type="hidden" value="<%= p_name[i] %>" name="p_name">
+			<input type="hidden" value="<%= p_nums[i] %>" name="p_num">
+			<input type="hidden" value="<%= p_prices[i] %>" name="p_price"> --%>
+			<input type="hidden" value="<%= cart_numbers[i] %>" name="cart_number">
+<%
+		}
+%>
+	</form>
+<%
+	} else{
+%>
+
+	<form action="main.jsp" method="post" id="product" name="product">
+<%
+		for(int i=0;i<p_name.length;i++){
+%>
+			<input type="hidden" value="../buy/buy_body" name="pages">
+			<input type="hidden" value="<%= p_name[i] %>" name="product_name">
+			<input type="hidden" value="<%= p_nums[i] %>" name="product_number">
+			<input type="hidden" value="<%= p_count[i] %>" name="product_count">
+			<input type="hidden" value="<%= p_prices[i] %>" name="product_price">
+<%
+		}
+%>
+	</form>
 <%
 	}
 %>
-	</form>
 
 	<form action="main.jsp" method="post" id="paySuccess">
 <%
@@ -184,7 +211,7 @@
 	    var re = document.getElementById("re").value;
 	    if(re == 2){
 			alert("재고가 없습니다.");
-			document.getElementById("product").submit;
+			document.getElementById("product").submit();
 			<%-- location.href="main.jsp?pages=../buy/buy_body&p_name=<%= p_name %>&p_num=<%= p_num %>&count=<%= count %>&price=<%= price %>"; --%>	        
 	    }
 		</script>
@@ -195,7 +222,7 @@
 	    var re = document.getElementById("re").value;
 	    if(re == 3){
 			alert("주문에 실패했습니다.");
-			document.getElementById("product").submit;
+			document.getElementById("product").submit();
 			<%-- location.href="main.jsp?pages=../buy/buy_body&p_name=<%= p_name %>&p_num=<%= p_num %>&count=<%= count %>&price=<%= price %>"; --%>	        
 	    }
 		</script>

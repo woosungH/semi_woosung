@@ -132,7 +132,7 @@
                             <li>
                                 <p designelement="text" textindex="2"
                                     texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">OPEN : AM 09:30
-                                    - PM 06:30 / SAT, SUN, HOLIDAY OFF</p>
+                                    - PM 05:30 / SAT, SUN, HOLIDAY OFF</p>
                                 <p designelement="text" textindex="3"
                                     texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">영업시간외 문의는 카카오톡
                                     채널로 부탁드립니다</p>
@@ -193,7 +193,7 @@
                         <ul class="list v5">
                             <li><span designelement="text" textindex="12"
                                     texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">반품주소 :</span>
-                                서울특별시 서초구 동광로10길 27 그린촬영시스템(주)</li>
+                                부산광역시 부산진구 중앙대로 688 한준빌딩 2층</li>
                             <li style="text-indent:0; padding-left:0;">
                                 <span designelement="text" textindex="13"
                                     texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">배송조회 : 로젠택배
@@ -213,19 +213,19 @@
         <div class="footer_b">
             <div class="resp_wrap">
                 <ul class="menu2">
-                    <li><a href="/" designelement="text" textindex="15"
+                    <li><a href="#" designelement="text" textindex="15"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">HOME</a></li>
-                    <li><a href="/service/company" designelement="text" textindex="16"
+                    <li><a href="#" designelement="text" textindex="16"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">COMPANY</a></li>
-                    <li><a href="/service/agreement" designelement="text" textindex="17"
+                    <li><a href="#" designelement="text" textindex="17"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">AGREEMENT</a></li>
-                    <li class="bold"><a href="/service/privacy" designelement="text" textindex="18"
+                    <li class="bold"><a href="#" designelement="text" textindex="18"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">PRIVACY POLICY</a></li>
-                    <li><a href="/service/guide" designelement="text" textindex="19"
+                    <li><a href="#" designelement="text" textindex="19"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">GUIDE</a></li>
-                    <li><a href="/service/partnership" designelement="text" textindex="20"
+                    <li><a href="#" designelement="text" textindex="20"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">PARTNER</a></li>
-                    <li class="bold"><a href="http://nisifilters.co.kr/main/index" designelement="text" textindex="21"
+                    <li class="bold"><a href="#" designelement="text" textindex="21"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">
                             <p style="color:#fcaf15;">NISI FILTERS KOREA</p>
                         </a></li>
@@ -237,7 +237,7 @@
         <div class="footer_c">
             <div class="resp_wrap">
                 <ul class="menu3">
-                    <li><span designelement="text" textindex="22"
+                    <li style="margin-right:15px;"><span designelement="text" textindex="22"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">회사명 :</span> <span
                             class="pcolor">그린샵(주)</span></li>
                     <li><span designelement="text" textindex="23"
@@ -245,21 +245,21 @@
                             class="pcolor">이홍섭 </span></li>
                     <li><span designelement="text" textindex="24"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">주소 :</span> <span
-                            class="pcolor">서울특별시 서초구 동광로10길 27 그린샵(주)</span></li>
+                            class="pcolor">부산광역시 부산진구 중앙대로 688 한준빌딩 2층</span></li>
                     <li><span designelement="text" textindex="25"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">전화 :</span> <a
-                            href="tel:02-535-6100" class="pcolor">02-535-6100</a></li>
+                            href="tel:02-535-6100" class="pcolor">051-912-1000</a></li>
                     <li><span designelement="text" textindex="26"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">팩스 :</span> <span
-                            class="pcolor">02-535-6230</span></li>
+                            class="pcolor">051-912-1000</span></li>
                     <li><span designelement="text" textindex="27"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">사업자등록번호 :</span> <span
-                            class="pcolor">111-82-32270 <a href="javascript:;"
+                            class="pcolor">-<a href="javascript:;"
                                 onclick="window.open('https://www.ftc.go.kr/bizCommPop.do?wrkr_no=1148637270','communicationViewPopup','width=750,height=700,scrollbars=yes')">[사업자정보확인]</a></span>
                     </li>
                     <li><span designelement="text" textindex="28"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">통신판매업신고번호 :</span> <span
-                            class="pcolor">2009-서울서초1176호</span></li>
+                            class="pcolor">-</span></li>
                     <li><span designelement="text" textindex="29"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">개인정보보호책임자 : </span>이홍섭
                     </li>
@@ -269,7 +269,7 @@
                                 href="mailto:green@greenshop.co.kr">green@greenshop.co.kr</a></span></li>
                     <li><span designelement="text" textindex="31"
                             texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">호스팅 제공자 :</span> <span
-                            class="pcolor">(주)가비아씨엔에스</span></li>
+                            class="pcolor">톰캣</span></li>
                 </ul>
                 <p class="copyright" designelement="text" textindex="32"
                     texttemplatepath="MjAyMDEwMDgvbGF5b3V0X2Zvb3Rlci9zdGFuZGFyZC5odG1s">COPYRIGHT (c) <span

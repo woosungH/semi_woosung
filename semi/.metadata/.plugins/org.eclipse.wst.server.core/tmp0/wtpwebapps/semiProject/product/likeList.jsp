@@ -27,6 +27,7 @@
 	System.out.println("카테고리 ================"+category_code);
 
 	String id = (String)session.getAttribute("id");
+	String name = (String)session.getAttribute("name");
 	System.out.println("id==========================="+id);
 	LikeDBBean db = LikeDBBean.getInstance();
 	ArrayList<LikeBean> likeList = db.likeList(id);
@@ -49,7 +50,12 @@
   </head>
   <body class="vertical  light  ">
       <div class="container-fluid">
-            <h6 class="mb-3">좋아요</h6>
+        <h2 class="h4 mb-1">나의 찜 목록</h2>
+        <p class="mb-3"><%= name %>님이 좋아요한 제품의 목록 입니다.</p>
+			<%
+				if(likeList.size()!=0){
+					
+			%>
 	        <div class="row justify-content-center">
 	            <div class="img_contianer mb-4">
 		     	 <%
@@ -77,6 +83,15 @@
 				</div> <!-- .card -->
 				<%
 						}
+					} else {
+				%>
+					<div class="card shadow">
+						<div class="card-body">
+							<p class="mb-3">찜 목록이 비어있습니다. 마음에 드는 제품을 찜 목록에 추가해보세요.</p>
+						</div>
+					</div>
+				<%				
+					}
 				%>
 			</div> <!-- .card-deck -->
 		</div>

@@ -11,7 +11,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	int p_num = 0,price=0,count=0,ship=0,totalPrice=0;
+	int p_num = 0,price=0,count=0,ship=0,totalPrice=0,one_price=0;
 	String phone1="",phone2="",phone3="",email="",pcode="",raddr="",jibun="",detailaddr="",p_name="",phone="",address="",name="",id="",shipping="";
 	if(session.getAttribute("Member") == null){ 
 	// member가 null(초기화)되면  main으로 들어갈 수 없게 
@@ -92,22 +92,23 @@
 						
 						product = pdb.getproduct(p_num, false);
 						p_name =product.getProduct_name();
+						one_price = product.getProduct_price();
 						price = product.getProduct_price() * count;
 						totalPrice += price;
-					
 					%>
 					  <tr>
 					    <td>
 	                   		<input type="text" class="form-control" value="<%= p_name %>" name="p_name" readonly>		
 	                   		<input type="hidden" class="form-control" value="<%= p_num %>" name="p_num" readonly>		
+					    	<input type="hidden" id="cart_number" value="<%= cart_numbers.length %>">
 					    </td>
 					    <td>
-					    	<input type="number" min="1" onchange="priceCal()"  class="form-control" id="count" value="<%= count %>" name="count">
+					    	<input type="number" min="1" onchange="priceCal(<%= i %>)"  class="form-control" id="count<%= i %>" value="<%= count %>" name="count">
 					    	<input type="hidden" class="form-control" id="ori_count" value="<%= count %>" readonly>
 					    </td>
 					    <td>
-					   		<input type="text" class="form-control" id="price" value="<%= price %>" name="price" readonly>
-					   		<input type="hidden" class="form-control" id="ori_price" value="<%= price %>" readonly>
+					   		<input type="text" class="form-control" id="price<%= i %>" value="<%= price %>" name="price" readonly>
+					   		<input type="hidden" class="form-control" id="one_price<%= i %>" value="<%= one_price %>" readonly>
 					    </td>
 					    <td style="text-align: center;">
 					   		<p style="padding-top:13px;"><%= shipping %></p>
@@ -130,7 +131,7 @@
 		                   		<input type="hidden" class="form-control" value="<%= p_num %>" name="p_num" readonly>		
 						    </td>
 						    <td>
-						    	<input type="number" min="1" class="form-control" id="count" value="<%= count %>" onchange="priceCal()" name="count">
+						    	<input type="number" min="1" class="form-control" id="count" value="<%= count %>" onchange="oneCal()" name="count">
 						    	<input type="hidden" class="form-control" id="ori_count" value="<%= count %>" readonly>
 						    </td>
 						    <td>
@@ -281,7 +282,7 @@
 </script>
 <script type="text/javascript">
 /*주문 수량을 변경하면 가격이 자동으로 설정되는 스크립트*/
-function priceCal(){
+function oneCal(){
 	var ori_count = document.getElementById("ori_count").value;
 	var count = document.getElementById("count").value;
 	var one_price = document.getElementById("ori_price").value/ori_count;
@@ -294,6 +295,25 @@ function priceCal(){
 	}
 	
 	document.getElementById("totalPrice").value = Number(document.getElementById("ship").value) + Number(document.getElementById("price").value);
+}
+function priceCal(i){
+	var count = document.getElementById("count"+i).value;
+	var one_price = document.getElementById("one_price"+i).value;
+	document.getElementById("price"+i).value = (parseInt(count) * parseInt(one_price));
+	
+	var price = document.getElementById("price"+i).value;
+	if ((parseInt(count) * parseInt(one_price)) >= 20000 ) {
+		document.getElementById("ship").value = 0;
+	} else {
+		document.getElementById("ship").value = 3000;
+	}
+	
+	 var sum = 0;
+	 var counted = order_frm.cart_number.length;
+	 for(var i=0; i < counted; i++ ){
+	    sum += parseInt(document.getElementById("count"+i).value) * parseInt(document.getElementById("one_price"+i).value);
+	 }
+	document.getElementById("totalPrice").value = sum;
 }
 </script>
 
