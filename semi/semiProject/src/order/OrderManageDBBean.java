@@ -511,8 +511,7 @@ private static OrderManageDBBean OrderMangeDBBean = new OrderManageDBBean();
 				"    on D.order_number = O.order_number\r\n" +
 				"  join product P\r\n" + 
 				"    on P.product_number = D.product_number" + 
-				" where user_id = '"+user_id+"'"+
-				" order by O.order_number desc";
+				" where user_id = '"+user_id+"'";
 		String sql2 = "SELECT COUNT(ORDER_NUMBER) from USER_ORDER where user_id = '"+user_id+"'";
 		
 		Connection conn = null;
