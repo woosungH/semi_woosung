@@ -14,3 +14,21 @@
 - 카카오페이 결제 기능 추가
 - 결제 시 데이터베이스 연동 확인
 - 단, 카카오페이 결제 시 QR 코드로 진행하면 가끔 오류로 종료된 결제라는 메시지가 뜨고 팝업창이 남아있음.
+
+22/09/28
+- 팀원 작업물 합친 후 경로 수정
+- 톰캣으로 서버 배포후 작동 테스트
+- 각종 오류 확인 후 수정
+
+
+* 톰캣 서버로 배포 하는 방법 *
+1. 프로젝트를 WAR파일로 export해 톰캣이 설치된 경로에서 webapps 파일에 넣어준다.(파일이름 ROOT)
+2. sql 서버와 연동을 해야할 경우 톰캣 설치 경로에서 conf 폴더의 context.xml파일에 resource를 추가해준다.
+3. 톰캣 설치 경로의 bin 파일에서 startup.bat(윈도우)를 실행해 서버를 실행 시킨다.
+4. 서버의 url은 ip주소 : 톰캣서버 포트번호 / 첫화면 파일이름 이다.
+    ex ) 192.000.000.000:8080/index.html
+    단, ROOT파일이 먼저 실행되므로 파일이름이 ROOT가 아닌경우 따로 설정이 필요하다.
+
+  ==src파일의 주석들의 한글이 깨져있음.==
+  참고한 부트스트랩 : https://themewagon.com/themes/free-responsive-bootstrap-4-html5-admin-template-tinydash/
+                     https://technext.github.io/amado/product-details.html
