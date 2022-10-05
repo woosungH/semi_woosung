@@ -85,7 +85,7 @@
     ex ) 192.000.000.000:8080/index.html
     단, ROOT파일이 먼저 실행되므로 파일이름이 ROOT가 아닌경우 따로 설정이 필요하다.
 
-  ==src파일의 주석들의 한글이 깨져있음.==
-  참고한 부트스트랩
+  - src파일의 주석들의 한글이 깨져있음.
+  - 참고한 부트스트랩
   1. https://themewagon.com/themes/free-responsive-bootstrap-4-html5-admin-template-tinydash/
   2. https://technext.github.io/amado/product-details.html
