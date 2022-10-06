@@ -1,3 +1,31 @@
+## 사용방법
+
+사용한 프로그램 : 이클립스(20년 6월 버전), JAVA 11,  톰캣(9.0버전),  sql developer, 오라클 11xe
+설치 방법 
+  - 이클립스 :  https://www.eclipse.org/downloads/packages/release/2020-06
+  - JAVA :  https://www.oracle.com/java/technologies/downloads/
+  - 톰캣 : https://tomcat.apache.org/download-90.cgi
+  - sql developer : https://www.oracle.com/database/sqldeveloper/technologies/download/
+  - 오라클 11xe : https://www.oracle.com/database/technologies/xe-prior-release-downloads.html
+  
+프로젝트 진행하며 사용한 라이브러리 :  cos.jar, thumbnailator.jar
+ - cos.jar : 서버로 파일을 업로드하기 위해서 사용
+ - thumbnailator.jar : 이미지 업로드 후 썸네일 형식으로 크기 수정, 파일 크기 수정을 위해 사용
+추가 작업(DB 연결)
+  - server.xml :  oracle과 연동하기 위해 하단부의 context 태그 사이에 아래의 내용을 입력
+  <Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/oracle" password="1234 (접속 비밀번호)"/> " type="javax.sql.DataSource" url="jdbc:oracle:thin:@192.168.200.153:1521:xe(url)" username="green(접속 아이디)"/>
+  
+톰캣 서버로 배포 하는 방법 
+1. 프로젝트를 WAR파일로 export해 톰캣이 설치된 경로에서 webapps 파일에 넣어준다.(파일이름 ROOT)
+2. sql 서버와 연동을 해야할 경우 톰캣 설치 경로에서 conf 폴더의 context.xml파일에 resource를 추가해준다.
+3. 톰캣 설치 경로의 bin 파일에서 startup.bat(윈도우)를 실행해 서버를 실행 시킨다.
+4. 서버의 url은 ip주소 : 톰캣서버 포트번호 / 첫화면 파일이름 이다.
+    ex ) 192.000.000.000:8080/index.html
+    단, ROOT파일이 먼저 실행되므로 파일이름이 ROOT가 아닌경우 따로 설정이 필요하다.
+    
+-----
+## 작업내용
+
 22/09/16
 - 고객센터
   1:1 문의(상품문의 통합) > 로그인 후 이용가능 (ID 세션 없으면 로그인 페이지 이동)
@@ -76,16 +104,10 @@
 - 톰캣으로 서버 배포후 작동 테스트
 - 각종 오류 확인 후 수정
 
+----
+## 참고사항
 
-* 톰캣 서버로 배포 하는 방법 *
-1. 프로젝트를 WAR파일로 export해 톰캣이 설치된 경로에서 webapps 파일에 넣어준다.(파일이름 ROOT)
-2. sql 서버와 연동을 해야할 경우 톰캣 설치 경로에서 conf 폴더의 context.xml파일에 resource를 추가해준다.
-3. 톰캣 설치 경로의 bin 파일에서 startup.bat(윈도우)를 실행해 서버를 실행 시킨다.
-4. 서버의 url은 ip주소 : 톰캣서버 포트번호 / 첫화면 파일이름 이다.
-    ex ) 192.000.000.000:8080/index.html
-    단, ROOT파일이 먼저 실행되므로 파일이름이 ROOT가 아닌경우 따로 설정이 필요하다.
-
-  - src파일의 주석들의 한글이 깨져있음.
-  - 참고한 부트스트랩
-  1. https://themewagon.com/themes/free-responsive-bootstrap-4-html5-admin-template-tinydash/
-  2. https://technext.github.io/amado/product-details.html
+- src파일의 주석들의 한글이 깨져있음. -> 한글 수정 필요
+- 참고한 부트스트랩
+ 1. https://themewagon.com/themes/free-responsive-bootstrap-4-html5-admin-template-tinydash/
+ 2. https://technext.github.io/amado/product-details.html
